@@ -11,6 +11,7 @@ export default class AddRestriction {
     }
 
     onClick() {
+        
         if (this.form.numberOfForms >= 5) {
             this.alerta('Max number of restrictions', 'success');
         } else {
@@ -43,9 +44,11 @@ export default class AddRestriction {
     }
 
     createRemoveBtn() {
+        console.log(this.form.numberOfForms);
         const rmvBtn = document.createElement('button');
         rmvBtn.setAttribute('type', 'button');
         rmvBtn.setAttribute('id', `rmv-btn-form-${this.form.numberOfForms}`);
+        rmvBtn.setAttribute('class', 'btn btn-danger');
         rmvBtn.innerText = 'Remove';
 
         const target = document.getElementById(`form-${this.form.numberOfForms}`);
@@ -55,8 +58,9 @@ export default class AddRestriction {
     }
 
     createInput() {
+    
         this.form.numberOfForms = this.form.currentRestrictionForm.length; 
-        const formCopyTarget = document.getElementById('restriction-form')
+        const formCopyTarget = document.getElementById('restriction-form-id');
         const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
     
         // class= 'restriction-form'
@@ -65,7 +69,7 @@ export default class AddRestriction {
         // crear boton aqui
         const regex = new RegExp('__prefix__', 'g')
         formCopyTarget.append(copyEmptyFormEl)
-        console.log('# forms', this.form.numberOfForms)
+
         this.form.totalNewForms.setAttribute('value', this.form.numberOfForms + 1);
         copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, this.form.numberOfForms)
         

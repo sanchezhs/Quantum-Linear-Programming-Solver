@@ -30,7 +30,7 @@
       </div>
     </nav>
 
-    <div id='empty-form' class="hidden">{{formset.empty_form}}</div>
+    <div id='empty-form' class="hidden form-control">{{formset.empty_form}}</div>
   
       <main role="main" class="container mt-5">
   
@@ -41,7 +41,7 @@
           <div id="liveAlertPlaceholder"></div>
 
           <form method="POST">
-            {{ formset.management_form }}
+            {% comment %} {{ formset.management_form }} {% endcomment %}
             {% csrf_token %}
             <div class="mb-3">
               {% bootstrap_field formFunction.function class="form-control"%}
@@ -51,8 +51,9 @@
               {% bootstrap_field formFunction.maximize class="form-check-input"%}
             </div>
 
-            <div id='restriction-form'>
-            {% bootstrap_formset formset %}
+            <div id='restriction-form-id' class='restriction-form'>
+            {% bootstrap_formset formset class='restriction-form'%}
+          
             </div>  
 
             <button id='add-more' type="button" class="btn btn-primary">Add Restriction</button>

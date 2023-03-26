@@ -5,4 +5,5 @@ export default class Form {
         this.currentRestrictionForm = document.getElementsByClassName('restriction-form');
         this.numberOfForms = this.currentRestrictionForm.length; // actual # of restrictions, initial is 1
     }
+
 }
