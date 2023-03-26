@@ -11,8 +11,35 @@ export default class AddRestriction {
     }
 
     onClick() {
-        this.createInput();
-        this.createRemoveBtn();
+        if (this.form.numberOfForms >= 5) {
+            this.alerta('Max number of restrictions', 'success');
+        } else {
+            this.createInput();
+            this.createRemoveBtn();
+        }
+    }
+
+
+    alerta(message, type) {
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+          ].join('')
+        
+        alertPlaceholder.append(wrapper);  
+        alertPlaceholder.removeAttribute('class', 'd-none');
+        const alertTrigger = document.getElementsByClassName('btn-close')[0]
+        if (alertTrigger) {
+        alertTrigger.addEventListener('click', () => {
+            alertPlaceholder.setAttribute('class', 'd-none');
+        })
+        }
+  
     }
 
     createRemoveBtn() {
@@ -29,18 +56,19 @@ export default class AddRestriction {
 
     createInput() {
         this.form.numberOfForms = this.form.currentRestrictionForm.length; 
-        const formCopyTarget = document.getElementById('restriction-list')
+        const formCopyTarget = document.getElementById('restriction-form')
         const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
     
-        copyEmptyFormEl.setAttribute('class', 'restriction-form')
+        // class= 'restriction-form'
+        copyEmptyFormEl.setAttribute('class', 'restriction-form form-control mb-3')
         copyEmptyFormEl.setAttribute('id', `form-${this.form.numberOfForms}`)
         // crear boton aqui
         const regex = new RegExp('__prefix__', 'g')
         formCopyTarget.append(copyEmptyFormEl)
-    
+        console.log('# forms', this.form.numberOfForms)
         this.form.totalNewForms.setAttribute('value', this.form.numberOfForms + 1);
         copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, this.form.numberOfForms)
-
+        
     }
 
 }

@@ -8,7 +8,7 @@ import re
 
 def index(request):
     if request.method == 'GET':
-        formset = formset_factory(CreateNewRestriction, extra=1)
+        formset = formset_factory(CreateNewRestriction, max_num=5, extra=1)
         return render(request, 'index2.html', {'formFunction': CreateNewFunction(),
                                           'formset': formset})
     else:
@@ -18,6 +18,7 @@ def index(request):
     
 def store_function_and_restrictions(query_dict):
     data = {}
+    data['maximize'] = False
     regex = r'^form-\d+-restriction$'
     for key, value in query_dict.items():
         if key == 'function':
@@ -31,6 +32,6 @@ def store_function_and_restrictions(query_dict):
             else:
                 form_id = key.split('-')[1]
                 data[f'form-{form_id}-restriction'] = ''
-        data['maximize'] = False
+        
     print(data)
     #return data

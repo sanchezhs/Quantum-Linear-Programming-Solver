@@ -18,7 +18,7 @@
     </style>
 
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -30,40 +30,40 @@
       </div>
     </nav>
 
+    <div id='empty-form' class="hidden">{{formset.empty_form}}</div>
   
-      <main role="main" class="container">
+      <main role="main" class="container mt-5">
   
-        <div class="starter-template">
+        <div class="container">
             
+          {% bootstrap_formset_errors formset %}
+
+          <div id="liveAlertPlaceholder"></div>
+
           <form method="POST">
             {{ formset.management_form }}
             {% csrf_token %}
-            
-            {% bootstrap_form formFunction layout='inline' %}
-           {% comment %}  {{formFunction.as_p}} {% endcomment %}
-           <div id='formset'>
-           {% comment %}  {% bootstrap_formset formset layout='inline' %} {% endcomment %}
-           </div>
-            <div id="restriction-list">
-                    {% for form in formset %}
-                        <div class='restriction-form'>{{form.as_p}} </div>
-        
-                    {% endfor %}
-                </div>
-                <div id='empty-form' class="hidden">{{formset.empty_form}}</div>
-                
-                
-                <button id='add-more' type="button">
-                    Add
-                </button>
-                
-                <button class="btn btn-outline-success my-2 my-sm-0">
-                    Save
-                </button>
+            <div class="mb-3">
+              {% bootstrap_field formFunction.function class="form-control"%}
+              <div id="emailHelp" class="form-text">Ex: 3*x - 2*y + z</div>
+            </div>
+            <div class="">
+              {% bootstrap_field formFunction.maximize class="form-check-input"%}
+            </div>
+
+            <div id='restriction-form'>
+            {% bootstrap_formset formset %}
+            </div>  
+
+            <button id='add-more' type="button" class="btn btn-primary">Add Restriction</button>
+            <button type="reset" class="btn btn-primary">Clear All</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+
             </form>
         </div>
   
-      </main><!-- /.container -->
+      </main>
 
 
 <script src="{% static './js/index.js' %}" type="module"></script>
