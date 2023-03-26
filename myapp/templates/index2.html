@@ -1,0 +1,73 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load static %}
+
+
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+      </div>
+    </nav>
+
+  
+      <main role="main" class="container">
+  
+        <div class="starter-template">
+            
+          <form method="POST">
+            {{ formset.management_form }}
+            {% csrf_token %}
+            
+            {% bootstrap_form formFunction layout='inline' %}
+           {% comment %}  {{formFunction.as_p}} {% endcomment %}
+           <div id='formset'>
+           {% comment %}  {% bootstrap_formset formset layout='inline' %} {% endcomment %}
+           </div>
+            <div id="restriction-list">
+                    {% for form in formset %}
+                        <div class='restriction-form'>{{form.as_p}} </div>
+        
+                    {% endfor %}
+                </div>
+                <div id='empty-form' class="hidden">{{formset.empty_form}}</div>
+                
+                
+                <button id='add-more' type="button">
+                    Add
+                </button>
+                
+                <button class="btn btn-outline-success my-2 my-sm-0">
+                    Save
+                </button>
+            </form>
+        </div>
+  
+      </main><!-- /.container -->
+
+
+<script src="{% static './js/index.js' %}" type="module"></script>
+{% endblock content %}
+
+
+
