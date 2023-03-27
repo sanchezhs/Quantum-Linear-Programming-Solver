@@ -13,34 +13,11 @@ export default class AddRestriction {
     onClick() {
         
         if (this.form.numberOfForms >= 5) {
-            this.alerta('Max number of restrictions', 'success');
+            console.log('maximo')
         } else {
             this.createInput();
             this.createRemoveBtn();
         }
-    }
-
-
-    alerta(message, type) {
-        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-
-        const wrapper = document.createElement('div')
-        wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
-          ].join('')
-        
-        alertPlaceholder.append(wrapper);  
-        alertPlaceholder.removeAttribute('class', 'd-none');
-        const alertTrigger = document.getElementsByClassName('btn-close')[0]
-        if (alertTrigger) {
-        alertTrigger.addEventListener('click', () => {
-            alertPlaceholder.setAttribute('class', 'd-none');
-        })
-        }
-  
     }
 
     createRemoveBtn() {

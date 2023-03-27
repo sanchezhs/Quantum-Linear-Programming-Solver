@@ -30,6 +30,10 @@
       </div>
     </nav>
 
+    {% if error %}
+      <h1>Error</h1>
+    {% endif %}
+
     <div id='empty-form' class="hidden form-control">{{formset.empty_form}}</div>
   
       <main role="main" class="container mt-5">
@@ -37,8 +41,6 @@
         <div class="container">
             
           {% bootstrap_formset_errors formset %}
-
-          <div id="liveAlertPlaceholder"></div>
 
           <form method="POST">
             {% comment %} {{ formset.management_form }} {% endcomment %}
@@ -52,7 +54,7 @@
             </div>
 
             <div id='restriction-form-id' class='restriction-form'>
-            {% bootstrap_formset formset class='restriction-form'%}
+            {% bootstrap_formset formset %}
           
             </div>  
 

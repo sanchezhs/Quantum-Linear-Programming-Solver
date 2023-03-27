@@ -1,37 +1,33 @@
 from django.shortcuts import render, redirect
-from .models import Function, Restriction
 from .forms import CreateNewFunction, CreateNewRestriction
 from django.forms import formset_factory
 import re
 
+from .validation.form_parser import validate
+from .validation.process import process_form
+
+from django.core.exceptions import ValidationError
+
+
 # Create your views here.
 
 def index(request):
+    formset = formset_factory(CreateNewRestriction, max_num=5, extra=1)
+    formFunction = CreateNewFunction()
     if request.method == 'GET':
-        formset = formset_factory(CreateNewRestriction, max_num=5, extra=1)
-        return render(request, 'index2.html', {'formFunction': CreateNewFunction(),
-                                          'formset': formset})
+        return render(request, 'index2.html', {'formFunction': formFunction,
+                                          'formset': formset,
+                                          'error': False})
     else:
-        #maximize = request.POST.get('maximize', False)
-        store_function_and_restrictions(request.POST)
+        data = process_form(request.POST)
+        try:
+            for k, v in data.items():
+                if k != 'maximize':
+                    validate(v)
+        except ValidationError as e:
+            return render(request, 'index2.html', {'formFunction': CreateNewFunction(),
+                                          'formset': formset,
+                                          'error': True})
         return redirect('index')
+
     
-def store_function_and_restrictions(query_dict):
-    data = {}
-    data['maximize'] = False
-    regex = r'^form-\d+-restriction$'
-    for key, value in query_dict.items():
-        if key == 'function':
-            data['function'] = value
-        elif key == 'maximize':
-            data['maximize'] = True
-        elif re.match(regex, key):
-            if len(value) != 0:
-                form_id = key.split('-')[1]
-                data[f'form-{form_id}-restriction'] = value
-            else:
-                form_id = key.split('-')[1]
-                data[f'form-{form_id}-restriction'] = ''
-        
-    print(data)
-    #return data
