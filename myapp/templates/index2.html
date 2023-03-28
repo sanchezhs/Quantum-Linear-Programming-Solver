@@ -3,11 +3,12 @@
 
 {% block content %}
 
+{% load crispy_forms_tags %}
 {% load bootstrap5 %}
 {% bootstrap_css %}
-{# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 {% load static %}
+
 
 
 
@@ -34,16 +35,12 @@
       <h1>Error</h1>
     {% endif %}
 
-    <div id='empty-form' class="hidden form-control">{{formset.empty_form}}</div>
+    {% comment %} <div id='empty-form' class="hidden form-control">{{formset.empty_form}}</div> {% endcomment %}
   
-      <main role="main" class="container mt-5">
-  
-        <div class="container">
-            
-          {% bootstrap_formset_errors formset %}
-
-          <form method="POST">
-            {% comment %} {{ formset.management_form }} {% endcomment %}
+      <div class="container mt-5 pt-5">
+          
+        {% comment %} 
+        <form method="POST">
             {% csrf_token %}
             <div class="mb-3">
               {% bootstrap_field formFunction.function class="form-control"%}
@@ -54,19 +51,27 @@
             </div>
 
             <div id='restriction-form-id' class='restriction-form'>
-            {% bootstrap_formset formset %}
-          
-            </div>  
-
+            {% bootstrap_formset formset %} 
+            {% endcomment %}
+            <form method="POST">
+              {% crispy formFunction helper %}
+              {% crispy formset helper %}
+              <button id='add-more' type="button" class="btn btn-primary">Add Restriction</button>
+              <button type="reset" class="btn btn-primary">Clear All</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+              
+{% comment %} 
             <button id='add-more' type="button" class="btn btn-primary">Add Restriction</button>
             <button type="reset" class="btn btn-primary">Clear All</button>
             <button type="submit" class="btn btn-primary">Submit</button>
 
+          </form>
+ {% endcomment %}            
 
-            </form>
+            
+          </div>
         </div>
-  
-      </main>
 
 
 <script src="{% static './js/index.js' %}" type="module"></script>

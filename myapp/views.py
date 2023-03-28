@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CreateNewFunction, CreateNewRestriction
+from .forms import CreateNewFunction, CreateNewRestriction, ExampleFormSetHelper
 from django.forms import formset_factory
 import re
 
@@ -14,9 +14,11 @@ from django.core.exceptions import ValidationError
 def index(request):
     formset = formset_factory(CreateNewRestriction, max_num=5, extra=1)
     formFunction = CreateNewFunction()
+    helper = ExampleFormSetHelper()
     if request.method == 'GET':
         return render(request, 'index2.html', {'formFunction': formFunction,
                                           'formset': formset,
+                                          'helper': helper,
                                           'error': False})
     else:
         data = process_form(request.POST)
