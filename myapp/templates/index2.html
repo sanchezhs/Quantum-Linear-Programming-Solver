@@ -2,13 +2,12 @@
 
 
 {% block content %}
+{% load crispy_forms_tags %}
 
 {% load bootstrap5 %}
 {% bootstrap_css %}
-{# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 {% load static %}
-
 
 
     <style>
@@ -54,7 +53,8 @@
             </div>
 
             <div id='restriction-form-id' class='restriction-form'>
-            {% bootstrap_formset formset %}
+            {% bootstrap_formset formset%} 
+
           
             </div>  
 
