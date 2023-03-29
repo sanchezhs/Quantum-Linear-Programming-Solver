@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHelper
 from django.forms import formset_factory
+from django.http import HttpResponse, JsonResponse
+
 
 from .validation.form_parser import validate
 from .validation.process import process_form
@@ -36,3 +38,10 @@ def index(request):
         return redirect('index')
 
     
+def file_upload(request):
+     if request.method == 'POST':
+          file = request.FILES.get('file')
+          print(str(file.read()))
+
+          return HttpResponse('')
+     return JsonResponse({'post': 'false'})

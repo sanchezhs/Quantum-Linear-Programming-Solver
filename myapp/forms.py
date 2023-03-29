@@ -46,6 +46,3 @@ class ConstraintsFormSetHelper(FormHelper):
         super().__init__(*args, **kwargs)
         self.form_tag = False
         self.disable_csrf = True
-       # self.add_input(Button('Button', 'Add constraint', css_class='btn-primary'))
-       # self.add_input(Reset('Reset', 'Clear All', css_class='btn-primary'))
-       # self.add_input(Submit('Submit', 'Submit'))
