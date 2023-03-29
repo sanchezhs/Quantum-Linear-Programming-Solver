@@ -24,7 +24,7 @@ def index(request):
             for k, v in data.items():
                 if k != 'maximize':
                     validate(v)
-        except ValidationError as e:
+        except ValidationError:
             return render(request, 'index2.html', {'formFunction': CreateNewFunction(),
                                           'formset': formset,
                                           'error': True})

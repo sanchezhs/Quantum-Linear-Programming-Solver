@@ -39,6 +39,14 @@ class Parser():
             %ignore WS_INLINE
         """
         
+"""
+[0-9]*\.[0-9]+([Ee][+-]?[0-9+])?
+| [0-9]+\.[0-9]*([Ee][+-]?[0-9+])?
+| [0-9]+[Ee][+-]?[0-9+]
+;
+
+"""
+    
 p = Parser()
 def validate(str):
     print(str)
