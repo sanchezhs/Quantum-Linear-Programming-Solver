@@ -1,35 +1,33 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Button, Reset, Layout
+from crispy_forms.layout import Submit, Button, Reset, Layout, Field
 
 class CreateNewFunction(forms.Form):
     function = forms.CharField(
-        label='Function to Optimize', 
-        max_length=200 
-        #widget=forms.TextInput()
+        label='Optimize', 
+        max_length=200,
     )
 
-    maximize = forms.TypedChoiceField(
+    optimizationType = forms.TypedChoiceField(
         label='',
-        choices=((0, 'Maximize'), (1, 'Minimize')),
+        choices=((0, 'Minimize'), (1, 'Maximize')),
         coerce=lambda x: bool(int(x)),
         widget=forms.RadioSelect,
-        initial='1',
+        initial='0',
         required=True
     )
 
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(CreateNewFunction, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = 'form-control'
-        self.form_method = 'post'
-    
+        self.helper.form_tag = False    
+        self.fields['function'].widget.attrs['placeholder'] = 'x + 2*y - 4*z + 2'
         
 
-class CreateNewRestriction(forms.Form):
-    restriction = forms.CharField(
-        label='Restrictions', 
+class CreateNewConstraint(forms.Form):
+    constraint = forms.CharField(
+        label='', # Constraints
         max_length=250, 
         widget=forms.TextInput(), 
         required=False
@@ -37,17 +35,17 @@ class CreateNewRestriction(forms.Form):
     
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(CreateNewConstraint, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.render_required_fields = True
         self.helper.form_tag = False
-    
+        self.fields['constraint'].widget.attrs['placeholder'] = 'x < 1'
 
-class ExampleFormSetHelper(FormHelper):
+class ConstraintsFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.form_tag = False
         self.disable_csrf = True
-       # self.add_input(Button('Button', 'Add Restriction', css_class='btn-primary'))
+       # self.add_input(Button('Button', 'Add constraint', css_class='btn-primary'))
        # self.add_input(Reset('Reset', 'Clear All', css_class='btn-primary'))
        # self.add_input(Submit('Submit', 'Submit'))

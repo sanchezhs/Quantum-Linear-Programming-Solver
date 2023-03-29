@@ -3,11 +3,12 @@
 
 {% block content %}
 
+{% load crispy_forms_tags %}
 {% load bootstrap5 %}
 {% bootstrap_css %}
-{# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 {% load static %}
+
 
 
 
@@ -17,66 +18,39 @@
         }
     </style>
 
-    <h1>Formulario</h1>
-    <form method="POST">
-        {{ formset.management_form }}
-        {% csrf_token %}
 
-        {{formFunction.as_p}}
-        <div id="restriction-list">
-            {% for form in formset %}
-                <div class='restriction-form'>{{form.as_p}} </div>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-            {% endfor %}
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+      </div>
+    </nav>
+      <div id="empty-form" class="d-none">{% crispy empty %}</div>
+      <div class="container mt-5 pt-5">
+          
+            <form method="POST">
+              {% csrf_token %}
+
+              {% crispy formFunction helper %}
+              <div id="label-target"></div>
+              {% crispy formset helper %}
+              <div id="restriction-form-id"> </div>
+              <button id='add-more' type="button" class="btn btn-primary">Add Constraint</button>
+              <button type="reset" class="btn btn-primary">Clear All</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+              
+            
+          </div>
         </div>
 
-        <div id='empty-form' class="hidden">{{formset.empty_form}}</div>
-
-        
-        <button id='add-more' type="button">
-            Add
-        </button>
-        
-        <button>
-            Save
-        </button>
-    </form>
 
 <script src="{% static './js/index.js' %}" type="module"></script>
-
-<!-- <script>
-
-    const addMoreBtn = document.getElementById('add-more');
-    const totalNewForms = document.getElementById('id_form-TOTAL_FORMS');
-    
-    addMoreBtn.addEventListener('click', add_new_form);
-    
-    function add_new_form(event) {
-        if (event) {
-            event.preventDefault()
-        }
-        const currentRestrictionForm = document.getElementsByClassName('restriction-form');
-        const currentFormCount = currentRestrictionForm.length // + 1
-        const formCopyTarget = document.getElementById('restriction-list')
-        const copyEmptyFormEl = document.getElementById('empty-form').cloneNode(true)
-        copyEmptyFormEl.setAttribute('class', 'restriction-form')
-        copyEmptyFormEl.setAttribute('id', `form-${currentFormCount}`)
-        const regex = new RegExp('__prefix__', 'g')
-        formCopyTarget.append(copyEmptyFormEl)
-        totalNewForms.setAttribute('value', currentFormCount + 1)
-        copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount)
-        console.log(currentFormCount)
-    }
-
-    removeBtn = document.getElementById('remove-restriction')   
-    removeBtn.addEventListener('click', remove_existing_form)
-
-    function remove_existing_form(event) {
-        console.log('remove btn clickled')
-    }
-
-</script>
- -->
 {% endblock content %}
 
 
