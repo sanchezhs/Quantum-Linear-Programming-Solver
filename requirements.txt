@@ -1,3 +1,6 @@
 django
 django-bootstrap-v5
 lark
+crispy
+django-crispy-forms
+crispy-bootstrap4

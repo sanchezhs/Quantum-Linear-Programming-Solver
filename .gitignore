@@ -122,6 +122,16 @@ Scripts/
 # mkdocs documentation
 /site
 
+Lib
+
+share
+
+silx
+
+*.cfg
+
+Include
+
 # mypy
 .mypy_cache/
 .dmypy.json
