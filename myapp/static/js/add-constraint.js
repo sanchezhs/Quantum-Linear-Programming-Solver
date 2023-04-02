@@ -18,7 +18,6 @@ export default class AddRestriction {
         } else {
             if (this.form.numberOfForms === 0) 
                 this.label.show();
-                //this.showLabel();
     
             this.createInput();
             this.createRemoveBtn();
@@ -27,13 +26,13 @@ export default class AddRestriction {
         }
     }
 
-    showLabel() {
+/*     showLabel() {
         const constraintsLabel = document.createElement('label');
         constraintsLabel.setAttribute('id', 'label-constraint-id');
         constraintsLabel.innerText = 'Subject to:';
         const target = document.getElementById('label-target');
         target.append(constraintsLabel);
-    }
+    } */
 
     createInput() {
         
