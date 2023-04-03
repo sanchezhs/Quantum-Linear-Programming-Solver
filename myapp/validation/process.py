@@ -3,8 +3,9 @@ import re
 
 def process_form(query_dict):
     data = {}
+    constraintNumber = 0
     for key, value in query_dict.items():
-        print(key, value)
+        # print(key, value)
         if key == 'function':
             data['function'] = value
         elif key == 'optimizationType':
@@ -12,7 +13,9 @@ def process_form(query_dict):
                 data['maximization'] = True 
             else:
                 data['minimization'] = True
-        elif key == 'constraint':
-                data[key] = value
-    print(data)
+    constraintList = query_dict.getlist('constraint')
+    for constraint in constraintList:
+        data['constraint-'+str(constraintNumber)] = constraint
+        constraintNumber += 1
+
     return data

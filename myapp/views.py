@@ -17,17 +17,18 @@ def index(request):
     formFunction = CreateNewFunction()
     helper = ConstraintsFormSetHelper()
     empty = CreateNewConstraint()
-    if request.method == 'GET':
-        return render(request, 'index.html', {'formFunction': formFunction,
-                                          'formset': formset,
-                                          'helper': helper,
-                                          'empty': empty
-                                          })
-    else:
+
+    if request.method == 'POST':
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+             print('ajax')
+             data = process_form(request.POST)
+             print(data)
+             return JsonResponse({'status': 'ok'})
+        # print(request.POST)
         data = process_form(request.POST)
+        print(data)
         try:
             for k, v in data.items():
-                #if k != 'maximize':
                     validate(v)
         except ValidationError as e:
             return render(request, 'index.html', {'formFunction': CreateNewFunction(),
@@ -36,12 +37,24 @@ def index(request):
                                           'empty': empty
                                         })
         return redirect('index')
+    
+    return render(request, 'index.html', {'formFunction': formFunction,
+                                        'formset': formset,
+                                        'helper': helper,
+                                        'empty': empty
+                                        })
 
     
 def file_upload(request):
+    # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    #      print('ajax')
+    #      file = request.FILES.get('file')
+    #      print(str(file.read()))
+    #      return JsonResponse({"status": "success"}, status=200)
+    # return HttpResponse('')
      if request.method == 'POST':
           file = request.FILES.get('file')
           print(str(file.read()))
-
+    
           return HttpResponse('')
      return JsonResponse({'post': 'false'})

@@ -52,7 +52,7 @@
           <div class="col border-end">
 
 
-            <form method="POST">
+            <form id="form" method="POST">
                 {% csrf_token %}
                 {% crispy formFunction helper %}
                 <div id="label-target"></div>
@@ -60,7 +60,7 @@
                 <div id="restriction-form-id"> </div>
                 <button id='add-more' type="button" class="btn btn-primary">Add Constraint</button>
                 <button type="reset" class="btn btn-primary">Clear All</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button id="submit-func" type="submit" class="btn btn-primary">Submit</button>
               </form>
             
             </div>
@@ -108,6 +108,7 @@
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
 <script src="{% static './js/index.js' %}" type="module"></script>
+<script src="{% static './js/text-form-ajax.js' %}" type="module"></script>
 <script src="{% static './js/dropzone.js' %}" type="module"></script>
 <script>
 
