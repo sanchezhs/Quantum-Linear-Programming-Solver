@@ -17,6 +17,9 @@
   background-color: aliceblue;
 }
 
-.bg-dark nav {
-  background-color: aliceblue;
+.form-check-input:checked[type=checkbox] {
+  background-color: #111312;
+  border-color: #30D158;
+  border: none;
 }
+

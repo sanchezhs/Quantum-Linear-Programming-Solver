@@ -1,6 +1,0 @@
-html[data-theme='dark'] {
-  background: var(--lightBg);
- --lightBtn: #FFBD07;
- --lightBg: #232323;
- --lightColor: #fff;
-}
