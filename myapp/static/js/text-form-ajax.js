@@ -1,5 +1,4 @@
 const form = document.querySelector('#form');
-const btn = document.querySelector('#submit-func');
 form.addEventListener('submit', sendForm);
 
 function sendForm(event) {
@@ -32,7 +31,8 @@ function sendForm(event) {
             if (data.status === 'ok') {
                 alert('Mensaje enviado correctamente');
             } else {
-                alert('Error al enviar el mensaje');
+                $('#errorModal').modal('show');
+                //alert('Error al enviar el mensaje');
             }
         })
         //.catch(function(error) {

@@ -42,32 +42,27 @@ calc_grammar2 = """
 calc_grammar = """
     ?start: comparison
     
-    ?comparison: sum ("<" | ">" | ">=" | "<=" | "=") sum    -> compare
+    ?comparison: expr ("<" | ">" | ">=" | "<=" | "=") expr
 
-    ?sum: product ("+" | "-") product
-        | product
+    ?expr: expr ("+" | "-") term
+        | linexp (("+" | "-") term)?
+        | term
 
-    ?product: power ("*" | "/") power
-        | power
+    ?linexp: linexp ("+"|"-") VAR
+        | "(" linexp ")"
+        | NUMBER "*" VAR
+        | VAR
+        
+    ?term: term ("*" | "/") factor
+        | factor
 
-    ?power: primary "^" power
-        | primary
-
-    ?primary: "(" sum ")" 
-        | ("+" | "-") primary   
-        | IDENT
+    ?factor: "(" expr ")" 
         | NUMBER
     
-    NUMBER: "1".."9" DIGIT* "." DIGIT+  
-        | "1".."9" DIGIT* "/" DIGIT+
-        | "0" "." DIGIT*
-        | "1".."9" DIGIT*   
-        | "0"          
+    NUMBER: DIGIT+        
+    VAR: "a" .. "z"
 
-    IDENT: LETTER
-    LETTER: "a" .. "z"
 
-    %import common.CNAME -> NAME
     %import common.WS_INLINE
     %import common.DIGIT
 
@@ -81,10 +76,6 @@ class CalculateTree(Transformer):
         self.vars = []
     
 if __name__ == '__main__':
-    try:
-        calc_parser = Lark(calc_grammar, parser='lalr', transformer=CalculateTree())
+        calc_parser = Lark(calc_grammar, parser='lalr')
         calc = calc_parser.parse
         print(calc(sys.argv[1]))
-        print('valid string')
-    except:
-        print('invalid string')

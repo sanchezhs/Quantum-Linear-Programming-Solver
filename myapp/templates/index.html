@@ -38,16 +38,35 @@
             </svg>
           </label>
         </div>
-
       </div>
     </nav>
     <!--  Empty Constraint Form  -->
       <div id="empty-form" class="d-none">{% crispy empty %}</div>
       
 
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="errorModalLabel">Error</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            There was an error processing your data. Please check the syntax and try again.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      
+
       <!--  Main Forms  -->
       <div class="container mt-5 pt-5">
-          
+        
         <div class="row">
           <div class="col border-end">
 
@@ -66,47 +85,33 @@
             </div>
 
               <div class="col">
-                  <!--  Upload file  -->
+                  <!-- Dropzone Upload file  -->
                   <form action="upload/" method="POST" class="dropzone dz" id="drop-zone">
                   {% csrf_token %}
+                  
                   </form>
 
               </div>
 
           </div>
-         <!--  <div class="row text-center">
-            <div class="col-6"></div>
-            <div class="col">
-              <p>
-                // minimize         <br>
-                min: 2*x + y        <br>
-                subject to: x &lt; 1<br>
-                            y &lt; 1<br>
-                </p>
-            </div>
-            <div class="col">
-              <p>
-                // maximize <br>
-                max: 2*x + y  <br>
-                subject to: x &lt; 1 <br>
-                            y &lt; 1 <br>
-                </p>
-            </div>
-          </div> -->
-        
        </div>
 
 
 
 
 
+<!-- Scripts -->       
+<script src="{% static './js/jquery/jquery-3.6.4.js' %}"></script>
+<script src="{% static './js/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static './js/bootstrap/bootstrap.min.js' %}"></script>
 
+<!-- CSS -->
 <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />  
 <link rel="stylesheet" type='text/css'  href="{% static './styles/main.css' %}">
 <link rel="stylesheet" type='text/css'  href="{% static './styles/theme.css' %}">      
-<script src="http://code.jquery.com/jquery.min.js"></script>   
-<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
+<!-- Scripts -->
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <script src="{% static './js/index.js' %}" type="module"></script>
 <script src="{% static './js/text-form-ajax.js' %}" type="module"></script>
 <script src="{% static './js/dropzone.js' %}" type="module"></script>

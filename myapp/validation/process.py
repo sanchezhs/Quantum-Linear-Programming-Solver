@@ -10,9 +10,9 @@ def process_form(query_dict):
             data['function'] = value
         elif key == 'optimizationType':
             if value == 1:
-                data['maximization'] = True 
+                data['max'] = True 
             else:
-                data['minimization'] = True
+                data['min'] = True
     constraintList = query_dict.getlist('constraint')
     for constraint in constraintList:
         data['constraint-'+str(constraintNumber)] = constraint

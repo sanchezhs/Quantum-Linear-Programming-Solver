@@ -30,7 +30,7 @@ class CreateNewConstraint(forms.Form):
         label='', # Constraints
         max_length=250, 
         widget=forms.TextInput(), 
-        required=False
+        required=True
     )
     
 

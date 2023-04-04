@@ -2,6 +2,10 @@
     display: none;
 }
 
+.dropzone {
+  text-align: center;
+}
+
 .dz {
   /*border: dashed;*/
   border-color: #9400ff;
@@ -15,25 +19,4 @@
 
 .bg-dark nav {
   background-color: aliceblue;
-}
-
-@keyframes append-animate {
-	from {
-		transform: scaleY(0);
-		opacity: 0;
-	}
-	to {
-		transform: scaleY(1);
-		opacity: 1;
-	}
-}
-
-.restriction-form {
-	transform-origin: 50% 0;
-	animation: append-animate .3s linear;
-}
-
-.btn {
-	transform-origin: 50% 0;
-	animation: append-animate .3s linear;
 }
