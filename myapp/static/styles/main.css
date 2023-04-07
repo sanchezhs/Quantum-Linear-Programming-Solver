@@ -1,3 +1,7 @@
+body {
+  background-color: rgba(184, 190, 194, .12);
+}
+
 .hidden {
     display: none;
 }
@@ -33,3 +37,5 @@
   border-color: #30D158;
   border: none;
 }
+
+
