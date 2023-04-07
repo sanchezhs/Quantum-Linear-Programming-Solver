@@ -3,3 +3,5 @@ django-bootstrap-v5
 lark
 dropzone
 bootstrap
+scipy
+sympy

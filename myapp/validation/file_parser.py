@@ -26,7 +26,9 @@ def read_string(s):
     constraints = parts[3:]
     return objective, constraints
 
-def read_file(file):
+
+
+""" def read_file(file):
     first_line_pattern = r'\bmin\b | \bmax\b:.+'
     first_line = re.compile(first_line_pattern, flags=re.I | re.X)
     second_line_pattern = r'subject to:\s*'
@@ -41,8 +43,5 @@ def read_file(file):
                 print('error')
             else:
                 constraints.append(line)
-    #print(function)
-    #print(constraints)
-    return function, constraints
-
-# read_file(file)
+    return function, constraints 
+    """

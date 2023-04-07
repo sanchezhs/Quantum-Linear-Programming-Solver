@@ -6,8 +6,19 @@
   text-align: center;
 }
 
+.dz-dark {
+  background-color: #282A3A;
+  border-color: #162780;
+  /*border-color: #150050;*/
+  border-radius: 10px;
+  color: grey;
+}
+
+.dz-dark:hover {
+  background-color: #04293A;
+}
+
 .dz {
-  /*border: dashed;*/
   border-color: #9400ff;
   border-radius: 10px;
   color: grey;
@@ -22,4 +33,3 @@
   border-color: #30D158;
   border: none;
 }
-

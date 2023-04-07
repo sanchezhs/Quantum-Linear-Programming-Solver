@@ -22,7 +22,7 @@ class CreateNewFunction(forms.Form):
         super(CreateNewFunction, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False    
-        self.fields['function'].widget.attrs['placeholder'] = 'x + 2*y - 4*z + 2'
+        self.fields['function'].widget.attrs['placeholder'] = 'x + 2y - 4z + 2'
         
 
 class CreateNewConstraint(forms.Form):

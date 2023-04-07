@@ -28,9 +28,11 @@ function sendForm(event) {
         })
         .then(function(data) {
             console.log('data', data)
-            if (data.status === 'ok') {
+            if (data && data.status === 'ok') {
                 alert('Mensaje enviado correctamente');
             } else {
+                const invalidForm = document.getElementById(data.constraint_name);
+                invalidForm.classList.add('is-invalid');
                 $('#errorModal').modal('show');
                 //alert('Error al enviar el mensaje');
             }

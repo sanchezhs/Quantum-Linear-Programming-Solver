@@ -3,9 +3,9 @@ from django.forms import formset_factory
 from django.http import HttpResponse, JsonResponse, HttpResponseServerError
 from django.core.exceptions import ValidationError
 from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHelper
-from .validation.form_parser import validate
+from .validation.form_parser import validate_constraints, validate_objetive
 from .validation.process import process_form
-from .validation.file_parser import read_string, read_file
+from .validation.file_parser import read_string
 from mysite.exceptions import FileSyntaxError
 # Create your views here.
 
@@ -18,14 +18,16 @@ def index(request):
 
     if request.method == 'POST':
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            data = process_form(request.POST)
+            objetive, constraints = process_form(request.POST)
+            print(objetive, '\n', constraints)
             try:
-                for k, v in data.items():
-                    if k not in ['max', 'min']:
-                        print('Valor:  ', v)
-                        validate(v)
+                validate_objetive(objetive['function'])
+                for name, constraint in constraints.items():
+                        validate_constraints(name, constraint)
             except ValidationError as e:
-                return JsonResponse({'status': 'error'})
+                print(e.params)
+                return JsonResponse({'status': 'error',
+                                     'constraint_name': e.params['name']})
 
         return JsonResponse({'status': 'ok'})
 
@@ -47,3 +49,6 @@ def file_upload(request):
         return JsonResponse({'success': 'ok'}) #HttpResponse('')
 
     return JsonResponse({'post': 'false'})
+
+def about(request):
+    return render(request, 'about.html')

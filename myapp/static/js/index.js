@@ -1,5 +1,5 @@
 import AddRestriction from "./add-constraint.js";
-import RemoveRestriction from "./remove-form.js";
+import RemoveRestriction from "./remove-constraint.js";
 import Form from "./form.js";
 import Label from "./label.js";
 
