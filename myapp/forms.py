@@ -22,7 +22,7 @@ class CreateNewFunction(forms.Form):
         super(CreateNewFunction, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False    
-        self.fields['function'].widget.attrs['placeholder'] = 'x + 2*y - 4*z + 2'
+        self.fields['function'].widget.attrs['placeholder'] = 'x + 2y - 4z + 2'
         
 
 class CreateNewConstraint(forms.Form):
@@ -30,7 +30,7 @@ class CreateNewConstraint(forms.Form):
         label='', # Constraints
         max_length=250, 
         widget=forms.TextInput(), 
-        required=False
+        required=True
     )
     
 
@@ -46,6 +46,3 @@ class ConstraintsFormSetHelper(FormHelper):
         super().__init__(*args, **kwargs)
         self.form_tag = False
         self.disable_csrf = True
-       # self.add_input(Button('Button', 'Add constraint', css_class='btn-primary'))
-       # self.add_input(Reset('Reset', 'Clear All', css_class='btn-primary'))
-       # self.add_input(Submit('Submit', 'Submit'))

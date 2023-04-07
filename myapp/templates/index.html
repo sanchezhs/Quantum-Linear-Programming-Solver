@@ -2,55 +2,89 @@
 
 
 {% block content %}
-
 {% load crispy_forms_tags %}
-{% load bootstrap5 %}
+<!-- {% load bootstrap5 %}
 {% bootstrap_css %}
-{% bootstrap_messages %}
+{% bootstrap_messages %} -->
 {% load static %}
 
 
+    <!--  Empty Constraint Form  -->
+    <div id="empty-form" class="d-none">{% crispy empty %}</div>
+      
 
-
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
-
-
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-      </div>
-    </nav>
-      <div id="empty-form" class="d-none">{% crispy empty %}</div>
-      <div class="container mt-5 pt-5">
-          
-            <form method="POST">
-              {% csrf_token %}
-
-              {% crispy formFunction helper %}
-              <div id="label-target"></div>
-              {% crispy formset helper %}
-              <div id="restriction-form-id"> </div>
-              <button id='add-more' type="button" class="btn btn-primary">Add Constraint</button>
-              <button type="reset" class="btn btn-primary">Clear All</button>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-              
-            
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="errorModalLabel">Error</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="id-modal-body" class="modal-body">
+            There was an error processing your data. Please check the syntax and try again.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
+      </div>
+    </div>
 
+    
+    <!--  Main Form  -->
+    <div class="container card mt-5 pt-5 pb-5 col-sm-10">
+         <div class="row gx-5">
+          <div class="col border-end">
+            <form id="form" method="POST">
+                {% csrf_token %}
+                <!-- Function Form -->
+                {% crispy formFunction helper %}
+                <div id="label-target"></div>
+                <!-- Constraints Form -->
+                {% crispy formset helper %}
+                <div id="restriction-form-id"></div>
+                <!-- Buttons -->
+                <div class="btn-group" role="group">
+                  <button id='add-more' type="button" class="btn btn-outline-primary">Add Constraint</button>
+                  <button type="reset" class="btn btn-outline-primary">Clear All</button>
+                  <button id="submit-func" type="submit" class="btn btn-outline-success">Submit</button>
+                </div>
+              </form>
+            </div>
+              <!-- Dropzone Upload file  -->
+              <div class="col">
+                  <form action="upload/" method="POST" class="dropzone dz" id="drop-zone">
+                  {% csrf_token %}
+                  </form>
+              </div>
+          </div>
+       </div>
+
+
+
+<!-- Scripts -->       
+<!-- <script src="{% static './js/jquery/jquery-3.6.4.js' %}"></script>
+<script src="{% static './js/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static './js/bootstrap/bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+ -->
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />  
+<!-- <link rel="stylesheet" type='text/css'  href="{% static './styles/main.css' %}"> -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+ -->
+
+<!-- Scripts -->
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
 <script src="{% static './js/index.js' %}" type="module"></script>
+<script src="{% static './js/dropzone.js' %}"></script>
+<script src="{% static './js/ajax-form.js' %}"></script>
+
+
+
 {% endblock content %}
 
 

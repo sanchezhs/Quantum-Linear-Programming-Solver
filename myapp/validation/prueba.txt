@@ -1,0 +1,6 @@
+max: 
+x=0
+subject to: 
+c1
+x < 1
+x < 2

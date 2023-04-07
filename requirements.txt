@@ -1,6 +1,13 @@
 django
 django-bootstrap-v5
 lark
+<<<<<<< HEAD
 crispy
 django-crispy-forms
 crispy-bootstrap4
+=======
+dropzone
+bootstrap
+scipy
+sympy
+>>>>>>> crispy

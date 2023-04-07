@@ -8,7 +8,6 @@ export default class Label {
         this.target.append(this.constraintsLabel);
     }
     
-
     show() {
         console.log('label')
         this.constraintsLabel.classList.remove('d-none');
