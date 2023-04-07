@@ -1,1 +1,0 @@
-b'min: x=0\r\nsubject to: \r\nc1\r\nx < 1\r\nx < 2'
