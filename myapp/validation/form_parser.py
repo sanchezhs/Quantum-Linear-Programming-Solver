@@ -76,6 +76,20 @@ def check_duplicated_constraints(constraints):
                 params=duplicates,
             )        
     
+def validate_objetive(objetive):
+    print(objetive)
+    try:
+        parser = Lark(objetive_grammar, parser='lalr') 
+        tree = parser.parse
+        print(tree(objetive), 'ok')
+    except:
+        print('error objetive')
+        raise ValidationError(
+                ('Invalid value (parse error): %(value)s'),
+                code='objetive',
+                params={'value': objetive,
+                        'objetive': True},
+        )
 
 
 def validate_forms(objetive, constraints):

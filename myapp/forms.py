@@ -6,12 +6,14 @@ class CreateNewFunction(forms.Form):
     function = forms.CharField(
         label='Optimize', 
         max_length=200,
+        validators=[validate_objetive],
+        error_messages={'required': 'Please enter a function to optimize', 'invalid': 'Invalid function'},
     )
 
     optimizationType = forms.TypedChoiceField(
         label='',
-        choices=((0, 'Minimize'), (1, 'Maximize')),
-        coerce=lambda x: bool(int(x)),
+        choices=((0, 'min'), (1, 'max')),
+        coerce=lambda x: 'min' if x == '0' else 'max', 
         widget=forms.RadioSelect,
         initial='0',
         required=True
@@ -24,6 +26,8 @@ class CreateNewFunction(forms.Form):
         self.helper.form_tag = False    
         self.fields['function'].widget.attrs['placeholder'] = 'x + 2y - 4z + 2'
         
+    def clean(self):
+        return super().clean()
 
 class CreateNewConstraint(forms.Form):
     constraint = forms.CharField(

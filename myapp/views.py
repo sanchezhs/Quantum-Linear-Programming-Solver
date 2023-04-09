@@ -32,6 +32,9 @@ def index(request):
 
     if request.headers.get('x-requested-with') == AJAX_REQUEST:
         objetive, constraints = process_form(request.POST)
+        function = CreateNewFunction(request.POST)
+        print(function.is_valid())
+        print(function.clean())	
         try:
             validate_forms(objetive, constraints)
         except ValidationError as e:
@@ -44,7 +47,7 @@ def index(request):
                 print(e.params)
             else:
                 return JsonResponse({'status': 'error'})
-            
+
     return JsonResponse({'status': 'ok'})
 """         print(objetive, '\n', constraints)
         try:
