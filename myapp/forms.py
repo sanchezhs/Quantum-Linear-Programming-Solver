@@ -1,6 +1,5 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from .validation.form_parser import validate_objetive
 
 class CreateNewFunction(forms.Form):
     function = forms.CharField(
