@@ -3,7 +3,7 @@ from django.forms import formset_factory
 from django.http import HttpResponse, JsonResponse, HttpResponseServerError
 from django.core.exceptions import ValidationError
 from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHelper
-from .validation.form_parser import validate_constraints, validate_objetive
+from .validation.form_parser import validate_forms
 from .validation.process import process_form
 from .validation.file_parser import read_string
 from mysite.exceptions import FileSyntaxError
@@ -17,6 +17,7 @@ def insert_mult_operator(s):
     return s
 
 def index(request):
+    AJAX_REQUEST = 'XMLHttpRequest'
     formset = formset_factory(CreateNewConstraint, max_num=5, extra=0)
     formFunction = CreateNewFunction()
     helper = ConstraintsFormSetHelper()
@@ -29,9 +30,23 @@ def index(request):
                                             'empty': empty
                                             })        
 
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if request.headers.get('x-requested-with') == AJAX_REQUEST:
         objetive, constraints = process_form(request.POST)
-        print(objetive, '\n', constraints)
+        try:
+            validate_forms(objetive, constraints)
+        except ValidationError as e:
+            if e.code == 'objetive':
+                return JsonResponse({'status': 'error'})
+            elif e.code == 'constraints':
+                return JsonResponse({'status': 'error',
+                                    'constraint_name': e.params['name']})
+            elif e.code == 'duplicated':
+                print(e.params)
+            else:
+                return JsonResponse({'status': 'error'})
+            
+    return JsonResponse({'status': 'ok'})
+"""         print(objetive, '\n', constraints)
         try:
             validate_objetive(objetive['function'])
             print(simplify(insert_mult_operator(objetive['function'])))
@@ -45,8 +60,7 @@ def index(request):
                                     'constraint_name': e.params['name']})
             else:
                 return JsonResponse({'status': 'error'})
-
-    return JsonResponse({'status': 'ok'})
+ """
 
 
 
@@ -59,7 +73,7 @@ def file_upload(request):
             print(f,c)
         except FileSyntaxError:
             return JsonResponse({'status': 'error'}) # HttpResponseServerError('')
-        return JsonResponse({'success': 'ok'}) #HttpResponse('')
+        return JsonResponse({'status': 'ok'}) #HttpResponse('')
 
     return JsonResponse({'post': 'false'})
 
