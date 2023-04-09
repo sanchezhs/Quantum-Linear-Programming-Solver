@@ -117,3 +117,4 @@ def validate_forms(objetive, constraints):
     validate_objetive(objetive)
     validate_constraints(constraints)
     check_duplicated_constraints(constraints)
+    
