@@ -7,8 +7,14 @@ from .validation.form_parser import validate_constraints, validate_objetive
 from .validation.process import process_form
 from .validation.file_parser import read_string
 from mysite.exceptions import FileSyntaxError
+import re
+from sympy import simplify
 # Create your views here.
 
+def insert_mult_operator(s):
+    s = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', s)
+    s = re.sub(r'([a-zA-Z])(\d)', r'\1*\2', s)
+    return s
 
 def index(request):
     formset = formset_factory(CreateNewConstraint, max_num=5, extra=0)
@@ -16,26 +22,33 @@ def index(request):
     helper = ConstraintsFormSetHelper()
     empty = CreateNewConstraint()
 
-    if request.method == 'POST':
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            objetive, constraints = process_form(request.POST)
-            print(objetive, '\n', constraints)
-            try:
-                validate_objetive(objetive['function'])
+    if request.method == 'GET':
+        return render(request, 'index.html', {'formFunction': formFunction,
+                                            'formset': formset,
+                                            'helper': helper,
+                                            'empty': empty
+                                            })        
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        objetive, constraints = process_form(request.POST)
+        print(objetive, '\n', constraints)
+        try:
+            validate_objetive(objetive['function'])
+            print(simplify(insert_mult_operator(objetive['function'])))
+            if constraints:
                 for name, constraint in constraints.items():
-                        validate_constraints(name, constraint)
-            except ValidationError as e:
-                print(e.params)
+                    validate_constraints(name, constraint)
+        except ValidationError as e:
+            print(e.params)                
+            if constraints and not e.params['objetive']:
                 return JsonResponse({'status': 'error',
-                                     'constraint_name': e.params['name']})
+                                    'constraint_name': e.params['name']})
+            else:
+                return JsonResponse({'status': 'error'})
 
-        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'ok'})
 
-    return render(request, 'index.html', {'formFunction': formFunction,
-                                          'formset': formset,
-                                          'helper': helper,
-                                          'empty': empty
-                                          })
+
 
 
 def file_upload(request):

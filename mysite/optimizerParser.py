@@ -17,22 +17,26 @@ grammar = """
         | linexp                   
 
     ?linexp: "(" linexp ")"         
-        | NUMBER VAR                -> nvar
+        | number VAR                -> nvar
         | VAR                       -> var
         
     ?term: term ("*" | "/") factor  
         | factor                   
 
     ?factor: "(" expr ")"          
-        | "-" NUMBER               -> unumber
-        | NUMBER                   -> number
+        | "-" number               -> unumber
+        | number                   -> number
     
-    NUMBER: DIGIT+        
+    ?number:  DIGIT+
+            | FLOAT
+        
+        
     VAR: "a" .. "z"
 
 
     %import common.WS_INLINE
     %import common.DIGIT
+    %import common.FLOAT
     %ignore WS_INLINE
 """
 

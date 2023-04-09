@@ -9,7 +9,7 @@ export default class AddRestriction {
     onClick() {
         console.log(this.form.numberOfForms)
         if (this.form.numberOfForms >= 5) {
-            console.log('maximo')
+            alert('You have reached the maximum numbers of constraints. Try uploading a file instead.');
         } else {
             if (this.form.numberOfForms === 0) 
                 this.label.show();

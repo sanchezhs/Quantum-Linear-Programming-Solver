@@ -23,11 +23,13 @@ constraints_grammar = """
         | "-" NUMBER 
         | NUMBER
     
-    NUMBER: DIGIT+        
+    NUMBER: DIGIT+ 
+        |   FLOAT
     VAR: "a" .. "z"
 
     %import common.WS_INLINE
     %import common.DIGIT
+    %import common.FLOAT
     %ignore WS_INLINE
 """
 
@@ -50,11 +52,16 @@ objetive_grammar = """
         | "-" NUMBER 
         | NUMBER
     
-    NUMBER: DIGIT+        
-    VAR: "a" .. "z"
+    NUMBER: DIGIT+     
+        |   FLOAT
+    VAR:  LETTER
+        | LETTER "_" (DIGIT ~ 1..5)
+        
 
     %import common.WS_INLINE
+    %import common.LCASE_LETTER -> LETTER
     %import common.DIGIT
+    %import common.FLOAT
     %ignore WS_INLINE
 """
         
@@ -66,11 +73,12 @@ def validate_objetive(objetive):
         tree = parser.parse
         print(tree(objetive), 'ok')
     except:
-        print('no')
+        print('no objetive')
         raise ValidationError(
                 ('Invalid value (parse error): %(value)s'),
                 code='invalid',
-                params={'value': objetive},
+                params={'value': objetive,
+                        'objetive': True},
         )
         
 
@@ -81,7 +89,7 @@ def validate_constraints(name, constraint):
         tree = parser.parse
         print(tree(constraint), 'ok')
     except:
-        print('no')
+        print('no constraints')
         raise ValidationError(
                 ('Invalid value (parse error): %(value)s'),
                 code='invalid',

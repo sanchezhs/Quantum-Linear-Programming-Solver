@@ -20,10 +20,12 @@ def parse_string(parts):
 
 def read_string(s):
     parts = s.split('\r\n')
+    print(parts)
     if not parse_string(parts):
        raise FileSyntaxError()
     objective = parts[0].split(': ')
     constraints = parts[3:]
+    print(objective, constraints)
     return objective, constraints
 
 

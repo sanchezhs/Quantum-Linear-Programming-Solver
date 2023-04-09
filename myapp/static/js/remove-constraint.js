@@ -5,7 +5,6 @@ export default class RemoveRestriction {
     }
 
     onClick(id) {    
-        console.log('before', this.form.numberOfForms)
         if (this.form.numberOfForms === 1)
             this.label.hide();
 
