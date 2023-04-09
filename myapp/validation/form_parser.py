@@ -91,44 +91,16 @@ def validate_objetive(objetive):
                         'objetive': True},
         )
 
+def validate_constraints(constraints):
+    try:
+        parser = Lark(constraints_grammar, parser='lalr') 
+        tree = parser.parse
+        print(tree(constraints), 'ok')
+    except:
+        print('error constraints')
+        raise ValidationError(
+                ('Invalid value (parse error): %(value)s'),
+                code='constraints',
+                params={'value': constraints},
+        )
 
-def validate_forms(objetive, constraints):
-
-    def validate_objetive(objetive):
-        objetive = objetive['function']
-        print(objetive)
-        try:
-            parser = Lark(objetive_grammar, parser='lalr') 
-            tree = parser.parse
-            print(tree(objetive), 'ok')
-        except:
-            print('error objetive')
-            raise ValidationError(
-                    ('Invalid value (parse error): %(value)s'),
-                    code='objetive',
-                    params={'value': objetive,
-                            'objetive': True},
-            )
-        
-
-    def validate_constraints(constraints):
-        if constraints:
-            for name, constraint in constraints.items():
-                print(constraint)
-                try:
-                    parser = Lark(constraints_grammar, parser='lalr') 
-                    tree = parser.parse
-                    print(tree(constraint), 'ok')
-                except:
-                    print('error constraints')
-                    raise ValidationError(
-                            ('Invalid value (parse error): %(value)s'),
-                            code='constraints',
-                            params={'value': constraint,
-                                    'name': name},
-                    )
-        
-    validate_objetive(objetive)
-    validate_constraints(constraints)
-    check_duplicated_constraints(constraints)
-    

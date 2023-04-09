@@ -1,20 +1,14 @@
 from django.shortcuts import render
 from django.forms import formset_factory
-from django.http import HttpResponse, JsonResponse, HttpResponseServerError
-from django.core.exceptions import ValidationError
+from django.http import  JsonResponse
 from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHelper
-from .validation.form_parser import validate_forms
-from .validation.process import process_form
 from .validation.file_parser import read_string
 from mysite.exceptions import FileSyntaxError
-import re
-from sympy import simplify
+from .sympy import Sympy
+
 # Create your views here.
 
-def insert_mult_operator(s):
-    s = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', s)
-    s = re.sub(r'([a-zA-Z])(\d)', r'\1*\2', s)
-    return s
+
 
 def index(request):
     AJAX_REQUEST = 'XMLHttpRequest'
@@ -31,41 +25,28 @@ def index(request):
                                             })        
 
     if request.headers.get('x-requested-with') == AJAX_REQUEST:
-        objetive, constraints = process_form(request.POST)
-        function = CreateNewFunction(request.POST)
-        print(function.is_valid())
-        print(function.clean())	
-        try:
-            validate_forms(objetive, constraints)
-        except ValidationError as e:
-            if e.code == 'objetive':
-                return JsonResponse({'status': 'error'})
-            elif e.code == 'constraints':
-                return JsonResponse({'status': 'error',
-                                    'constraint_name': e.params['name']})
-            elif e.code == 'duplicated':
-                print(e.params)
-            else:
-                return JsonResponse({'status': 'error'})
+        objetive = CreateNewFunction(request.POST)
+        constraints = formset(request.POST)
+        if objetive.is_valid() and all([form.is_valid() for form in constraints]):
+            sympy = Sympy(objetive.cleaned_data, [form.cleaned_data for form in constraints])
+            return JsonResponse({'status': 'ok'}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 
+                                 'errors': {'objetive': objetive.errors.as_json(), 
+                                            'constraints': [form.errors.as_json() for form in constraints]}},
+                                status=400)
 
-    return JsonResponse({'status': 'ok'})
-"""         print(objetive, '\n', constraints)
-        try:
-            validate_objetive(objetive['function'])
-            print(simplify(insert_mult_operator(objetive['function'])))
-            if constraints:
-                for name, constraint in constraints.items():
-                    validate_constraints(name, constraint)
-        except ValidationError as e:
-            print(e.params)                
-            if constraints and not e.params['objetive']:
-                return JsonResponse({'status': 'error',
-                                    'constraint_name': e.params['name']})
-            else:
-                return JsonResponse({'status': 'error'})
- """
+    return JsonResponse({'status': 'ok'}, status=200)
 
 
+def check_for_duplicates_in_list_of_dicts(list_of_dicts):
+    seen = set()
+    for d in list_of_dicts:
+        t = tuple(d.items())
+        if t in seen:
+            return True
+        seen.add(t)
+    return False
 
 
 def file_upload(request):
@@ -75,8 +56,8 @@ def file_upload(request):
             f, c = read_string(str(file.read().decode('utf-8')))
             print(f,c)
         except FileSyntaxError:
-            return JsonResponse({'status': 'error'}) # HttpResponseServerError('')
-        return JsonResponse({'status': 'ok'}) #HttpResponse('')
+            return JsonResponse({'status': 'error'})
+        return JsonResponse({'status': 'ok'}) 
 
     return JsonResponse({'post': 'false'})
 

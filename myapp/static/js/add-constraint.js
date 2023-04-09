@@ -7,7 +7,6 @@ export default class AddRestriction {
     }
 
     onClick() {
-        console.log(this.form.numberOfForms)
         if (this.form.numberOfForms >= 5) {
             alert('You have reached the maximum numbers of constraints. Try uploading a file instead.');
         } else {
@@ -21,9 +20,9 @@ export default class AddRestriction {
     }
 
     createInput() {
-        
         const formCopyTarget = document.getElementById('restriction-form-id');
         const copyEmptyFormEl = document.getElementById('id_constraint').cloneNode(true)
+        copyEmptyFormEl.setAttribute('name', `form-${this.form.numberOfForms}-constraint`)
         copyEmptyFormEl.setAttribute('class', 'restriction-form form-control mb-1 count')
         copyEmptyFormEl.setAttribute('id', `id_form-${this.form.numberOfForms}-constraint`)
         formCopyTarget.append(copyEmptyFormEl)

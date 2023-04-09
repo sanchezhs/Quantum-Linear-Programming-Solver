@@ -1,10 +1,24 @@
 import re
+from sympy import sympify, reduce_inequalities
+# free_symbols
 
-def insert_multiplication_operator(s):
-    # Replace any instance of a number adjacent to a letter with a '*' in between
-    s = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', s)
-    # Replace any instance of a letter adjacent to a number with a '*' in between
-    s = re.sub(r'([a-zA-Z])(\d)', r'\1*\2', s)
-    return s
+class Sympy():
 
-print(insert_multiplication_operator('2x+4y-z+1'))
+    def __init__(self, objetive, constraints):
+        self.objetive = objetive['function']
+        self.type = objetive['optimizationType']
+        self.constraints = [constraint['constraint'] for constraint in constraints]
+        self.reduce(self.objetive, self.constraints)
+
+    def reduce(self, objetive, constraints):
+        objetive = self.insert_mult_operator(objetive)
+        constraints = [self.insert_mult_operator(constraint) for constraint in constraints]
+        print(objetive, constraints)
+        objetive = sympify(objetive)
+        constraints = [sympify(constraint) for constraint in constraints]
+        print('sympified ', objetive, constraints)
+        if len(constraints) > 0:
+            reduced = reduce_inequalities(constraints[0], [])
+
+    def insert_mult_operator(self, string):
+        return re.sub(r'(\d)([a-zA-Z])', r'\1*\2', string)

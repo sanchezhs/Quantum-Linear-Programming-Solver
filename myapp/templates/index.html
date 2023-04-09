@@ -48,54 +48,24 @@
                 <div class="btn-group" role="group">
                   <button id='add-more' type="button" class="btn btn-outline-primary">Add Constraint</button>
                   <button type="reset" class="btn btn-outline-primary">Clear All</button>
-                  <button id="submit-func" type="submit" class="btn btn-outline-success">Submit</button>
+                  <button id="submit-func" type="submit" class="btn btn-outline-success">Submit
+                    <span id="loading-icon" class="d-none spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  </button>
                 </div>
               </form>
             </div>
+
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+
               <!-- Dropzone Upload file  -->
               <div class="col">
                   <form action="upload/" method="POST" class="dropzone dz" id="drop-zone">
                   {% csrf_token %}
                   </form>
-                  
-<!--                   <div class="card mt-3">
-                    <div class="card-body">
-                      <h5 class="card-title">How to upload a file</h5>
-                      <p class="text-monospace">To submit more than x constraints, write them in a file with txt extension and upload it here. 
-                        You can either minimize or maximize, make sure there is an example below:</p>
-                      <div class="container">
-                        <div class="row">
-                          <div class="col">
-                            <h6>min:</h6>
-                            <p>x + y</p>
-                            <h6>subject to:</h6>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item">constraint 1</li>
-                              <li class="list-group-item">constraint 2</li>
-                              <li class="list-group-item">...</li>
-                              <li class="list-group-item">constraint n</li>
-                            </ul>
-                          </div>
-                          <div class="col">
-                            <h6>max:</h6>
-                            <p>x + y</p>
-                            <h6>subject to:</h6>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item">constraint 1</li>
-                              <li class="list-group-item">constraint 2</li>
-                              <li class="list-group-item">...</li>
-                              <li class="list-group-item">constraint n</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
-                  
-                      
-
-
-
                     </div>
                   </div> <!-- div row1 -->
                     
