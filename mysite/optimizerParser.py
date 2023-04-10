@@ -17,7 +17,7 @@ grammar = """
         | linexp                   
 
     ?linexp: "(" linexp ")"         
-        | number VAR                -> nvar
+        | factor VAR                -> nvar
         | VAR                       -> var
         
     ?term: term ("*" | "/") factor  
@@ -48,7 +48,7 @@ class TestTree(Transformer):
         print(e1)
         return e1
 
-@v_args(inline=True)    # Affects the signatures of the methods
+""" @v_args(inline=True)    # Affects the signatures of the methods
 class CalculateTree(Visitor):
 
     def __init__(self):
@@ -83,32 +83,14 @@ class CalculateTree(Visitor):
         print('children: 1', expr.children[0])
 
     def print_vars(self):
-        print(self.vars)
+        print(self.vars) """
 
-def insert_multiplication_operator(s):
-    # Replace any instance of a number adjacent to a letter with a '*' in between
-    s = re.sub(r'(\d)([a-zA-Z])', r'\1*\2', s)
-    # Replace any instance of a letter adjacent to a number with a '*' in between
-    s = re.sub(r'([a-zA-Z])(\d)', r'\1*\2', s)
-    return s
-
-def extract_unique_variables(s):
-    # Find all matches of a single letter surrounded by whitespace or string boundaries
-    matches = re.findall(r'\b[a-zA-Z]\b', s)
-    # Use a set to remove duplicates
-    unique_variables = set(matches)
-    # Join the unique variables into a single string separated by spaces
-    variables = ' '.join(unique_variables)
-    return variables
 
 if __name__ == '__main__':
         calc_parser = Lark(grammar, parser='lalr', debug=True)
         calc = calc_parser.parse
-        c_tree = CalculateTree()
+        print(calc(sys.argv[1]).pretty())
+"""         c_tree = CalculateTree()
         c_tree.visit(calc(sys.argv[1]))
-        c_tree.print_vars()
-        str = sys.argv[1]
-        str_sym = insert_multiplication_operator(str)
-        str_sym = re.sub(r'([^=])(=)([^=])', r'\1=\2', str_sym)  
-        print(simplify(str_sym))
-        #print(calc(sys.argv[1]).pretty)
+        c_tree.print_vars() """
+

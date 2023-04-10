@@ -8,9 +8,9 @@ class Sympy():
         self.objetive = objetive['function']
         self.type = objetive['optimizationType']
         self.constraints = [constraint['constraint'] for constraint in constraints]
-        self.reduce(self.objetive, self.constraints)
+        self.simplify(self.objetive, self.constraints)
 
-    def reduce(self, objetive, constraints):
+    def simplify(self, objetive, constraints):
         objetive = self.insert_mult_operator(objetive)
         constraints = [self.insert_mult_operator(constraint) for constraint in constraints]
         print(objetive, constraints)

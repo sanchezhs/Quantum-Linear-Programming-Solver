@@ -23,7 +23,6 @@ def index(request):
                                             'helper': helper,
                                             'empty': empty
                                             })        
-
     if request.headers.get('x-requested-with') == AJAX_REQUEST:
         objetive = CreateNewFunction(request.POST)
         constraints = formset(request.POST)
@@ -34,7 +33,7 @@ def index(request):
             return JsonResponse({'status': 'error', 
                                  'errors': {'objetive': objetive.errors.as_json(), 
                                             'constraints': [form.errors.as_json() for form in constraints]}},
-                                status=400)
+                                status=200)
 
     return JsonResponse({'status': 'ok'}, status=200)
 
@@ -54,6 +53,7 @@ def file_upload(request):
         file = request.FILES.get('file')
         try:
             f, c = read_string(str(file.read().decode('utf-8')))
+            print(file.read().decode('utf-8'))
             print(f,c)
         except FileSyntaxError:
             return JsonResponse({'status': 'error'})

@@ -25,7 +25,7 @@ def read_string(s):
        raise FileSyntaxError()
     objective = parts[0].split(': ')
     constraints = parts[3:]
-    print(objective, constraints)
+    
     return objective, constraints
 
 
@@ -47,3 +47,4 @@ def read_string(s):
                 constraints.append(line)
     return function, constraints 
     """
+
