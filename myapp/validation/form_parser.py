@@ -54,6 +54,7 @@ objetive_grammar = """
     
     NUMBER: DIGIT+     
         |   FLOAT
+        
     VAR:  LETTER
         | LETTER "_" (DIGIT ~ 1..5)
         

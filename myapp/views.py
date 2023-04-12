@@ -8,11 +8,12 @@ from .sympy import Sympy
 
 # Create your views here.
 
+MAX_CONSTRAINTS = 5
 
 
 def index(request):
     AJAX_REQUEST = 'XMLHttpRequest'
-    formset = formset_factory(CreateNewConstraint, max_num=5, extra=0)
+    formset = formset_factory(CreateNewConstraint, max_num=MAX_CONSTRAINTS, extra=0)
     formFunction = CreateNewFunction()
     helper = ConstraintsFormSetHelper()
     empty = CreateNewConstraint()
@@ -61,5 +62,5 @@ def file_upload(request):
 
     return JsonResponse({'post': 'false'})
 
-def about(request):
-    return render(request, 'about.html')
+def how_to(request):
+    return render(request, 'how_to.html', {'max_constraints': MAX_CONSTRAINTS})
