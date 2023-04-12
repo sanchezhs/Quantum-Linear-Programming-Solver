@@ -1,4 +1,5 @@
 """
+// comentarios
 [min | max]: funcion
 subject to: 
 c1
@@ -11,12 +12,12 @@ from mysite.exceptions import FileSyntaxError
 import re
 
 def parse_string(parts):
-    objective_pattern = r'\bmin\b|\bmax\b:'
+    objective_pattern = r'\bmin\b|\bmax\b\s*'
     objective_re = re.compile(objective_pattern, flags=re.I)
     constraints_pattern = r'\bsubject\b \bto\b:'
     constraints_re = re.compile(constraints_pattern, flags=re.I) 
-
-    return re.search(objective_re, parts[0]) and re.search(constraints_re, parts[2])
+    print('parsing...', parts[0].split(': '))
+    return re.search(objective_re, parts[0].split(': ')[0]) and re.search(constraints_re, parts[1])
 
 def read_string(s):
     parts = s.split('\r\n')
@@ -24,7 +25,7 @@ def read_string(s):
     if not parse_string(parts):
        raise FileSyntaxError()
     objective = parts[0].split(': ')
-    constraints = parts[3:]
+    constraints = parts[2:]
     
     return objective, constraints
 

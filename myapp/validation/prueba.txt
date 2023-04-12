@@ -1,5 +1,4 @@
-max: 
-x=0
+max: x
 subject to: 
 x < 1
 x < 2
