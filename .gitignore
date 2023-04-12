@@ -150,3 +150,11 @@ media
 
 # Backup files # 
 *.bak 
+
+/bin
+bin 
+include
+share
+/share
+silx
+/silx
