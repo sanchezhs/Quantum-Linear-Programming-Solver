@@ -20,6 +20,7 @@ Dropzone.options.dropZone = {
            // this.removeFile(file);
         })
         this.on("success", function(file, responseText) {
+            console.log(responseText)
             if (responseText['status'] === 'error') {
                 $('#errorModal').modal('show');
                 this.removeAllFiles();

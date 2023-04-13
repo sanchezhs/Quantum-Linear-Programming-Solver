@@ -28,13 +28,18 @@ function sendForm(event) {
         })
         .then(function(data) {
             if (data && data.status === 'ok') {
+                console.log(data.sympy);
+                const res = data.sympy;
+                const showRes = document.createElement('div');
+                
+
                 alert('Mensaje enviado correctamente');
                 const invalidInputs = document.querySelectorAll('.text-danger');
                 invalidInputs.forEach((invalidInput) => {
                     invalidInput.remove();
                 });
             } else {
-
+                /*
                 if (JSON.parse(data.errors.objetive).function) {
                     if (!document.getElementById('invalid-feedback-objetive')) {
                         msgObjetive = JSON.parse(data.errors.objetive).function[0].message;
@@ -46,7 +51,7 @@ function sendForm(event) {
                         target.appendChild(invalidFeedback);
                     }
                 }
-/*                 if (data.errors.constraints) {
+                 if (data.errors.constraints) {
                     var i = 0;
                     data.errors.constraints.forEach((constraint) => {
                         if(!document.getElementById(`invalid-feedback-constraint-${i}`)) {
@@ -63,12 +68,12 @@ function sendForm(event) {
                         }
                     });
                 } */
-                $('#errorModal').modal('show');
+                //$('#errorModal').modal('show');
 
             }
         })
         .catch(function(error) {
-            //$('#errorModal').modal('show');
+            $('#errorModal').modal('show');
             console.log('Hubo un problema con la petición Fetch:' + error);
         });
 }

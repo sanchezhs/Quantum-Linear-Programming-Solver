@@ -2,17 +2,17 @@ from django.shortcuts import render
 from django.forms import formset_factory
 from django.http import  JsonResponse
 from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHelper
-from .validation.file_parser import read_string
+from .validation.file_reader import extract_data
 from mysite.exceptions import FileSyntaxError
 from .sympy import Sympy
 
 # Create your views here.
 
 MAX_CONSTRAINTS = 5
+AJAX_REQUEST = 'XMLHttpRequest'
 
 
 def index(request):
-    AJAX_REQUEST = 'XMLHttpRequest'
     formset = formset_factory(CreateNewConstraint, max_num=MAX_CONSTRAINTS, extra=0)
     formFunction = CreateNewFunction()
     helper = ConstraintsFormSetHelper()
@@ -29,14 +29,31 @@ def index(request):
         constraints = formset(request.POST)
         if objetive.is_valid() and all([form.is_valid() for form in constraints]):
             sympy = Sympy(objetive.cleaned_data, [form.cleaned_data for form in constraints])
-            return JsonResponse({'status': 'ok'}, status=200)
+            return JsonResponse({'status': 'ok', 
+                                  'sympy': sympy.toJSON()}, status=200)
         else:
             return JsonResponse({'status': 'error', 
                                  'errors': {'objetive': objetive.errors.as_json(), 
                                             'constraints': [form.errors.as_json() for form in constraints]}},
-                                status=200)
+                                status=400)
 
     return JsonResponse({'status': 'ok'}, status=200)
+
+def file_upload(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        try:
+            file_contents = str(file.read().decode('utf-8'))
+            objetive, constraints = extract_data(file_contents)
+            print(objetive, '\n', constraints)
+            return JsonResponse({'status': 'ok', 'objetive': objetive, 'constraints': constraints}) 
+        except FileSyntaxError:
+            return JsonResponse({'status': 'error'})
+
+    return JsonResponse({'post': 'false'})
+
+def how_to(request):
+    return render(request, 'how_to.html', {'max_constraints': MAX_CONSTRAINTS})
 
 
 def check_for_duplicates_in_list_of_dicts(list_of_dicts):
@@ -47,20 +64,3 @@ def check_for_duplicates_in_list_of_dicts(list_of_dicts):
             return True
         seen.add(t)
     return False
-
-
-def file_upload(request):
-    if request.method == 'POST':
-        file = request.FILES.get('file')
-        try:
-            f, c = read_string(str(file.read().decode('utf-8')))
-            print(file.read().decode('utf-8'))
-            print(f,c)
-        except FileSyntaxError:
-            return JsonResponse({'status': 'error'})
-        return JsonResponse({'status': 'ok'}) 
-
-    return JsonResponse({'post': 'false'})
-
-def how_to(request):
-    return render(request, 'how_to.html', {'max_constraints': MAX_CONSTRAINTS})

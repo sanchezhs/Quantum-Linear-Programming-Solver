@@ -1,4 +1,4 @@
-import re
+import re, json
 from sympy import sympify, reduce_inequalities
 
 class Sympy():
@@ -19,6 +19,8 @@ class Sympy():
         print('sustituida ', self.subsitute(objetive))
         if len(constraints) > 0:
             reduced = reduce_inequalities(constraints[0], [])
+        
+        return objetive, constraints
 
     # x_i = (1 - z_i)/2
     def subsitute(self, objetive):
@@ -29,3 +31,6 @@ class Sympy():
 
     def insert_mult_operator(self, string):
         return re.sub(r'(\d)([a-zA-Z])', r'\1*\2', string)
+
+    def toJSON(self):
+        return json.dumps(str(self.simplify(self.objetive, self.constraints)))

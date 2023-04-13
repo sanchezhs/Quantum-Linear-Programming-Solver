@@ -1,4 +1,8 @@
-max: x
-subject to: 
+// comentariosA x mayor que 0
+// comentariosN
+// comentariosC
+min: x + 12 + (2*2*2)
+subject to:
 x < 1
-x < 2
+y < 2
+2*(1+2+3+4) - x < 21
