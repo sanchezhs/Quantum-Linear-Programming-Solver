@@ -17,8 +17,8 @@ class Sympy():
         constraints = [sympify(constraint) for constraint in constraints]
         print('sympified ', objetive, constraints)
         print('sustituida ', self.subsitute(objetive))
-        if len(constraints) > 0:
-            reduced = reduce_inequalities(constraints[0], [])
+        #if len(constraints) > 0:
+        #    constraints = reduce_inequalities(constraints[0], [])
         
         return objetive, constraints
 
@@ -34,3 +34,13 @@ class Sympy():
 
     def toJSON(self):
         return json.dumps(str(self.simplify(self.objetive, self.constraints)))
+    
+    def simplify_constraints(self, constraints):
+        """ Divide constraints into two groups separated by 
+        '<, <=' and '>, >=' operators
+        Put parentheses and "-" sign around second group
+        then simplify the expression
+        Args:
+            constraints (_type_): _description_
+        """
+        pass

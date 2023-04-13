@@ -13,8 +13,8 @@ constraints_grammar = """
         | linexp
 
     ?linexp: "(" linexp ")"
-        | NUMBER VAR
-        | VAR
+        | "-"? NUMBER VAR
+        | "-"? VAR
         
     ?term: term ("*" | "/") factor
         | factor

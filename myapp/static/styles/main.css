@@ -1,3 +1,7 @@
+.navbar-nav {
+  font-size: 14pt;
+}
+
 .dropzone .dz-preview .dz-error-message {
   top: 150px!important;
 }
