@@ -65,42 +65,46 @@ objetive_grammar = """
     %import common.FLOAT
     %ignore WS_INLINE
 """
-def check_duplicated_constraints(constraints):  
+
+
+def check_duplicated_constraints(constraints):
     rev_multidict = {}
     for name, constraint in constraints.items():
         rev_multidict.setdefault(constraint, set()).add(name)
-    duplicates = set(chain.from_iterable(values for values in rev_multidict.values() if len(values) > 1))
+    duplicates = set(chain.from_iterable(
+        values for values in rev_multidict.values() if len(values) > 1))
     if duplicates:
-            raise ValidationError(
-                ('Constraint %(name)s duplicated: %(value)s'),
-                code='duplicated',
-                params=duplicates,
-            )        
-    
+        raise ValidationError(
+            ('Constraint %(name)s duplicated: %(value)s'),
+            code='duplicated',
+            params=duplicates,
+        )
+
+
 def validate_objetive(objetive):
     try:
-        parser = Lark(objetive_grammar, parser='lalr') 
+        parser = Lark(objetive_grammar, parser='lalr')
         tree = parser.parse
         # print(tree(objetive), 'ok')
     except:
         # print('error objetive')
         raise ValidationError(
-                ('Invalid value (parse error): %(value)s'),
-                code='objetive',
-                params={'value': objetive,
-                        'objetive': True},
+            ('Invalid value (parse error): %(value)s'),
+            code='objetive',
+            params={'value': objetive,
+                    'objetive': True},
         )
+
 
 def validate_constraints(constraints):
     try:
-        parser = Lark(constraints_grammar, parser='lalr') 
+        parser = Lark(constraints_grammar, parser='lalr')
         tree = parser.parse
         # print(tree(constraints), 'ok')
     except:
         # print('error constraints')
         raise ValidationError(
-                ('Invalid value (parse error): %(value)s'),
-                code='constraints',
-                params={'value': constraints},
+            ('Invalid value (parse error): %(value)s'),
+            code='constraints',
+            params={'value': constraints},
         )
-

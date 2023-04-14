@@ -12,6 +12,7 @@ cn
 from mysite.exceptions import FileSyntaxError
 import re
 
+
 def extract_data(s):
     pattern = re.compile(r"""(?P<comments>(\/\/\s*.+\s*\r?\n)+)  # Comments starts with // and lines are separated by \r?\n, unix or windows
                               (max|min)\s*:\s*                   # min or max
@@ -27,7 +28,7 @@ def extract_data(s):
         print('comments ', comments)
         print('objetive ', objetive)
         print('constraints ', constraints)
-        
+
         return objetive, constraints
     except AttributeError:
         raise FileSyntaxError()

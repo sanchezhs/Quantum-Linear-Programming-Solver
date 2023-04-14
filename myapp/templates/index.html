@@ -1,97 +1,126 @@
-{% extends 'layouts/base.html' %}
-
-
-{% block content %}
-{% load crispy_forms_tags %}
+{% extends 'layouts/base.html' %} {% block content %} {% load crispy_forms_tags
+%}
 <!-- {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_messages %} -->
 {% load static %}
 
+<!--  Empty Constraint Form  -->
+<div id="empty-form" class="d-none">{% crispy empty %}</div>
 
-    <!--  Empty Constraint Form  -->
-    <div id="empty-form" class="d-none">{% crispy empty %}</div>
-      
-
-    <!-- Error Modal -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="errorModalLabel">Error</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div id="id-modal-body" class="modal-body">
-            There was an error processing your data. Please check the syntax and try again.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+<!-- Error Modal -->
+<div
+  class="modal fade"
+  id="errorModal"
+  tabindex="-1"
+  aria-labelledby="errorModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="errorModalLabel">Error</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div id="id-modal-body" class="modal-body">
+        There was an error processing your data. Please check the syntax and try
+        again.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-
-    <!-- Max Constraints Modal -->
-    <div class="modal fade" id="max-constraint-modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Error</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>You have reached the maximum numbers of constraints. Try uploading a file instead.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </div>
+<!-- Max Constraints Modal -->
+<div class="modal fade" id="max-constraint-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Error</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          You have reached the maximum numbers of constraints. Try uploading a
+          file instead.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
       </div>
     </div>
-    
-  
+  </div>
+</div>
 
+<!--  Main Form  -->
+<div class="container card mt-5 pt-5 pb-5 col-sm-10">
+  <div class="row gx-5">
+    <div class="col border-end">
+      <form id="form" class="needs-validation" method="POST">
+        {% csrf_token %}
+        <!-- Function Form -->
+        {% crispy formFunction helper %}
+        <div id="label-target"></div>
+        <!-- Constraints Form -->
+        {% crispy formset helper %}
+        <div id="restriction-form-id"></div>
+        <!-- Buttons -->
+        <div class="btn-group mt-3" role="group">
+          <button id="add-more" type="button" class="btn btn-outline-primary">
+            Add Constraint
+          </button>
+          <button type="reset" class="btn btn-outline-primary">
+            Clear All
+          </button>
+          <button
+            id="submit-func"
+            type="submit"
+            class="btn btn-outline-success"
+          >
+            Submit
+            <span
+              id="loading-icon"
+              class="d-none spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- Dropzone Upload file  -->
+    <div class="col">
+      <form action="upload/" method="POST" class="dropzone dz" id="drop-zone">
+        {% csrf_token %}
+      </form>
+    </div>
+    <!-- div dropzone col -->
+  </div>
+  <!-- div row1 -->
+</div>
+<!-- div container -->
 
-
-    <!--  Main Form  -->
-    <div class="container card mt-5 pt-5 pb-5 col-sm-10 ">
-         <div class="row gx-5">
-          <div class="col border-end">
-            <form id="form" class="needs-validation" method="POST">
-                {% csrf_token %}
-                <!-- Function Form -->
-                {% crispy formFunction helper %}
-                <div id="label-target"></div>
-                <!-- Constraints Form -->
-                {% crispy formset helper %}
-                <div id="restriction-form-id"></div>
-                <!-- Buttons -->
-                <div class="btn-group mt-3" role="group">
-                  <button id='add-more' type="button" class="btn btn-outline-primary">Add Constraint</button>
-                  <button type="reset" class="btn btn-outline-primary">Clear All</button>
-                  <button id="submit-func" type="submit" class="btn btn-outline-success">Submit
-                    <span id="loading-icon" class="d-none spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </form>
-            </div>
-              <!-- Dropzone Upload file  -->
-              <div class="col">
-                  <form action="upload/" method="POST" class="dropzone dz" id="drop-zone">
-                  {% csrf_token %}
-                  </form>
-              </div>  <!-- div dropzone col -->
-                  </div> <!-- div row1 -->
-                    
-    </div> <!-- div container -->
-
- 
-        
-
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<!-- Scripts -->       
+<script
+  src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+  type="text/javascript"
+></script>
+<!-- Scripts -->
 <!-- <script src="{% static './js/jquery/jquery-3.6.4.js' %}"></script>
 <script src="{% static './js/bootstrap/bootstrap.js' %}"></script>
 <script src="{% static './js/bootstrap/bootstrap.min.js' %}"></script>
@@ -99,7 +128,11 @@
  -->
 
 <!-- CSS -->
-<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />  
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+  type="text/css"
+/>
 <!-- <link rel="stylesheet" type='text/css'  href="{% static './styles/main.css' %}"> -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
  -->
@@ -111,8 +144,4 @@
 <script src="{% static './js/dropzone.js' %}"></script>
 <script src="{% static './js/ajax.js' %}"></script>
 
-
 {% endblock content %}
-
-
-
