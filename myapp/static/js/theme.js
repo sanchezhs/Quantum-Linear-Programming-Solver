@@ -1,4 +1,4 @@
-function ThemeSwith() {
+document.addEventListener('DOMContentLoaded', () => {
 
   const lightSwitch = document.querySelector('#lightSwitch');
   if (lightSwitch) {
@@ -58,9 +58,4 @@ function ThemeSwith() {
     }
   }
   
-
-  
-}
-
-
-document.addEventListener('DOMContentLoaded', ThemeSwith);
+});

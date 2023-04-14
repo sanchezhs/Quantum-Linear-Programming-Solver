@@ -1,5 +1,5 @@
 import re, json
-from sympy import sympify, reduce_inequalities
+from sympy import sympify, reduce_inequalities, simplify
 
 class Sympy():
 
@@ -12,14 +12,10 @@ class Sympy():
     def simplify(self, objetive, constraints):
         objetive = self.insert_mult_operator(objetive)
         constraints = [self.insert_mult_operator(constraint) for constraint in constraints]
-        print(objetive, constraints)
         objetive = sympify(objetive)
         constraints = [sympify(constraint) for constraint in constraints]
         print('sympified ', objetive, constraints)
-        print('sustituida ', self.subsitute(objetive))
-        #if len(constraints) > 0:
-        #    constraints = reduce_inequalities(constraints[0], [])
-        
+        # print('sustituida ', self.subsitute(objetive))
         return objetive, constraints
 
     # x_i = (1 - z_i)/2
@@ -43,4 +39,10 @@ class Sympy():
         Args:
             constraints (_type_): _description_
         """
+        constraints = str(constraints[0])
+        parts = re.split(r'(<|>)=?', constraints)
+        lhs, rhs = parts[0], parts[2]
+        rhs = '-(' + rhs + ')'
+        expression = lhs + rhs + parts[1] + ' 0 '
+        print('expression ', simplify(expression))
         pass

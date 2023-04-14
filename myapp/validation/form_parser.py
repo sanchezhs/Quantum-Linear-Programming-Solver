@@ -78,13 +78,12 @@ def check_duplicated_constraints(constraints):
             )        
     
 def validate_objetive(objetive):
-    print(objetive)
     try:
         parser = Lark(objetive_grammar, parser='lalr') 
         tree = parser.parse
-        print(tree(objetive), 'ok')
+        # print(tree(objetive), 'ok')
     except:
-        print('error objetive')
+        # print('error objetive')
         raise ValidationError(
                 ('Invalid value (parse error): %(value)s'),
                 code='objetive',
@@ -96,9 +95,9 @@ def validate_constraints(constraints):
     try:
         parser = Lark(constraints_grammar, parser='lalr') 
         tree = parser.parse
-        print(tree(constraints), 'ok')
+        # print(tree(constraints), 'ok')
     except:
-        print('error constraints')
+        # print('error constraints')
         raise ValidationError(
                 ('Invalid value (parse error): %(value)s'),
                 code='constraints',
