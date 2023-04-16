@@ -13,6 +13,7 @@ function Constraint({ constraint }) {
       {" "}
       <InputGroup className="mb-3">
         <Form.Control
+          required
           type="text"
           placeholder="x < 1"
           onChange={(e) => {

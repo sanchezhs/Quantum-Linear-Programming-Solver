@@ -6,7 +6,7 @@ const baseStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "20px",
+  padding: "40px",
   borderWidth: 2,
   borderRadius: 2,
   borderColor: "#eeeeee",
@@ -15,6 +15,14 @@ const baseStyle = {
   color: "#bdbdbd",
   outline: "none",
   transition: "border .24s ease-in-out",
+  ":hover" : {
+    borderColor: "#2196f3",
+    backgroundColor: "#123456",
+  },
+};
+
+const activeStyle = {
+  borderColor: "#000000",
 };
 
 const focusedStyle = {
@@ -29,7 +37,7 @@ const rejectStyle = {
   borderColor: "#ff0000",
 };
 
-function MyDropzone(props) {
+function MyDropzone() {
   const [fileContents, setFileContents] = useState("");
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -60,6 +68,7 @@ function MyDropzone(props) {
       ...(isFocused ? focusedStyle : {}),
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
+      ...(isDragActive ? activeStyle : {}),
     }),
     [isFocused, isDragAccept, isDragReject]
   );
@@ -95,8 +104,12 @@ function MyDropzone(props) {
         )}
       </div>
       <aside>
-        <h4>Accepted files</h4>
-        <ul>{acceptedFileItems}</ul>
+        {acceptedFileItems.length > 0 && (
+          <div>
+          <h4>Accepted files</h4>
+          <ul>{acceptedFileItems}</ul>
+          </div>
+        )}
         {fileRejectionItems.length > 0 && (
           <div>
             <h4>Rejected files</h4>
