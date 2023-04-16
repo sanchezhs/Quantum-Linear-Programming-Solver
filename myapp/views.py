@@ -5,12 +5,14 @@ from .forms import CreateNewFunction, CreateNewConstraint, ConstraintsFormSetHel
 from .validation.file_reader import extract_data
 from mysite.exceptions import FileSyntaxError
 from .sympy import Sympy
+from rest_framework import viewsets
+from django.middleware.csrf import get_token
+import json
 
 # Create your views here.
 
 MAX_CONSTRAINTS = 5
 AJAX_REQUEST = 'XMLHttpRequest'
-
 
 def index(request):
     formset = formset_factory(
@@ -20,11 +22,15 @@ def index(request):
     empty = CreateNewConstraint()
 
     if request.method == 'GET':
+        return JsonResponse({'csrfToken': get_token(request)})
         return render(request, 'index.html', {'formFunction': formFunction,
                                               'formset': formset,
                                               'helper': helper,
                                               'empty': empty
                                               })
+    if request.method == 'POST':
+        print('desde React')
+        print(json.loads(request.body.decode('utf-8')))
     if request.headers.get('x-requested-with') == AJAX_REQUEST:
         objetive = CreateNewFunction(request.POST)
         constraints = formset(request.POST)

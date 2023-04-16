@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'crispy_forms',
     "crispy_bootstrap4",
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -52,10 +54,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
-
 ROOT_URLCONF = 'mysite.urls'
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+)
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_NAME = "csrftoken"
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

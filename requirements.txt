@@ -11,3 +11,5 @@ bootstrap
 scipy
 sympy
 >>>>>>> crispy
+djangorestframework
+django-cors-headers
