@@ -17,7 +17,7 @@ function Howto() {
       example below:
     </p>
     <Col>
-      <pre>
+      <pre className='shadow p-3 mb-5 bg-body-tertiary'>
       <code>
         <h6><strong>min:</strong>{" "}f(x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>m</sub>)</h6>
         <h6><strong>subject to:</strong></h6>
@@ -31,7 +31,7 @@ function Howto() {
       </pre>
     </Col>
     <Col>
-      <pre>
+      <pre className='shadow p-3 mb-5 bg-body-tertiary'>
       <code>
         <h6><strong>max:</strong>{" "}f(x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>m</sub>)</h6>
         <h6><strong>subject to:</strong></h6>

@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
+import Message from "./Message";
 
 const baseStyle = {
   flex: 1,
@@ -15,14 +16,14 @@ const baseStyle = {
   color: "#bdbdbd",
   outline: "none",
   transition: "border .24s ease-in-out",
-  ":hover" : {
+  ":hover": {
     borderColor: "#2196f3",
     backgroundColor: "#123456",
   },
 };
 
 const activeStyle = {
-  borderColor: "#000000",
+  borderColor: "#0000ff",
 };
 
 const focusedStyle = {
@@ -73,24 +74,7 @@ function MyDropzone() {
     [isFocused, isDragAccept, isDragReject]
   );
 
-  const acceptedFileItems = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
 
-  const fileRejectionItems = fileRejections.map(({ file, errors }) => {
-    return (
-      <li key={file.path}>
-        {file.path} - {file.size} bytes
-        <ul>
-          {errors.map((e) => (
-            <li key={e.code}>{e.message}</li>
-          ))}
-        </ul>
-      </li>
-    );
-  });
 
   return (
     <section className="container">
@@ -103,19 +87,11 @@ function MyDropzone() {
           <p>Drag and drop a file here, or click to select file</p>
         )}
       </div>
-      <aside>
-        {acceptedFileItems.length > 0 && (
-          <div>
-          <h4>Accepted files</h4>
-          <ul>{acceptedFileItems}</ul>
-          </div>
-        )}
-        {fileRejectionItems.length > 0 && (
-          <div>
-            <h4>Rejected files</h4>
-            <ul>{fileRejectionItems}</ul>
-          </div>
-        )}
+      <aside className="text-center mx-auto">
+        <Message
+          acceptedFiles={acceptedFiles}
+          fileRejections={fileRejections}
+        />
       </aside>
       {fileContents && <p>File contents: {fileContents}</p>}
     </section>

@@ -1,5 +1,6 @@
 from lark import Lark
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
 from itertools import chain
 
 constraints_grammar = """
@@ -74,7 +75,7 @@ def check_duplicated_constraints(constraints):
     duplicates = set(chain.from_iterable(
         values for values in rev_multidict.values() if len(values) > 1))
     if duplicates:
-        raise ValidationError(
+        raise serializers.ValidationError(
             ('Constraint %(name)s duplicated: %(value)s'),
             code='duplicated',
             params=duplicates,
@@ -85,26 +86,23 @@ def validate_objetive(objetive):
     try:
         parser = Lark(objetive_grammar, parser='lalr')
         tree = parser.parse
+        tree(objetive)
         # print(tree(objetive), 'ok')
     except:
         # print('error objetive')
-        raise ValidationError(
-            ('Invalid value (parse error): %(value)s'),
-            code='objetive',
-            params={'value': objetive,
-                    'objetive': True},
+        raise serializers.ValidationError(
+            f'Invalid value (parse error): {objetive}'
         )
 
 
 def validate_constraints(constraints):
     try:
-        parser = Lark(constraints_grammar, parser='lalr')
-        tree = parser.parse
-        # print(tree(constraints), 'ok')
+        for constraint in constraints:
+            parser = Lark(constraints_grammar, parser='lalr')
+            tree = parser.parse
+            tree(constraint)
     except:
-        # print('error constraints')
-        raise ValidationError(
-            ('Invalid value (parse error): %(value)s'),
-            code='constraints',
-            params={'value': constraints},
+        print('error constraints')
+        raise serializers.ValidationError(
+            f'Invalid value (parse error): {constraint}'
         )

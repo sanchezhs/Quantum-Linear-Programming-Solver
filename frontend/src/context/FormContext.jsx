@@ -24,6 +24,7 @@ export function FormProvider({children}) {
             {
                 constraints,
                 objetive,
+                radioValue,
                 setRadioValue,
                 createConstraint,
                 setConstraints,

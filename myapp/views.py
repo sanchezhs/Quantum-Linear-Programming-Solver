@@ -8,11 +8,35 @@ from .sympy import Sympy
 from rest_framework import viewsets
 from django.middleware.csrf import get_token
 import json
-
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from . import serializers
 # Create your views here.
 
 MAX_CONSTRAINTS = 5
 AJAX_REQUEST = 'XMLHttpRequest'
+
+class Api_index(viewsets.ViewSet):
+
+    serializer_class = serializers.FormDataSerializer
+    
+    def list(self, request, format=None):
+        serializer = serializers.FormDataSerializer(
+            instance=serializers.FormData(objetive='x', constraints=['x < 1'], radioValue='z')
+        )
+        return Response(serializer.data)
+
+    def create(self, request, format=None):
+        print(request.body.decode('utf-8'))
+        serializer = serializers.FormDataSerializer(data=request.data)
+        if serializer.is_valid():
+            print('todo ok')
+            serializer.save()
+            return Response(serializer.data, status=201)
+        else:
+            print(serializer.errors)
+        return Response({'status': 'error', 'errors': serializer.errors}, status=400)
+
 
 def index(request):
     formset = formset_factory(

@@ -1,6 +1,6 @@
 pre {
     background-color: #f8f8f8;
-    padding: 15px;
+    padding: 20px;
 }
 
 code {
@@ -9,4 +9,24 @@ code {
 
 ul {
     list-style-type: none;
+}
+
+.dropzone p:hover {
+    font-size: 1.2em;
+}
+
+.dropzone p {
+    text-align: center;
+    font-size: 1em;
+    color: black;
+    transition: font-size 0.24s ease-in-out;
+}
+
+.dropzone {
+    justify-content: center;
+    margin-top: 30px;
+    border: 2px dashed #0087F7;
+    border-radius: 5px;
+    min-height: 150px;
+    padding: 54px 54px;
 }
