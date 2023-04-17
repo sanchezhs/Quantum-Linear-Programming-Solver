@@ -1,8 +1,8 @@
 import MainForm from "./components/MainForm";
 import Navigation from "./components/Navigation";
 import MyDropzone from "./components/DropZone";
+import Howto from "./components/Howto";
 import axios from "axios";
-//import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,10 +16,8 @@ function App() {
   return (
     <>
       <Navigation />
-      <Container> 
-        <Row>
-        <h1>How To</h1>
-        </Row>
+      <Container>
+        <Howto />
         <Row>
           <Col>
             <MainForm />

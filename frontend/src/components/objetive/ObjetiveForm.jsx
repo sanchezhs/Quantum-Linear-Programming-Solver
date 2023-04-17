@@ -14,7 +14,7 @@ function ObjetiveForm() {
         <Form.Control
           required
           type="text"
-          placeholder="f(x,y,...)"
+          placeholder="x + 2y - 3z + ..."
           onChange={(e) => {
             setObjetive(e.target.value);
           }}
@@ -27,14 +27,3 @@ function ObjetiveForm() {
 }
 
 export default ObjetiveForm;
-/*
-<input
-type="text"
-name="objetive"
-placeholder="f(x,y,...)"
-autoFocus
-onChange={(e) => {
-  setObjetive(e.target.value);
-}}
-value={objetive}
-*/

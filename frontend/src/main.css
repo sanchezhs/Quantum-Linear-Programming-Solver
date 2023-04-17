@@ -1,0 +1,12 @@
+pre {
+    background-color: #f8f8f8;
+    padding: 15px;
+}
+
+code {
+    font-family: "Fira Code", "Roboto Mono", Monaco, Consolas, monospace;
+}
+
+ul {
+    list-style-type: none;
+}
