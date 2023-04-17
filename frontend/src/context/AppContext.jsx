@@ -2,11 +2,11 @@ import {createContext, useState } from 'react'
 
 export const FormContext = createContext()
 
-export function FormProvider({children}) {
+export function AppContextProvider({children}) {
     const [constraints, setConstraints] = useState([{id: 1, value: ''}])
     const [objetive, setObjetive] = useState('')
     const [radioValue, setRadioValue] = useState('')
-
+    const [theme, setTheme] = useState('light');
 
     function createConstraint() {
         setConstraints([...constraints, {id: 
@@ -25,6 +25,8 @@ export function FormProvider({children}) {
                 constraints,
                 objetive,
                 radioValue,
+                theme,
+                setTheme,
                 setRadioValue,
                 createConstraint,
                 setConstraints,

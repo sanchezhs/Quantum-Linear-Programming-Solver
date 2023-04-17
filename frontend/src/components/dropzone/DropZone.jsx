@@ -26,10 +26,6 @@ const activeStyle = {
   borderColor: "#0000ff",
 };
 
-const focusedStyle = {
-  borderColor: "#2196f3",
-};
-
 const acceptStyle = {
   borderColor: "#00e676",
 };
@@ -66,7 +62,6 @@ function MyDropzone() {
   const style = useMemo(
     () => ({
       ...baseStyle,
-      ...(isFocused ? focusedStyle : {}),
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
       ...(isDragActive ? activeStyle : {}),
@@ -74,28 +69,25 @@ function MyDropzone() {
     [isFocused, isDragAccept, isDragReject]
   );
 
-
-
   return (
     <section className="container">
       {" "}
       <div {...getRootProps({ className: "dropzone", style })}>
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <p>Drop the file here ...</p>
         ) : (
           <p>Drag and drop a file here, or click to select file</p>
         )}
       </div>
-      <aside className="text-center mx-auto">
-        <Message
+      {/*   <aside className="text-center mx-auto">
+         <Message
           acceptedFiles={acceptedFiles}
           fileRejections={fileRejections}
-        />
-      </aside>
+        /> 
+      </aside>*/}
       {fileContents && <p>File contents: {fileContents}</p>}
     </section>
   );
 }
-
 export default MyDropzone;

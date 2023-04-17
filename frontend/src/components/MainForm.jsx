@@ -2,7 +2,7 @@ import { useContext } from "react";
 import ObjetiveForm from "./objetive/ObjetiveForm";
 import ConstraintsList from "./constraint/ConstraintsList";
 import CheckRadio from "./objetive/CheckRadio";
-import { FormContext } from "../context/FormContext";
+import { FormContext } from "../context/AppContext";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";

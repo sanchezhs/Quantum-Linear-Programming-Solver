@@ -1,5 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
+import ThemeSwitch from './ThemeSwitch';
+
 
 function NavigationBar() {
   return (
@@ -16,6 +18,7 @@ function NavigationBar() {
             />{' '}
             Quantum Solver
           </Navbar.Brand>
+        <ThemeSwitch />
         </Container>
       </Navbar>
     </>

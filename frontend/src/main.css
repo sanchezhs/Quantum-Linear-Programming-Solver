@@ -7,6 +7,10 @@ code {
     font-family: "Fira Code", "Roboto Mono", Monaco, Consolas, monospace;
 }
 
+code ul {
+    padding: 0;
+}
+
 ul {
     list-style-type: none;
 }
@@ -29,4 +33,81 @@ ul {
     border-radius: 5px;
     min-height: 150px;
     padding: 54px 54px;
+}
+
+.App {
+    height: 100vh;
+}
+
+#dark .App {
+    background-color: #1c2025;
+}
+
+/* Dark mode */
+#dark .form-check-input:checked {
+    background-color: #123456;
+}
+
+#dark {
+    background-color: #1c2025;
+}
+
+
+#dark .navbar {
+    background-color: #112a44 !important; 
+}
+
+#dark p {
+    color: #829ab1;
+}
+
+#dark label {
+    color: #829ab1;
+}
+
+#dark h3 {
+    color: #829ab1;
+}
+
+#dark .form-control {
+    background-color: #2f2f2f;
+    border-color: #2f2f2f;
+}
+
+#dark .form-control:focus {
+    background-color: #2f2f2f;
+    border-color: #2f2f2f;
+}
+
+#dark .btn-outline-success {
+    color: #aeee99;
+    border-color: #aeee99;
+}
+
+#dark .btn-outline-success:hover {
+    color: #aeee99;
+    border-color: #aeee99;
+}
+
+#dark .btn-outline-primary {
+    color: #bcccdc;
+    border-color: #bcccdc;
+}
+
+#dark .btn-outline-primary:hover {
+    color: #bcccdc;
+    border-color: #bcccdc;
+}
+
+#dark pre  {
+    background-color: #2f2f2f;
+    color: #829ab1;
+}
+
+#dark form input[type="text"] {
+    color: white;
+}
+
+#dark form input[type="text"]:focus {
+    color: white;
 }
