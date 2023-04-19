@@ -6,6 +6,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
  
 router.register(r'index',views.Api_index, basename='index')
+router.register(r'upload',views.Api_upload, basename='upload')
 
 urlpatterns = [
     path('', include(router.urls)),

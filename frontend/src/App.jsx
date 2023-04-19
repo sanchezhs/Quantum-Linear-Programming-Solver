@@ -1,12 +1,12 @@
-import MainForm from "./components/MainForm";
-import Navigation from "./components/Navigation";
-import MyDropzone from "./components/dropzone/DropZone";
-import Howto from "./components/Howto";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import { useContext } from "react";
 import { FormContext } from "./context/AppContext";
+import Navigation from "./components/Navigation";
+import Qaoa from "./components/refs/Qaoa"; 
+import MainForm from "./components/refs/MainForm";
+import Howto from "./components/refs/Howto";
+import MyDropzone from "./components/refs/DropZone";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
 function App() {
   const { theme } = useContext(FormContext);
@@ -18,14 +18,17 @@ function App() {
     <div className="App" id={theme}>
       <Navigation />
       <Container>
-        <Howto />
         <Row>
-          <Col>
-            <MainForm />
-          </Col>
-          <Col>
-            <MyDropzone />
-          </Col>
+          <Qaoa />
+        </Row>
+        <Row>
+          <Howto />
+        </Row>
+        <Row>
+          <MainForm />
+        </Row>
+        <Row>
+          <MyDropzone />
         </Row>
       </Container>
     </div>

@@ -11,6 +11,7 @@ import json
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from . import serializers
+from rest_framework import serializers as rest_serializers
 # Create your views here.
 
 MAX_CONSTRAINTS = 5
@@ -26,7 +27,7 @@ class Api_index(viewsets.ViewSet):
         )
         return Response(serializer.data)
 
-    def create(self, request, format=None):
+    def create(self, request):
         print(request.body.decode('utf-8'))
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
@@ -37,6 +38,25 @@ class Api_index(viewsets.ViewSet):
             print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
 
+class Api_upload(viewsets.ViewSet): 
+    
+    serializer_class = serializers.FileSerializer
+    
+    def create(self, request):
+        print(request.body.decode('utf-8'))
+        print(request.data)
+        serializer = serializers.FileSerializer(data=request.data)
+        try:
+            if serializer.is_valid(raise_exception=True):
+                print('file ok')
+            else:
+                print(serializer.errors)
+            return Response({'status': 'ok'}, status=200)
+        except rest_serializers.ValidationError as e:
+            return Response({'status': 'error', 'errors': e.detail}, status=400)
+
+
+
 
 def index(request):
     formset = formset_factory(
@@ -46,7 +66,6 @@ def index(request):
     empty = CreateNewConstraint()
 
     if request.method == 'GET':
-        return JsonResponse({'csrfToken': get_token(request)})
         return render(request, 'index.html', {'formFunction': formFunction,
                                               'formset': formset,
                                               'helper': helper,

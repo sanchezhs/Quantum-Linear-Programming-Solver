@@ -9,7 +9,7 @@ c3
 cn
 """
 
-from mysite.exceptions import FileSyntaxError
+from rest_framework import serializers
 import re
 
 
@@ -22,7 +22,12 @@ def extract_data(s):
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:
         match = re.match(pattern, s)
+        if not match:
+            raise ValueError(f"Invalid input format. The input string '{s}' must match the expected format.")
+
         comments = match.group('comments')
+        
+        
         objetive = match.group('objetive')
         constraints = re.findall(r'.+', match.group('constraints'))
         print('comments ', comments)
@@ -30,5 +35,5 @@ def extract_data(s):
         print('constraints ', constraints)
 
         return objetive, constraints
-    except AttributeError:
-        raise FileSyntaxError()
+    except (AttributeError, ValueError) as e:
+        raise serializers.ValidationError({'Invalid value': str(e)})

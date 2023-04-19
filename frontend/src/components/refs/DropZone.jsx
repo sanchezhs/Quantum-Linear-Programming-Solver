@@ -1,13 +1,14 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useContext } from "react";
 import { useDropzone } from "react-dropzone";
-import Message from "./Message";
+import { ScrollContext } from "../../context/ScrollContext";
+import axios from "axios";
 
 const baseStyle = {
   flex: 1,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  padding: "40px",
+  padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
   borderColor: "#eeeeee",
@@ -36,11 +37,28 @@ const rejectStyle = {
 
 function MyDropzone() {
   const [fileContents, setFileContents] = useState("");
+  const { fourthRef } = useContext(ScrollContext);
+
+
+  const sendFile = (fileContents) => {
+    const host = "http://localhost:8000/upload/";
+    axios
+      .post(host, {
+        fileContents: fileContents,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
 
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       setFileContents(event.target.result);
+      sendFile(event.target.result);
     };
     reader.readAsText(acceptedFiles[0]);
   }, []);
@@ -70,24 +88,26 @@ function MyDropzone() {
   );
 
   return (
-    <section className="container">
-      {" "}
-      <div {...getRootProps({ className: "dropzone", style })}>
-        <input {...getInputProps()} />
-        {isDragActive ? (
-          <p>Drop the file here ...</p>
-        ) : (
-          <p>Drag and drop a file here, or click to select file</p>
-        )}
-      </div>
-      {/*   <aside className="text-center mx-auto">
+    <>
+        <section  id="dropzone-section" className="container">
+        <h3 ref={fourthRef}>File Upload</h3>
+          <div {...getRootProps({ className: "dropzone", style })}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Drop the file here ...</p>
+            ) : (
+              <p>Drag and drop a file here, or click to select file</p>
+            )}
+          </div>
+          {/*   <aside className="text-center mx-auto">
          <Message
           acceptedFiles={acceptedFiles}
           fileRejections={fileRejections}
         /> 
       </aside>*/}
-      {fileContents && <p>File contents: {fileContents}</p>}
-    </section>
+          {fileContents && <p>File contents: {fileContents}</p>}
+        </section>
+    </>
   );
 }
 export default MyDropzone;

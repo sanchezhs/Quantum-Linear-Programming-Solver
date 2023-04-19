@@ -5,9 +5,8 @@ import Form from "react-bootstrap/Form";
 function ObjetiveForm() {
   const { objetive, setObjetive } = useContext(FormContext);
 
-
   return (
-    <>
+    <div>
       {" "}
       <Form.Group className="mb-3" controlId="formObjetive">
         <Form.Label>Optimize</Form.Label>
@@ -22,7 +21,7 @@ function ObjetiveForm() {
           autoFocus
         />
       </Form.Group>
-    </>
+    </div>
   );
 }
 

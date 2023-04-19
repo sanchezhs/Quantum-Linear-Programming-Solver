@@ -1,8 +1,6 @@
 import Card from "react-bootstrap/Card";
 
-/*     <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li> */
+
 function Message(props) {
   const acceptedFileItems = props.acceptedFiles.map((file) => (
     <div key={file.path}>

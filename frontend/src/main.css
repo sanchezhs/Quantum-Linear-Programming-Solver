@@ -1,9 +1,28 @@
+html, body {
+    scroll-behavior: smooth;
+}
+
+.active {
+    font-weight: bold;
+  }
+
 pre {
     background-color: #f8f8f8;
     padding: 20px;
 }
 
+.App {
+    overflow: scroll;
+}
+
+.row {
+    align-items: center;
+    justify-content: center;
+    padding: 90px;
+}
+
 code {
+    width: 10px;
     font-family: "Fira Code", "Roboto Mono", Monaco, Consolas, monospace;
 }
 
@@ -16,23 +35,27 @@ ul {
 }
 
 .dropzone p:hover {
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 .dropzone p {
     text-align: center;
-    font-size: 1em;
+    font-size: 1.2em;
     color: black;
     transition: font-size 0.24s ease-in-out;
 }
 
 .dropzone {
     justify-content: center;
-    margin-top: 30px;
     border: 2px dashed #0087F7;
     border-radius: 5px;
     min-height: 150px;
-    padding: 54px 54px;
+    padding: 35px 35px;
+}
+
+
+#dropzone-section {
+    margin-bottom: 100px;
 }
 
 .App {
@@ -44,6 +67,11 @@ ul {
 }
 
 /* Dark mode */
+#dark .dropzone {
+    background-color: #112a44 !important;
+    border-color: #1c2025 !important;
+}
+
 #dark .form-check-input:checked {
     background-color: #123456;
 }
@@ -98,6 +126,18 @@ ul {
     color: #bcccdc;
     border-color: #bcccdc;
 }
+
+#dark .btn-outline-danger {
+    color: #AA4A44;
+    border-color: #AA4A44;
+}
+
+#dark .btn-outline-danger:hover {
+    color: #AA4A44;
+    border-color: #AA4A44;
+}
+
+
 
 #dark pre  {
     background-color: #2f2f2f;
