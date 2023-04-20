@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import Form from "react-bootstrap/Form";
-import { FormContext } from "../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 
 function CheckRadio() {
-  const { setRadioValue } = useContext(FormContext);
+  const { setRadioValue } = useContext(AppContext);
   const [selected, setSelected] = useState(false);
 
   return (

@@ -21,6 +21,23 @@ pre {
     padding: 90px;
 }
 
+#modal-row{
+    padding: 0px;
+}
+
+#footer-row{
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+}
+
+#footer-div {
+    background-color: #0087F7;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
 code {
     width: 10px;
     font-family: "Fira Code", "Roboto Mono", Monaco, Consolas, monospace;
@@ -67,6 +84,14 @@ ul {
 }
 
 /* Dark mode */
+#dark #footer-div {
+    background-color: #112a44;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+
 #dark .dropzone {
     background-color: #112a44 !important;
     border-color: #1c2025 !important;

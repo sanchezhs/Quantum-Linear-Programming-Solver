@@ -2,9 +2,9 @@ import { useContext, useState } from "react";
 import ObjetiveForm from "../objetive/ObjetiveForm";
 import ConstraintsList from "../constraint/ConstraintsList";
 import CheckRadio from "../objetive/CheckRadio";
-import { FormContext } from "../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { ScrollContext } from "../../context/ScrollContext";
-import Modal from '../Modal'
+import Modal from "../Modal";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";
@@ -22,29 +22,25 @@ function MainForm() {
     createConstraint,
     setObjetive,
     setConstraints,
-    setModalShow,
-  } = useContext(FormContext);
+    showErrorModal,
+  } = useContext(AppContext);
   const { thirdRef } = useContext(ScrollContext);
   const [validated, setValidated] = useState(false);
-
 
   const host = "http://localhost:8000/index/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const constraintsPost = [];
 
     if (constraints.length === 0 || objetive === "" || radioValue === "") {
       console.log("invalid form");
+      alert("Invalid form, check the fields. Constraints can't be empty.");
       e.stopPropagation();
       setValidated(true);
       return;
     }
-    
 
-    constraints.map((constraint) => {
-      constraintsPost.push(constraint.value);
-    });
+    const constraintsPost = constraints.map((constraint) => constraint.value);
 
     axios
       .post(host, {
@@ -54,12 +50,13 @@ function MainForm() {
       })
       .then((response) => {
         console.log(response);
-        alert('Success! Check the console for the results.')
+        alert("Success! Check the console for the results.");
       })
       .catch((error) => {
-        console.log(error.response.data);
-        console.log(error.response.data.errors);
-        setModalShow(true);
+        console.log(error.response.data.errors.objetive);
+        console.log(error.response.data.errors.constraints);
+        showErrorModal(error);
+        setValidated(false);
       });
   };
 
@@ -67,7 +64,7 @@ function MainForm() {
     e.preventDefault();
     setValidated(false);
     setObjetive("");
-    setConstraints([{id: 1, value: ''}]);
+    setConstraints([{ id: 1, value: "" }]);
   };
 
   return (

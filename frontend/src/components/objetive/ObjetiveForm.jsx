@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { FormContext } from "../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import Form from "react-bootstrap/Form";
 
 function ObjetiveForm() {
-  const { objetive, setObjetive } = useContext(FormContext);
+  const { objetive, setObjetive } = useContext(AppContext);
 
   return (
     <div>

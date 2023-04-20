@@ -1,11 +1,11 @@
 import { useContext } from 'react'
-import { FormContext } from '../context/AppContext'
+import { AppContext } from '../context/AppContext'
 import Form from "react-bootstrap/Form";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 function ThemeSwitch() {
-    const { theme, setTheme } = useContext(FormContext);
+    const { theme, setTheme } = useContext(AppContext);
     const handleSwitchChange = () => {
       setTheme(theme === 'light' ? 'dark' : 'light');
     }

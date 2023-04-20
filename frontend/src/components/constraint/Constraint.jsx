@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { FormContext } from "../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 
 function Constraint({ constraint }) {
   const { deleteConstraint, constraints, setConstraints } =
-    useContext(FormContext);
+    useContext(AppContext);
 
   return (
     <>

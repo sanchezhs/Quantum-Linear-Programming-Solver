@@ -1,11 +1,11 @@
 import {useContext} from 'react'
-import {FormContext} from '../../context/AppContext'
+import {AppContext} from '../../context/AppContext'
 import Constraint from './Constraint'
 import Form from "react-bootstrap/Form";
 
 function ConstraintsList() {
 
-    const { constraints } = useContext(FormContext)
+    const { constraints } = useContext(AppContext)
 
 
   return (
