@@ -31,6 +31,10 @@ function Constraint({ constraint }) {
             ).value
           }
         />
+        <Form.Control.Feedback type="invalid" className="mb-1">
+          This field may not be blank.
+        </Form.Control.Feedback>
+
         <Button
           variant="outline-danger"
           type="button"

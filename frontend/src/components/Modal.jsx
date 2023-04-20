@@ -1,29 +1,23 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { FormContext } from "../context/AppContext";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function myModal() {
-  const [show, setShow] = useState(false);
+function myModal(props) {
 
+  const { modalShow, setModalShow } = useContext(FormContext);
 
   return (
     <>
-    
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>{props.header}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Body>{props.body}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

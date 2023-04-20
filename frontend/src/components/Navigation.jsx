@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import ThemeSwitch from "./ThemeSwitch";
-import { useRef, useContext } from 'react'
+import { useContext } from 'react'
 import { ScrollContext } from '../context/ScrollContext'
 
 function NavigationBar() {

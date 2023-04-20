@@ -20,6 +20,9 @@ function ObjetiveForm() {
           value={objetive}
           autoFocus
         />
+        <Form.Control.Feedback type="invalid">
+          This field may not be blank.
+        </Form.Control.Feedback>
       </Form.Group>
     </div>
   );

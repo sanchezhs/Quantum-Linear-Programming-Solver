@@ -7,6 +7,7 @@ export function AppContextProvider({children}) {
     const [objetive, setObjetive] = useState('')
     const [radioValue, setRadioValue] = useState('')
     const [theme, setTheme] = useState('light');
+    const [modalShow, setModalShow] = useState(false);
 
 
 
@@ -28,6 +29,8 @@ export function AppContextProvider({children}) {
                 objetive,
                 radioValue,
                 theme,
+                modalShow,
+                setModalShow,
                 setTheme,
                 setRadioValue,
                 createConstraint,

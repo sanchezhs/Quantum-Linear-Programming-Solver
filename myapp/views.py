@@ -21,12 +21,6 @@ class Api_index(viewsets.ViewSet):
 
     serializer_class = serializers.FormDataSerializer
     
-    def list(self, request, format=None):
-        serializer = serializers.FormDataSerializer(
-            instance=serializers.FormData(objetive='x', constraints=['x < 1'], radioValue='z')
-        )
-        return Response(serializer.data)
-
     def create(self, request):
         print(request.body.decode('utf-8'))
         serializer = serializers.FormDataSerializer(data=request.data)

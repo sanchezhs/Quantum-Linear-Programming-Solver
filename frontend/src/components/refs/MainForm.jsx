@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ObjetiveForm from "../objetive/ObjetiveForm";
 import ConstraintsList from "../constraint/ConstraintsList";
 import CheckRadio from "../objetive/CheckRadio";
 import { FormContext } from "../../context/AppContext";
 import { ScrollContext } from "../../context/ScrollContext";
+import Modal from '../Modal'
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";
@@ -21,14 +22,26 @@ function MainForm() {
     createConstraint,
     setObjetive,
     setConstraints,
+    setModalShow,
   } = useContext(FormContext);
   const { thirdRef } = useContext(ScrollContext);
+  const [validated, setValidated] = useState(false);
+
 
   const host = "http://localhost:8000/index/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const constraintsPost = [];
+
+    if (constraints.length === 0 || objetive === "" || radioValue === "") {
+      console.log("invalid form");
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+    
+
     constraints.map((constraint) => {
       constraintsPost.push(constraint.value);
     });
@@ -40,21 +53,25 @@ function MainForm() {
         radioValue: radioValue,
       })
       .then((response) => {
-        //console.log(response);
+        console.log(response);
+        alert('Success! Check the console for the results.')
       })
       .catch((error) => {
         console.log(error.response.data);
+        console.log(error.response.data.errors);
+        setModalShow(true);
       });
   };
 
   const handleReset = (e) => {
     e.preventDefault();
+    setValidated(false);
     setObjetive("");
-    setConstraints([]);
+    setConstraints([{id: 1, value: ''}]);
   };
 
   return (
-    <Form>
+    <Form validated={validated}>
       <h3 ref={thirdRef}>QAOA Quantum Solver</h3>
       <ObjetiveForm />
       <CheckRadio />
@@ -74,6 +91,7 @@ function MainForm() {
           Submit
         </Button>
       </ButtonGroup>
+      <Modal header="error" body="error" />
     </Form>
   );
 }
