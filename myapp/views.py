@@ -1,9 +1,10 @@
 from .sympy import Sympy
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import serializers as rest_serializers
 from . import serializers
 from .validation import file_reader, form_parser
-from rest_framework import serializers as rest_serializers
+from .qiskit_ibm import ibm
 import json
 
 
@@ -16,7 +17,7 @@ class Api_index(viewsets.ViewSet):
     serializer_class = serializers.FormDataSerializer
 
     def create(self, request):
-        print(request.data)
+        print('form')
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -45,3 +46,18 @@ class Api_upload(viewsets.ViewSet):
             return Response({'status': 'ok'}, status=200) 
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
+
+
+class Api_ibm(viewsets.ViewSet):
+    
+    selializer_class = serializers.TokenSerializer
+    
+    def create(self, request):
+        print('ibm ', request.data)
+        serializer = serializers.TokenSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            print('serializer data: ', serializer.data)
+            return Response(serializer.data, status=201)
+        print(serializer.errors)
+        return Response({'status': 'error', 'errors': serializer.errors}, status=400)

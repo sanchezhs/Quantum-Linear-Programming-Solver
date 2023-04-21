@@ -43,3 +43,17 @@ class FileSerializer(serializers.Serializer):
         instance.objetive = validated_data.get('objetive', instance.objetive)
         instance.constraints = validated_data.get('constraints', instance.constraints)
         return instance
+    
+class Token:
+    def __init__(self, apiToken):
+        self.apiToken = apiToken
+    
+class TokenSerializer(serializers.Serializer):
+    apiToken = serializers.CharField()
+    
+    def create(self, validated_data):
+        return Token(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.apiToken = validated_data.get('apiToken', instance.apiToken)
+        return instance

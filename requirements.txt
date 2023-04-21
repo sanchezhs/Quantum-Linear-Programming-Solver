@@ -15,3 +15,5 @@ djangorestframework
 django-cors-headers
 qiskit-ibm-runtime
 setup-tools
+matplotlib
+pylatexenc
