@@ -24,8 +24,8 @@ function MainForm() {
     setConstraints,
     showErrorModal,
   } = useContext(AppContext);
-  const { thirdRef } = useContext(ScrollContext);
   const [validated, setValidated] = useState(false);
+  const { thirdRef } = useContext(ScrollContext);
 
   const host = "http://localhost:8000/index/";
 
@@ -69,7 +69,7 @@ function MainForm() {
 
   return (
     <Form validated={validated}>
-      <h3 ref={thirdRef}>QAOA Quantum Solver</h3>
+      <h3 ref={thirdRef}>Solver</h3>
       <ObjetiveForm />
       <CheckRadio />
       <ConstraintsList />

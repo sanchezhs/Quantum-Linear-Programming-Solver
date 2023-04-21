@@ -14,16 +14,19 @@ export function AppContextProvider({children}) {
         let objetiveErr = ""
         let constraintsErr = ""
         let fileContents = ""
+        let header = "Syntax Error"
         if (errors.objetive) {
             objetiveErr = errors.objetive[0]
         } 
         if (errors.constraints) {
             constraintsErr = errors.constraints
         }
-        if (errors.fileContents) {
-            fileContents = errors.fileContents['Invalid value']
+        console.log(errors)
+        if (errors[0]) {
+            header = "File Error"
+            fileContents = errors[0]
         }
-        setModalShow({show: true, header: 'Syntax Error', body: {objetiveErr, constraintsErr, fileContents}})
+        setModalShow({show: true, header: header, body: {objetiveErr, constraintsErr, fileContents}})
     }
 
     function createConstraint() {

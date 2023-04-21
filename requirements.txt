@@ -13,3 +13,5 @@ sympy
 >>>>>>> crispy
 djangorestframework
 django-cors-headers
+qiskit-ibm-runtime
+setup-tools

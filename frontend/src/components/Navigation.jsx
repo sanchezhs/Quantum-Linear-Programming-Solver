@@ -9,6 +9,7 @@ function NavigationBar() {
 
  const { scrollToFirst, scrollToSecond, scrollToThird, scrollToFourth } = useContext(ScrollContext);
 
+
   return (
     <>
       <Navbar
@@ -18,7 +19,7 @@ function NavigationBar() {
         variant="dark"
       >
         <Container fluid>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="#qaoa" onClick={scrollToFirst}>
             <img
               alt=""
               src="/wlogo.svg"
@@ -29,9 +30,8 @@ function NavigationBar() {
             Quantum Solver
           </Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#qaoa" onClick={scrollToFirst} >Qaoa</Nav.Link>
             <Nav.Link href="#howto" onClick={scrollToSecond}>How To</Nav.Link>
-            <Nav.Link href="#optimizer" onClick={scrollToThird}>Optimizer</Nav.Link>
+            <Nav.Link href="#solver" onClick={scrollToThird}>Solver</Nav.Link>
             <Nav.Link href="#files" onClick={scrollToFourth}>Files</Nav.Link>
           </Nav>
           <ThemeSwitch />

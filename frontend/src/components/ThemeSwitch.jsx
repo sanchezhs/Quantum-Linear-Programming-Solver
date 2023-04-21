@@ -6,14 +6,14 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 function ThemeSwitch() {
     const { theme, setTheme } = useContext(AppContext);
-    const preferredTheme = localStorage.getItem('theme');
+    /* const preferredTheme = localStorage.getItem('theme');
     if (preferredTheme) {
       setTheme(preferredTheme);
-    }
+    } */
 
     const handleSwitchChange = () => {
       setTheme(theme === 'light' ? 'dark' : 'light');
-      localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light');
+      //localStorage.setItem('theme', theme === 'light' ? 'dark' : 'light');
     }
 
     return (

@@ -25,17 +25,21 @@ class FormDataSerializer(serializers.Serializer):
         return instance
 
 class FileData:
-    def __init__(self, fileContents):
-        self.fileContents = fileContents
+    def __init__(self, objetive, constraints):
+        self.objetive = objetive
+        self.constraints = constraints
             
     
 
 class FileSerializer(serializers.Serializer):
-    fileContents = serializers.CharField(validators=[file_reader.extract_data])
+    #fileContents = serializers.CharField(validators=[file_reader.extract_data])
+    objetive = serializers.CharField(validators=[form_parser.validate_objetive])
+    contraints = serializers.CharField(validators=[form_parser.validate_constraints])
     
     def create(self, validated_data):
         return FileData(**validated_data)
     
     def update(self, instance, validated_data):
-        instance.fileContents = validated_data.get('fileContents', instance.fileContents)
+        instance.objetive = validated_data.get('objetive', instance.objetive)
+        instance.constraints = validated_data.get('constraints', instance.constraints)
         return instance

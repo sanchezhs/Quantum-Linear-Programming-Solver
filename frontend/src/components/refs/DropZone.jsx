@@ -55,6 +55,7 @@ function MyDropzone() {
         // TODO: show the results in a div
       })
       .catch((error) => {
+        console.log(error.response.data);
         showErrorModal(error);
       });
   };

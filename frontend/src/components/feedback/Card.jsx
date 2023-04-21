@@ -48,7 +48,11 @@ function Card(props) {
           {show ? "Hide" : "Show"}
         </Button>
       </div>
-      <code>{!show ? example : fullExample}</code>
+      <code>
+      <p>// You can also write comments</p>
+      <p>// at the beggining of the file</p>
+        {!show ? example : fullExample}
+        </code>
     </pre>
   );
 }
