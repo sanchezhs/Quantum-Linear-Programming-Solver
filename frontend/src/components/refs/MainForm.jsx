@@ -4,7 +4,7 @@ import ConstraintsList from "../constraint/ConstraintsList";
 import CheckRadio from "../objetive/CheckRadio";
 import { AppContext } from "../../context/AppContext";
 import { ScrollContext } from "../../context/ScrollContext";
-import Modal from "../Modal";
+import Modal from "../feedback/Modal";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";

@@ -1,6 +1,9 @@
 import React, { useCallback, useState, useMemo, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { ScrollContext } from "../../context/ScrollContext";
+import { AppContext } from "../../context/AppContext";
+import Message from "../feedback/Message";
+
 import axios from "axios";
 
 const baseStyle = {
@@ -38,7 +41,7 @@ const rejectStyle = {
 function MyDropzone() {
   const [fileContents, setFileContents] = useState("");
   const { fourthRef } = useContext(ScrollContext);
-
+  const { showErrorModal } = useContext(AppContext);
 
   const sendFile = (fileContents) => {
     const host = "http://localhost:8000/upload/";
@@ -47,10 +50,12 @@ function MyDropzone() {
         fileContents: fileContents,
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
+        alert("Success! Check the console for the results.");
+        // TODO: show the results in a div
       })
       .catch((error) => {
-        console.log(error.response.data);
+        showErrorModal(error);
       });
   };
 
@@ -89,24 +94,18 @@ function MyDropzone() {
 
   return (
     <>
-        <section  id="dropzone-section" className="container">
+      <section id="dropzone-section" className="container">
         <h3 ref={fourthRef}>File Upload</h3>
-          <div {...getRootProps({ className: "dropzone", style })}>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop the file here ...</p>
-            ) : (
-              <p>Drag and drop a file here, or click to select file</p>
-            )}
-          </div>
-          {/*   <aside className="text-center mx-auto">
-         <Message
-          acceptedFiles={acceptedFiles}
-          fileRejections={fileRejections}
-        /> 
-      </aside>*/}
-          {fileContents && <p>File contents: {fileContents}</p>}
-        </section>
+        <div {...getRootProps({ className: "dropzone", style })}>
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p>Drop the file here ...</p>
+          ) : (
+            <p>Drag and drop a file here, or click to select a file</p>
+          )}
+        </div>
+        <Message fileContents={fileContents} />
+      </section>
     </>
   );
 }

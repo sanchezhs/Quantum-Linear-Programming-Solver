@@ -13,13 +13,17 @@ export function AppContextProvider({children}) {
         const { errors } = error.response.data;
         let objetiveErr = ""
         let constraintsErr = ""
+        let fileContents = ""
         if (errors.objetive) {
             objetiveErr = errors.objetive[0]
         } 
         if (errors.constraints) {
             constraintsErr = errors.constraints
         }
-        setModalShow({show: true, header: 'Syntax Error', body: {objetiveErr, constraintsErr}})
+        if (errors.fileContents) {
+            fileContents = errors.fileContents['Invalid value']
+        }
+        setModalShow({show: true, header: 'Syntax Error', body: {objetiveErr, constraintsErr, fileContents}})
     }
 
     function createConstraint() {

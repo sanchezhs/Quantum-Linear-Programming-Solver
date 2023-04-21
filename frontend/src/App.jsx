@@ -8,16 +8,15 @@ import Footer from './components/refs/Footer'
 import MyDropzone from "./components/refs/DropZone";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { useCookies } from "react-cookie";
+
 
 function App() {
   const { theme } = useContext(AppContext);
-  const toggleTheme = () => {
+/*   const toggleTheme = () => {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
-  };
-  //const [cookies, setCookie, removeCookie] = useCookies(["theme"]);
-
-
+  }; 
+   */
+  
   return (
     <div className="App" id={theme}>
       <Navigation />
