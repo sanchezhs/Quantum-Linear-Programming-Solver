@@ -52,11 +52,10 @@ function MyDropzone() {
       .then((response) => {
         console.log(response);
         alert("Success! Check the console for the results.");
-        // TODO: show the results in a div
       })
       .catch((error) => {
         console.log(error.response.data);
-        showErrorModal(error);
+        showErrorModal([error.response.data.errors]);
       });
   };
 

@@ -4,19 +4,33 @@ from numpy import pi
 
 t = "4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932"
 
-def get_backend(token):
+# IBMNotAuthorizedError: 'The access token is not authorized to access the requested resource.'
+# error en el token
+# instance: ibm-q/open/main
+def get_backends(token):
     QiskitRuntimeService.save_account(overwrite=True, channel="ibm_quantum", token=token)
-    backends = QiskitRuntimeService().backends()
-    backends_list = {}
-    for backend in backends:
-        status = backend.status()
-        backends_list[backend.name] = {
-            'num_qubits': backend.num_qubits,
-            'is_simulator': backend.simulator,
+    try:
+        backends = QiskitRuntimeService().backends()
+    except:
+        raise Exception('Invalid IBM token')
+    backends_list = []
+    for i in range(len(backends)):
+        status = backends[i].status()
+        try:
+            num_qubits = backends[i].configuration().n_qubits
+            is_simulator = backends[i].configuration().simulator
+        except:
+            num_qubits = 'not available'
+            is_simulator = 'not available'
+        backend_info = {
+            'name': backends[i].name,
+            'num_qubits': num_qubits,
+            'is_simulator': is_simulator,
             'operational': status.operational,
             'pending_jobs': status.pending_jobs,
             'status_msg': status.status_msg,
         }
+        backends_list.append(backend_info)
     return backends_list
     
 

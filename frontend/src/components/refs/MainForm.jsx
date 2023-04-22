@@ -53,9 +53,10 @@ function MainForm() {
         alert("Success! Check the console for the results.");
       })
       .catch((error) => {
-        console.log(error.response.data.errors.objetive);
-        console.log(error.response.data.errors.constraints);
-        showErrorModal(error);
+        showErrorModal([
+          error.response.data.errors.objetive,
+          error.response.data.errors.constraints,
+        ]);
         setValidated(false);
       });
   };

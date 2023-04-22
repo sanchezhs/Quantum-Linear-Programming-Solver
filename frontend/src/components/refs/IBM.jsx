@@ -1,28 +1,47 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { AppContext } from "../../context/AppContext";
+import Backends from "../feedback/BackEnds";
 import axios from "axios";
 
-
 function IBM() {
-  const { apiToken, setApiToken } = useContext(AppContext);
+  const { apiToken, setApiToken, setBackends, showErrorModal } = useContext(AppContext);
+  const [waiting, setWaiting] = useState(false);
   const host = "http://localhost:8000/ibm/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(apiToken)
-    axios.post(host, {
+    setWaiting(true);
+    setBackends([]);
+    axios
+      .post(host, {
         apiToken: apiToken,
-        })
-        .then((response) => {
-            console.log(response);
-            alert("Success! Check the console for the results.");
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+      })
+      .then((response) => {
+        alert("Success! Check the console for the results.");
+        response.data.backends.forEach((backend) => {
+          setBackends((prevBackends) => [
+            ...prevBackends,
+            {
+              name: backend.name,
+              qubits: backend.num_qubits,
+              is_simulator: backend.is_simulator,
+              operational: backend.operational,
+              pending_jobs: backend.pending_jobs,
+              status_msg: backend.status_msg,
+            },
+          ]);
+        setWaiting(false);
+        });
+      })
+      .catch((error) => {
+        console.log('Token error: ', error.response.data.errors);
+        showErrorModal([error.response.data.errors]);
+        setWaiting(false);
+      });
   };
 
   return (
@@ -33,6 +52,10 @@ function IBM() {
         computer in the cloud, you can do it by entering your API token. You can
         find it in your IBM Quantum account, in the "Account settings / Account
         overview" section.
+      </p>
+      <p>
+        Once you have entered your API token, you will see the available backends
+        in the "Backends" section so you can choose the one you want to use later.
       </p>
       <p>
         If you don't have an account, you can create one for free{" "}
@@ -49,7 +72,7 @@ function IBM() {
         <FloatingLabel
           controlId="floatingInput"
           label="IBM API Token"
-          className="mb-3"
+          className="mb-2"
         >
           <Form.Control
             type="password"
@@ -60,10 +83,21 @@ function IBM() {
             value={apiToken}
           />
         </FloatingLabel>
-        <Button variant="outline-success" type="submit" onClick={handleSubmit}>
-          Submit
+        <Button variant="outline-success" type="submit" onClick={handleSubmit} className="mb-3">
+          {waiting && (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              style={{ marginRight: "5px" }}
+            />
+          )}
+          {waiting ? "Waiting..." : "Submit"}
         </Button>
       </Form>
+      <Backends />
     </>
   );
 }

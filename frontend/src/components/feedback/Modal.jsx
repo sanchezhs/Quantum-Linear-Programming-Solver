@@ -8,44 +8,30 @@ import Row from "react-bootstrap/Row";
 
 function myModal(props) {
   const { modalShow, setModalShow } = useContext(AppContext);
-  
   return (
     <>
       <Modal
         show={modalShow.show}
-        onHide={() => setModalShow({ show: false, header: "", body: "" })}
+        onHide={() => setModalShow({ show: false, body: [] })}
       >
         <Modal.Header closeButton>
-          <Modal.Title>{modalShow.header}</Modal.Title>
+          <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
           <Container>
-            {modalShow.body.objetiveErr && (
-              <Row id="modal-row">
-                <Col  style={{overflowY: 'scroll'}}>
-                  <p>{modalShow.body.objetiveErr}</p>
+            {modalShow.body.map((error, i) => (
+              <Row key={i} id="modal-row">
+                <Col style={{ overflowY: "scroll" }}>
+                  <p>{error}</p>
                 </Col>
               </Row>
-            )}
-            {modalShow.body.fileContents && (
-              <Row id="modal-row">
-                <Col style={{overflowY: 'scroll'}}>
-                  <p>{modalShow.body.fileContents}</p>
-                </Col>
-              </Row>
-            )}
-            <Row id="modal-row">
-              <Col style={{overflowY: 'scroll'}}>
-                <p>{modalShow.body.constraintsErr}</p>
-              </Col>
-            </Row>
+            ))}
           </Container>
         </Modal.Body>
-
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => setModalShow({ show: false, header: "", body: "" })}
+            onClick={() => setModalShow({ show: false, body: [] })}
           >
             Close
           </Button>

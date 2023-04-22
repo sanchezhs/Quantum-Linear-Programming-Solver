@@ -8,39 +8,20 @@ export function AppContextProvider({ children }) {
   const [radioValue, setRadioValue] = useState("");
   const [theme, setTheme] = useState("light");
   const [apiToken, setApiToken] = useState("");
+  const [backends, setBackends] = useState([]);
   const [modalShow, setModalShow] = useState({
     show: false,
-    header: "",
-    body: "",
+    body: [],
   });
 
-  function showErrorModal(error) {
-    const { errors } = error.response.data;
-    /*         let objetiveErr = ""
-        let constraintsErr = ""
-        let fileContents = ""
-        let header = "Syntax Error" */
-    let [objetiveErr, constraintsErr, fileContents, header] = [
-      "",
-      "",
-      "",
-      "Syntax Error",
-    ];
-    if (errors.objetive) {
-      objetiveErr = errors.objetive[0];
-    }
-    if (errors.constraints) {
-      constraintsErr = errors.constraints;
-    }
-    console.log(errors);
-    if (errors[0]) {
-      header = "File Error";
-      fileContents = errors[0];
-    }
+  function showErrorModal(errors) {
+    let body = [];
+    errors.forEach(error => {
+      body.push(error)
+    });
     setModalShow({
       show: true,
-      header: header,
-      body: { objetiveErr, constraintsErr, fileContents },
+      body
     });
   }
 
@@ -72,6 +53,8 @@ export function AppContextProvider({ children }) {
         theme,
         modalShow,
         apiToken,
+        backends,
+        setBackends,
         setApiToken,
         showErrorModal,
         setModalShow,

@@ -43,21 +43,24 @@ class Api_upload(viewsets.ViewSet):
         try:
             form_parser.validate_objetive(objetive)
             form_parser.validate_constraints(constraints)
-            return Response({'status': 'ok'}, status=200) 
+            return Response({'status': 'ok'}, status=200)
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
 
 
 class Api_ibm(viewsets.ViewSet):
-    
+
     selializer_class = serializers.TokenSerializer
-    
+
     def create(self, request):
         print('ibm ', request.data)
         serializer = serializers.TokenSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            print('serializer data: ', serializer.data)
-            return Response(serializer.data, status=201)
-        print(serializer.errors)
+            # serializer.save()
+            print('serializer data: ', serializer.data['apiToken'])
+            try:
+                backends = ibm.get_backends(serializer.data['apiToken'])
+                return Response({'status': 'ok', 'backends': backends}, status=201)
+            except Exception as e:
+                return Response({'status': 'error', 'errors': e.args}, status=400)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
