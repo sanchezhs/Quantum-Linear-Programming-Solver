@@ -25,13 +25,18 @@ function MainForm() {
     showErrorModal,
   } = useContext(AppContext);
   const [validated, setValidated] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const { thirdRef } = useContext(ScrollContext);
 
   const host = "http://localhost:8000/index/";
 
+  const showResponse = (response) => {
+    console.log(response);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setSubmitted(true);
     if (constraints.length === 0 || objetive === "" || radioValue === "") {
       console.log("invalid form");
       alert("Invalid form, check the fields. Constraints can't be empty.");
@@ -49,10 +54,12 @@ function MainForm() {
         radioValue: radioValue,
       })
       .then((response) => {
-        console.log(response);
+        setSubmitted(false);
+        console.log(response.data);
         alert("Success! Check the console for the results.");
       })
       .catch((error) => {
+        setSubmitted(false);
         showErrorModal([
           error.response.data.errors.objetive,
           error.response.data.errors.constraints,
@@ -64,6 +71,7 @@ function MainForm() {
   const handleReset = (e) => {
     e.preventDefault();
     setValidated(false);
+    setSubmitted(false);
     setObjetive("");
     setConstraints([{ id: 1, value: "" }]);
   };
@@ -85,7 +93,7 @@ function MainForm() {
         <Button variant="outline-primary" type="reset" onClick={handleReset}>
           Clear
         </Button>
-        <Button variant="outline-success" type="submit" onClick={handleSubmit}>
+        <Button variant="outline-success" type="submit" disabled={submitted} onClick={handleSubmit}>
           Submit
         </Button>
       </ButtonGroup>

@@ -12,8 +12,8 @@ function Howto() {
         How to <small className="text-muted">Files and syntax</small>
       </h3>
       <p>
-        To submit more than five constraints, write them in a text file and
-        upload it in the drag and drop zone. You can use either minimization or
+        This tool allows uploading a file with the problem to be solved.
+        Upload it in the drag and drop zone. You can use either minimization or
         maximization, but make sure to follow the syntax provided in the examples
         below:
       </p>

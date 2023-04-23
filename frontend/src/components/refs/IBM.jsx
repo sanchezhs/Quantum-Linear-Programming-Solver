@@ -10,10 +10,12 @@ import axios from "axios";
 function IBM() {
   const { apiToken, setApiToken, setBackends, showErrorModal } = useContext(AppContext);
   const [waiting, setWaiting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const host = "http://localhost:8000/ibm/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitted(true);
     setWaiting(true);
     setBackends([]);
     axios
@@ -34,12 +36,14 @@ function IBM() {
               status_msg: backend.status_msg,
             },
           ]);
+        setSubmitted(false);
         setWaiting(false);
         });
       })
       .catch((error) => {
         console.log('Token error: ', error.response.data.errors);
         showErrorModal([error.response.data.errors]);
+        setSubmitted(false);
         setWaiting(false);
       });
   };
@@ -83,7 +87,7 @@ function IBM() {
             value={apiToken}
           />
         </FloatingLabel>
-        <Button variant="outline-success" type="submit" onClick={handleSubmit} className="mb-3">
+        <Button variant="outline-success" type="submit" disabled={submitted} onClick={handleSubmit} className="mb-3">
           {waiting && (
             <Spinner
               as="span"

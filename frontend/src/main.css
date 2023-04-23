@@ -56,6 +56,10 @@ ul {
   list-style-type: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 .dropzone p:hover {
   font-size: 1.4em;
 }
@@ -128,7 +132,7 @@ ul {
 
 /* Table */
 #dark table {
-  background-color: #2f2f2f;
+  background-color: #1c2025;
   color: #829ab1;
   border: #123456;
 }

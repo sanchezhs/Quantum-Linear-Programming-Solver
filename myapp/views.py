@@ -2,9 +2,9 @@ from .sympy import Sympy
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
-from . import serializers
 from .validation import file_reader, form_parser
 from .qiskit_ibm import ibm
+from . import serializers
 import json
 
 
@@ -17,12 +17,17 @@ class Api_index(viewsets.ViewSet):
     serializer_class = serializers.FormDataSerializer
 
     def create(self, request):
-        print('form')
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            # serializer.save()
             print('serializer data: ', serializer.data)
-            return Response(serializer.data, status=201)
+            
+            sympy = Sympy(serializer.data.get('objetive', None),
+                          serializer.data.get('constraints', None),
+                          serializer.data.get('type', None))
+            test = sympy.solve()
+            print('sympy: ', test)
+            return Response(test, status=201)
         print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
 
@@ -43,7 +48,7 @@ class Api_upload(viewsets.ViewSet):
         try:
             form_parser.validate_objetive(objetive)
             form_parser.validate_constraints(constraints)
-            return Response({'status': 'ok'}, status=200)
+            return Response({'status': 'ok'}, status=201)
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
 
