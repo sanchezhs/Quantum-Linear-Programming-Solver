@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import Navigation from "./components/Navigation";
-import Qaoa from "./components/refs/Qaoa";
-import MainForm from "./components/refs/MainForm";
-import Howto from "./components/refs/Howto";
-import Footer from "./components/refs/Footer";
-import MyDropzone from "./components/refs/DropZone";
-import IBM from "./components/refs/IBM";
+import Qaoa from "./components/Refs/Qaoa";
+import MainForm from "./components/Refs/MainForm";
+import Howto from "./components/Refs/Howto";
+import Footer from "./components/Refs/Footer";
+import MyDropzone from "./components/Refs/DropZone";
+import IBM from "./components/Refs/IBM";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 

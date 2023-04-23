@@ -1,4 +1,10 @@
-import { useContext, useState, useEffect, useCallback } from "react";
+import {
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useReducer,
+} from "react";
 import { AppContext } from "../../context/AppContext";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
@@ -7,39 +13,100 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+const initialState = {
+  sortField: "name",
+  sortDirection: "asc",
+  displayedBackends: [],
+  // sortedBackends: [],
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "sort":
+      return {
+        ...state,
+        sortField: action.payload.sortField,
+        sortDirection: action.payload.sortDirection,
+      };
+    case "display":
+      return {
+        ...state,
+        displayedBackends: action.payload.displayedBackends,
+        // sortedBackends: action.payload.sortedBackends,
+      };
+    default:
+      throw new Error();
+  }
+}
+
 function Backends() {
   const { backends } = useContext(AppContext);
   const [selectedBackend, setSelectedBackend] = useState("");
   const [page, setPage] = useState(1);
-  const [sortField, setSortField] = useState("name");
-  const [sortDirection, setSortDirection] = useState("asc");
-  const [displayedBackends, setDisplayedBackends] = useState(backends);
-  const [sortedBackends, setSortedBackends] = useState(backends); // New state for sorted backends
+  // const [sortField, setSortField] = useState("name");
+  // const [sortDirection, setSortDirection] = useState("asc");
+  // const [displayedBackends, setDisplayedBackends] = useState(backends);
+  // const [sortedBackends, setSortedBackends] = useState(backends); // New state for sorted backends
+  const [state, dispatch] = useReducer(reducer, initialState);
   const itemsPerPage = 10;
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
+  const compare = useCallback(
+    (a, b) => {
+      // Use useCallback to memoize the compare function
+      if (a[state.sortField] < b[state.sortField]) {
+        return state.sortDirection === "asc" ? -1 : 1;
+      }
+      if (a[state.sortField] > b[state.sortField]) {
+        return state.sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    },
+    [state.sortField, state.sortDirection]
+  );
 
   useEffect(() => {
-    setDisplayedBackends(sortedBackends.slice(startIndex, endIndex)); // Display sorted backends
-  }, [sortedBackends, startIndex, endIndex]);
-
-  const compare = useCallback((a, b) => { // Use useCallback to memoize the compare function
-    if (a[sortField] < b[sortField]) {
-      return sortDirection === "asc" ? -1 : 1;
-    }
-    if (a[sortField] > b[sortField]) {
-      return sortDirection === "asc" ? 1 : -1;
-    }
-    return 0;
-  }, [sortField, sortDirection]);
+    dispatch({
+      type: "display",
+      payload: {
+        displayedBackends: backends.slice(startIndex, endIndex),
+        // sortedBackends: backends,
+      },
+    });
+  }, [backends, startIndex, endIndex]);
 
   useEffect(() => {
-    setSortedBackends([...backends].sort(compare)); // Sort the backends when sortField or sortDirection changes
-  }, [backends, compare, sortDirection, sortField]);
+    dispatch({
+      type: "display",
+      payload: {
+        displayedBackends: [...backends].sort(compare).slice(startIndex, endIndex), // backends.slice(startIndex, endIndex),
+        // sortedBackends: [...backends].sort(compare),
+      },
+    });
+  }, [backends, compare, state.sortDirection, state.sortField]);
+
+  // useEffect(() => {
+  //   setDisplayedBackends(sortedBackends.slice(startIndex, endIndex)); // Display sorted backends
+  // }, [sortedBackends, startIndex, endIndex]);
+
+  // useEffect(() => {
+  //   setSortedBackends([...backends].sort(compare)); // Sort the backends when sortField or sortDirection changes
+  // }, [backends, compare, sortDirection, sortField]);
+
+
 
   const handleOnSelect = (eventKey) => {
-    setSortField(eventKey);
-    setSortDirection((prevSortDirection) => prevSortDirection === "asc" ? "desc" : "asc");
+    dispatch({
+      type: "sort",
+      payload: {
+        sortField: eventKey,
+        sortDirection: state.sortDirection === "asc" ? "desc" : "asc",
+      },
+    });
+    // setSortField(eventKey);
+    // setSortDirection((prevSortDirection) =>
+    //   prevSortDirection === "asc" ? "desc" : "asc"
+    // );
   };
 
   const handleSelectBackend = (backendName) => {
@@ -53,7 +120,6 @@ function Backends() {
   const handleChangePage = (pageNumber) => {
     setPage(pageNumber);
   };
-
 
   return (
     <>
@@ -92,7 +158,7 @@ function Backends() {
                 </tr>
               </thead>
               <tbody>
-                {displayedBackends.map((backend) => (
+                {state.displayedBackends.map((backend) => (
                   <tr key={backend.name}>
                     <td>
                       <Form.Check

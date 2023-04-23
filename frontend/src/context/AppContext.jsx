@@ -9,6 +9,7 @@ export function AppContextProvider({ children }) {
   const [theme, setTheme] = useState("light");
   const [apiToken, setApiToken] = useState("");
   const [backends, setBackends] = useState([]);
+  const [solution, setSolution] = useState("");
   const [modalShow, setModalShow] = useState({
     show: false,
     body: [],
@@ -16,12 +17,12 @@ export function AppContextProvider({ children }) {
 
   function showErrorModal(errors) {
     let body = [];
-    errors.forEach(error => {
-      body.push(error)
+    errors.forEach((error) => {
+      body.push(error);
     });
     setModalShow({
       show: true,
-      body
+      body,
     });
   }
 
@@ -54,6 +55,8 @@ export function AppContextProvider({ children }) {
         modalShow,
         apiToken,
         backends,
+        solution,
+        setSolution,
         setBackends,
         setApiToken,
         showErrorModal,

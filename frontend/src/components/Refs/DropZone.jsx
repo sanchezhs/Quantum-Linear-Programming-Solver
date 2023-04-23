@@ -2,9 +2,8 @@ import React, { useCallback, useState, useMemo, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { ScrollContext } from "../../context/ScrollContext";
 import { AppContext } from "../../context/AppContext";
-import Message from "../feedback/Message";
-
-import axios from "axios";
+import { sendFile } from "../Actions/sendFile";
+import Message from "../Feedback/Message";
 
 const baseStyle = {
   flex: 1,
@@ -43,27 +42,11 @@ function MyDropzone() {
   const { fourthRef } = useContext(ScrollContext);
   const { showErrorModal } = useContext(AppContext);
 
-  const sendFile = (fileContents) => {
-    const host = "http://localhost:8000/upload/";
-    axios
-      .post(host, {
-        fileContents: fileContents,
-      })
-      .then((response) => {
-        console.log(response);
-        alert("Success! Check the console for the results.");
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        showErrorModal([error.response.data.errors]);
-      });
-  };
-
   const onDrop = useCallback((acceptedFiles) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       setFileContents(event.target.result);
-      sendFile(event.target.result);
+      sendFile(event.target.result, showErrorModal);
     };
     reader.readAsText(acceptedFiles[0]);
   }, []);

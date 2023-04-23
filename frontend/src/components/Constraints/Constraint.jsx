@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 
 function Constraint({ constraint }) {
-  const { deleteConstraint, constraints, setConstraints } =
+  const { constraints, deleteConstraint, setConstraints } =
     useContext(AppContext);
 
   return (
