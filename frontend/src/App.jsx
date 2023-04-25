@@ -1,22 +1,17 @@
 import { useContext } from "react";
-import { AppContext } from "./context/AppContext";
-import Navigation from "./components/Navigation";
-import Qaoa from "./components/Refs/Qaoa";
-import MainForm from "./components/Refs/MainForm";
-import Howto from "./components/Refs/Howto";
-import Footer from "./components/Refs/Footer";
-import MyDropzone from "./components/Refs/DropZone";
-import IBM from "./components/Refs/IBM";
+import { ThemeContext } from "./context/ThemeContext";
+import { Footer, Navbar, Howto, Qaoa } from './components/Layout/index';
+import { Form, Dropzone, Ibm } from './components/Form/index'; 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 
 function App() {
-  const { theme } = useContext(AppContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <div className="App" id={theme}>
-      <Navigation />
+      <Navbar />
       <Container>
         <Row>
           <Qaoa />
@@ -25,13 +20,13 @@ function App() {
           <Howto />
         </Row>
           <Row>
-            <IBM />
+            <Ibm />
           </Row>
         <Row>
-          <MainForm />
+          <Form />
         </Row>
         <Row>
-          <MyDropzone />
+          <Dropzone />
         </Row>
       </Container>
       <Footer />
