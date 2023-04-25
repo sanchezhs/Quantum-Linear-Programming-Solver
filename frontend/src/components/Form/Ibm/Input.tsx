@@ -1,5 +1,5 @@
 import { Form, FloatingLabel, Spinner, Button } from "react-bootstrap";
-import type { State } from "./IBM";
+import type { State } from "./Form";
 
 export function ApiForm({
   state,

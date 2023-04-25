@@ -4,6 +4,7 @@ import {
   useEffect,
   useCallback,
   useReducer,
+  useMemo,
 } from "react";
 import { AppContext } from "../../../context/AppContext";
 import type { Backend } from "../../../context/AppContext";
@@ -18,23 +19,23 @@ export type State = {
   displayedBackends: Backend[];
 };
 
-const initialState: State = {
-  sortField: "",
-  sortDirection: "asc",
-  displayedBackends: [],
-};
-
-enum ActionType {
-  Sort = "sort",
-  Display = "display",
-}
-
 type Action =
   | {
       type: ActionType.Sort;
       payload: { sortField: string; sortDirection: string };
     }
   | { type: ActionType.Display; payload: { displayedBackends: Backend[] } };
+
+  enum ActionType {
+  Sort = "sort",
+  Display = "display",
+}
+
+const initialState: State = {
+  sortField: "",
+  sortDirection: "asc",
+  displayedBackends: [],
+};
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -55,6 +56,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 export function Backends() {
+  console.count("Backends");
   const { backends } = useContext(AppContext);
   const [selectedBackend, setSelectedBackend] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -118,6 +120,12 @@ export function Backends() {
     setPage(pageNumber);
   };
 
+  const myTable = useMemo(() => {
+    return (
+      <Table state={state} selectedBackend={selectedBackend} handleSelectBackend={handleSelectBackend}/>
+    )
+  }, [state, selectedBackend])
+
   return (
     <>
       {backends.length > 0 && (
@@ -130,7 +138,7 @@ export function Backends() {
               <Dropdown handleOnSelect={handleOnSelect}/>
             </Col>
           </Row>
-          <Table state={state} selectedBackend={selectedBackend} handleSelectBackend={handleSelectBackend}/>
+          {myTable}
           <MyPagination
             total={Math.ceil(backends.length / itemsPerPage)}
             current={page}

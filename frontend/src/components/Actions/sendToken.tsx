@@ -1,7 +1,7 @@
 import { HOST } from "../Constants/host";
 import axios from "axios";
 import type { Backend } from "../../context/AppContext";
-import { Action, ActionType } from "../Form/Ibm/IBM";
+import { Action, ActionType } from "../Form/Ibm/Form";
 
 export const sendToken = (
   apiToken: string,
@@ -33,23 +33,11 @@ export const sendToken = (
       setBackends(backends); 
       dispatch({ type: ActionType.SetSubmitted, payload: false });
       dispatch({ type: ActionType.SetWaiting, payload: false });
-        
-/*       response.data.backends.forEach((backend: Backend) => {
-        setBackends((prevBackends: Backend[]) => [
-          ...prevBackends,
-          {
-            name: backend.name,
-            num_qubits: backend.num_qubits,
-            is_simulator: backend.is_simulator,
-            operational: backend.operational,
-            pending_jobs: backend.pending_jobs,
-            status_msg: backend.status_msg,
-          },
-        ]);  */
-
-      //});
     })
     .catch((error) => {
+      if (!error.response) {
+        alert("Network error");
+      }
       console.log("Token error: ", error.response.data.errors);
       showErrorModal([error.response.data.errors]);
       dispatch({ type: ActionType.SetSubmitted, payload: false });

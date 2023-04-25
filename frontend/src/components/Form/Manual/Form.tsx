@@ -30,6 +30,12 @@ function reducer(state: State, action: Action): State {
   }
 }
 
+type formStateType = {
+  submitted?: boolean;
+  validated?: boolean;
+  error?: boolean;
+}
+
 export function MainForm() {
   const {
     constraints,
@@ -39,10 +45,11 @@ export function MainForm() {
     showErrorModal,
   } = useContext(AppContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<formStateType>({
     submitted: false,
     validated: false,
   });
+
   const { thirdRef } = useContext(ScrollContext);
 
   const handleSubmit = (e: any) => {

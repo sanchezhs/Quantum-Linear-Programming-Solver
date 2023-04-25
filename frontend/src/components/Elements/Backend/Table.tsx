@@ -7,6 +7,7 @@ function Table({ state, selectedBackend, handleSelectBackend }: {
     selectedBackend: string,
     handleSelectBackend: (backendName: string) => void
 }) {
+  console.count("Table")
   return (
          <div className="table-responsive">
             <BTable hover>

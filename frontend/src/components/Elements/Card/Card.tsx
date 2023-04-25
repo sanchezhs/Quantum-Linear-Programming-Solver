@@ -1,9 +1,10 @@
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 
+
 export function Card(props: { type: string }) {
   const [show, setShow] = useState(false);
-  const fullExample = (
+   const fullExample = (
     <>
       <h6>
         <strong>{props.type}:</strong> 1000x + 2000y - 3000z
@@ -35,7 +36,7 @@ export function Card(props: { type: string }) {
         <li>constraint n</li>
       </ul>
     </>
-  );
+  ); 
 
   return (
     <pre className="shadow p-3 mb-5 bg-body-tertiary" style={{ width: "55%" }}>
@@ -49,8 +50,6 @@ export function Card(props: { type: string }) {
         </Button>
       </div>
       <code>
-      <p>// You can also write comments</p>
-      <p>// at the beggining of the file</p>
         {!show ? example : fullExample}
         </code>
     </pre>

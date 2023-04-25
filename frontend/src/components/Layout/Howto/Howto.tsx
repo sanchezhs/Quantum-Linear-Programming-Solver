@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ScrollContext } from "../../../context/ScrollContext";
 import { Card } from "../../Elements/index";
 
+
 export function Howto() {
   const { secondRef } = useContext(ScrollContext);
 

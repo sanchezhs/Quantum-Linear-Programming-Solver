@@ -1,51 +1,8 @@
-import { ApiForm } from './ApiForm';
-import { useContext, useState, useReducer } from "react";
-import { AppContext } from "../../../context/index";
-import { sendToken } from "../../Actions/index";
 import { Backends } from '../../Elements/index'
+import { Form } from './Form'
 
-export type State = {
-  waiting: boolean;
-  submitted: boolean;
-}
-
-const initialState: State = {
-  waiting: false,
-  submitted: false,
-};
-
-export enum ActionType {
-  SetWaiting = "setWaiting",
-  SetSubmitted = "setSubmitted",
-}
-
-export type Action =
-  | { type: ActionType.SetWaiting; payload: boolean }
-  | { type: ActionType.SetSubmitted; payload: boolean };
-
-
-const reducer = (state: State, action: Action) => {
-  switch (action.type) {
-    case ActionType.SetWaiting:
-      return { ...state, waiting: action.payload };
-    case ActionType.SetSubmitted:
-      return { ...state, submitted: action.payload };
-    default:
-      return state;
-  }
-};
 
 export function IBM() {
-  const { setBackends, showErrorModal } =
-    useContext(AppContext);
-  const [apiToken, setApiToken] = useState("");
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    sendToken(apiToken, setBackends, dispatch, showErrorModal);
-  };
-
   return (
     <>
       <h3>IBM Quantum</h3>
@@ -61,7 +18,7 @@ export function IBM() {
         use later.
       </p>
       <p>
-        If you don't have an account, you can create one for free{" "}
+        If you don't have an account, you can create one {" "}
         <a
           className="link-primary"
           href="https://quantum-computing.ibm.com/login"
@@ -70,8 +27,7 @@ export function IBM() {
         </a>
         .
       </p>
-
-      <ApiForm state={state} setApiToken={setApiToken} apiToken={apiToken} handleSubmit={handleSubmit}  />
+      <Form />
       <Backends />
     </>
   );
