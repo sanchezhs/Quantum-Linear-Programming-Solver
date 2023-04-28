@@ -1,5 +1,5 @@
 import { HOST } from "../Constants/host";
-import type { State } from "../Form/Manual/Form";
+import type { State } from "../Form/Input/Form";
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

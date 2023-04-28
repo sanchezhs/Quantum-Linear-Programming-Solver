@@ -3,21 +3,20 @@ import { AppContext } from "../../context/AppContext";
 
 function Solution() {
   const { solution } = useContext(AppContext);
-  let constraints = [];
 
-
-  if (solution) {
+  console.log(solution);
+  if (solution.length>0) {
     return (
       <>
-        <h3>Solution</h3>
-        <h6>Objetive</h6>
-        <p>{solution[0]}</p>
-        <h6>Constraints</h6>
+        <h4>Solucion</h4>
+        {   <p> {solution[0]} </p> }
 
-      </>)
-    
+        <h4>Sin restricciones</h4>
+        {   <p> {solution[1]} </p> }
+      </>
+    );
   }
-  return <></>
+  return <></>;
 }
 
 export default Solution;

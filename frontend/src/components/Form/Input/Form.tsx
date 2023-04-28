@@ -30,12 +30,6 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-type formStateType = {
-  submitted?: boolean;
-  validated?: boolean;
-  error?: boolean;
-}
-
 export function MainForm() {
   const {
     constraints,
@@ -45,7 +39,7 @@ export function MainForm() {
     showErrorModal,
   } = useContext(AppContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [formState, setFormState] = useState<formStateType>({
+  const [formState, setFormState] = useState({
     submitted: false,
     validated: false,
   });

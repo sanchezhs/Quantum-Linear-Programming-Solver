@@ -23,7 +23,7 @@ type AppContextType = {
   constraints: { id: number; value: string }[];
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
-  solution: string;
+  solution: [];
   setSolution: (solution: string) => void;
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
@@ -38,7 +38,7 @@ export const AppContext = createContext<AppContextType>(
     constraints: [],
     modalShow: { show: false, body: [] },
     backends: [],
-    solution: "",
+    solution: [],
     setSolution: () => {},
     setBackends: () => {},
     showErrorModal: () => {},
@@ -55,7 +55,7 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
     { id: 1, value: "" },
   ]);
   const [backends, setBackends] = useState<Backend[]>([]);
-  const [solution, setSolution] = useState<string>("");
+  const [solution, setSolution] = useState([]);
   const [modalShow, setModalShow] = useState<ErrorModal>({
     show: false,
     body: [],

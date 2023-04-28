@@ -20,13 +20,11 @@ class Api_index(viewsets.ViewSet):
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
             # serializer.save()
-            print('serializer data: ', serializer.data)
             
             sympy = Sympy(serializer.data.get('objetive', None),
                           serializer.data.get('constraints', None),
-                          serializer.data.get('type', None))
+                          serializer.data.get('radioValue', None))
             test = sympy.solve()
-            print('sympy: ', test)
             return Response(test, status=201)
         print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)

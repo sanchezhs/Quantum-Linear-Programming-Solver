@@ -20,12 +20,15 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-latex": "^2.0.0",
     "react-scroll": "^1.8.9",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
+    "@types/node": "^18.16.1",
     "@types/react": "^18.0.38",
     "@types/react-dom": "^18.0.11",
+    "@types/react-latex": "^2.0.0",
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^5.0.4",
     "vite": "^4.2.0"
