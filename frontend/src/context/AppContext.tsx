@@ -1,14 +1,5 @@
 import { createContext, useState } from "react";
 
-const InitialSolution = {
-  num_qubits: "",
-  circuit: "",
-  histogram: "",
-  matrix_shape: [0, 0] as [number, number],
-  details: "",
-  qubo: "",
-};
-
 export interface Solution {
   num_qubits: string;
   circuit: string;

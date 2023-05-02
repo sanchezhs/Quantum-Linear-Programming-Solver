@@ -6,7 +6,7 @@ import Buttons from "./Buttons";
 import { Modal } from "../../Elements/index";
 import { Form, Row, Col } from "react-bootstrap";
 import { sendForm } from "../../Actions/index";
-import Solution from "../../Feedback/Solution";
+import { Solution } from "../../Solution/index";
 
 export type State = {
   objetive: string;
@@ -46,8 +46,6 @@ function checkForm(constraints: any, state: State, setFormState: any) {
     constraints.length === 0 ||
     state.objetive === "" ||
     state.radioValue === "" ||
-    parseInt(state.p) <= 0 || 
-    parseInt(state.upperBound) <= 0 ||
     constraints.find((constraint: any) => constraint.value === "")
   ) {
     setFormState({ submitted: false, validated: true });

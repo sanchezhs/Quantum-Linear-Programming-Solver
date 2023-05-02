@@ -16,7 +16,7 @@ export function Approximation({
         <Form.Label>
           P
           <Tooltip
-            title="The performance of the algorithm is influenced by the value of p, 
+            title="The performance of the algorithm is influenced by the value of p > 0, 
                    and the precision of the estimation increases with larger p values. 
                    However, increasing p leads to a more complicated and larger circuit, 
                    which results in longer processing times to find a solution. 
@@ -33,6 +33,7 @@ export function Approximation({
         <Form.Control
           required
           type="number"
+          min={1}
           placeholder="Depth of the circuit"
           onChange={(e) => {
             if (e.target.value)
@@ -41,7 +42,7 @@ export function Approximation({
           value={state.p}
         />
         <Form.Control.Feedback type="invalid">
-          Only numbers are allowed
+          Only numbers &gt; 0 are allowed
         </Form.Control.Feedback>
       </Form.Group>
     </>

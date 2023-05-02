@@ -1,11 +1,9 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
+import { Circuit, Histogram, Details } from "./index";
 import { Row, Col } from "react-bootstrap";
-import { Images } from "./Circuit";
-import { Histogram } from "./Histogram";
-import { Details } from "./Details";
 
-function Solution() {
+export function Solution() {
   const { solution } = useContext(AppContext);
   if (solution === null) {
     return <></>;
@@ -36,9 +34,8 @@ function Solution() {
         </div>
         <code></code>
       </pre>
-      <Images circuit={solution!.circuit} />
+      <Circuit circuit={solution!.circuit} />
     </>
   );
 }
 
-export default Solution;

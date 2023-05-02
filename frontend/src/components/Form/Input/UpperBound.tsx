@@ -10,7 +10,7 @@ export function UpperBound({ state, dispatch }: { state: State; dispatch: React.
       <Form.Label>
           Upper Bound
           <Tooltip
-            title="This value is an upper limit used to binarize the variables.
+            title="This value must be > 0, is an upper limit used to binarize the variables.
                    Log base 2 of the upper bound is the number binary digits used to represent the variables."
             followCursor
           >
@@ -24,6 +24,7 @@ export function UpperBound({ state, dispatch }: { state: State; dispatch: React.
         <Form.Control
           required
           type="number"
+          min={1}
           placeholder="Maximum allowed value for the variables"
           onChange={(e) => {
             if (  e.target.value )
@@ -32,7 +33,7 @@ export function UpperBound({ state, dispatch }: { state: State; dispatch: React.
           value={state.upperBound}
         />
         <Form.Control.Feedback type="invalid">
-          Only numbers are allowed
+          Only numbers &gt; 0 are allowed
         </Form.Control.Feedback>
       </Form.Group>
     </>

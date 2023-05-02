@@ -9,7 +9,7 @@ export function ConstraintsList() {
 
 
   return (
-    <div> 
+    <div > 
       {constraints.length > 0 && <Form.Label>Subject to:</Form.Label>}
       {constraints.map((constraint) => (
         <Constraint key={constraint.id} constraint={constraint} />

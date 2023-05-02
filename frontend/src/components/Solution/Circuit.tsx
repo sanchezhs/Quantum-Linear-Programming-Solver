@@ -2,7 +2,7 @@ import { Row, Button, ButtonGroup } from "react-bootstrap";
 import "react-medium-image-zoom/dist/styles.css";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-export function Images({
+export function Circuit({
   circuit,
 }: {
   circuit: string;

@@ -50,6 +50,13 @@ function Buttons({
             />
           )}
         </Button>
+        <Button
+          variant="outline-danger"
+          type="button"
+          onClick={() => setWaiting(false)}
+        >
+          Cancel
+        </Button>
       </ButtonGroup>
     </>
   );
