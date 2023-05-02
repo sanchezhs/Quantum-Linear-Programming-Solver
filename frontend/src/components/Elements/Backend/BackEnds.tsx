@@ -10,8 +10,9 @@ import { AppContext } from "../../../context/AppContext";
 import type { Backend } from "../../../context/AppContext";
 import { MyPagination } from "../index";
 import { Dropdown } from '../index'
-import Table from './Table'
+//import Table from './Table'
 import { Row, Col } from 'react-bootstrap'
+import { MyTable } from '../index'
 
 export type State = {
   sortField: string;
@@ -56,7 +57,6 @@ const reducer = (state: State, action: Action): State => {
 };
 
 export function Backends() {
-  console.count("Backends");
   const { backends } = useContext(AppContext);
   const [selectedBackend, setSelectedBackend] = useState<string>("");
   const [page, setPage] = useState<number>(1);
@@ -120,30 +120,31 @@ export function Backends() {
     setPage(pageNumber);
   };
 
-  const myTable = useMemo(() => {
-    return (
-      <Table state={state} selectedBackend={selectedBackend} handleSelectBackend={handleSelectBackend}/>
-    )
-  }, [state, selectedBackend])
+  //const myTable = useMemo(() => {
+  //  return (
+  //    <Table state={state} selectedBackend={selectedBackend} handleSelectBackend={handleSelectBackend}/>
+  //  )
+  //}, [state, selectedBackend])
 
   return (
     <>
+      <MyTable state={state}/>
       {backends.length > 0 && (
         <>
           <Row id="modal-row">
             <Col>
               <h5>Available Backends</h5>
             </Col>
-            <Col style={{ textAlign: "right" }}>
+            {/* <Col style={{ textAlign: "right" }}>
               <Dropdown handleOnSelect={handleOnSelect}/>
-            </Col>
+            </Col> */}
           </Row>
-          {myTable}
-          <MyPagination
+          {/* {myTable} */}
+          {/* <MyPagination
             total={Math.ceil(backends.length / itemsPerPage)}
             current={page}
             onChangePage={handleChangePage}
-          />
+          /> */}
         </>
       )}
     </>

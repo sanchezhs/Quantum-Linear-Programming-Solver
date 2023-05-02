@@ -1,0 +1,49 @@
+import Form from "react-bootstrap/Form";
+import { State, Action } from "./Form";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Tooltip from "@mui/material/Tooltip";
+
+export function Approximation({
+  state,
+  dispatch,
+}: {
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}) {
+  return (
+    <>
+      <Form.Group className="mb-3" controlId="formUpperBound">
+        <Form.Label>
+          P
+          <Tooltip
+            title="The performance of the algorithm is influenced by the value of p, 
+                   and the precision of the estimation increases with larger p values. 
+                   However, increasing p leads to a more complicated and larger circuit, 
+                   which results in longer processing times to find a solution. 
+                   The circuit size increases proportionally to p times the number of constraints."
+            followCursor
+          >
+            <HelpOutlineIcon
+              style={{ fontSize: 15, marginLeft: "2px" }}
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+            />
+          </Tooltip>
+        </Form.Label>
+        <Form.Control
+          required
+          type="number"
+          placeholder="Depth of the circuit"
+          onChange={(e) => {
+            if (e.target.value)
+              dispatch({ type: "setP", payload: e.target.value });
+          }}
+          value={state.p}
+        />
+        <Form.Control.Feedback type="invalid">
+          Only numbers are allowed
+        </Form.Control.Feedback>
+      </Form.Group>
+    </>
+  );
+}

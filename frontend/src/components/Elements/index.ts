@@ -4,3 +4,4 @@ export { MyPagination } from './Pagination/MyPagination';
 export { myModal as Modal } from './Modal/Modal';
 export { Backends } from './Backend/BackEnds'
 export { Dropdown } from './Dropdown/Dropdown';
+export { MyTable } from './Table/Table';

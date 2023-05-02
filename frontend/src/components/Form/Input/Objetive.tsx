@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form";
+import { State, Action } from './Form'
 
-export function Objetive({ state, dispatch }: { state: any; dispatch: any }) {
+export function Objetive({ state, dispatch }: { state: State; dispatch: React.Dispatch<Action> }) {
   return (
     <div>
       {" "}

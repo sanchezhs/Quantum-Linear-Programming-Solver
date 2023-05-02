@@ -1,7 +1,22 @@
-import { Button, ButtonGroup } from "react-bootstrap";
+import { useState } from "react";
+import { Button, ButtonGroup, Spinner } from "react-bootstrap";
 
-function Buttons({ formState, handleSubmit, handleReset, createConstraint }:
-    { formState: any, handleSubmit: any, handleReset: any, createConstraint: any }) {
+function Buttons({
+  formState,
+  handleSubmit,
+  handleReset,
+  createConstraint,
+  waiting,
+  setWaiting
+}: {
+  formState: any;
+  handleSubmit: any;
+  handleReset: any;
+  createConstraint: any;
+  waiting: boolean;
+  setWaiting: any;
+}) {
+
   return (
     <>
       <ButtonGroup>
@@ -21,7 +36,19 @@ function Buttons({ formState, handleSubmit, handleReset, createConstraint }:
           disabled={formState.submitted}
           onClick={handleSubmit}
         >
-          Submit
+          {waiting ? "Waiting..." : "Submit"}
+          {waiting && (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              style={{
+                marginRight: "5px",
+              }}
+            />
+          )}
         </Button>
       </ButtonGroup>
     </>

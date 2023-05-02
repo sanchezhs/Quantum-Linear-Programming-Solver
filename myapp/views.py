@@ -1,4 +1,4 @@
-from .sympy import Sympy
+from .utils.problem import Problem
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
@@ -19,13 +19,18 @@ class Api_index(viewsets.ViewSet):
     def create(self, request):
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
-            # serializer.save()
-            
-            sympy = Sympy(serializer.data.get('objetive', None),
-                          serializer.data.get('constraints', None),
-                          serializer.data.get('radioValue', None))
-            test = sympy.solve()
-            return Response(test, status=201)
+            print('serializer data: ', serializer.data)
+            problem = Problem(serializer.data['objetive'], 
+                              serializer.data['constraints'],
+                              serializer.data['radioValue'],
+                              serializer.data['upperBound'],
+                              serializer.data['p'])
+            try:
+                result = problem.solve()
+            except Exception as e:
+                print(e)
+                return Response({'status': 'error', 'errors': e.args}, status=400)
+            return Response(result, status=201)
         print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
 

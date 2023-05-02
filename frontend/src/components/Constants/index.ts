@@ -1,1 +1,1 @@
-export { HOST } from './host';
+export { HOST, UPPERBOUND } from './host';

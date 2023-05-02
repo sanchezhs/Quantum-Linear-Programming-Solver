@@ -1,5 +1,24 @@
 import { createContext, useState } from "react";
 
+const InitialSolution = {
+  num_qubits: "",
+  circuit: "",
+  histogram: "",
+  matrix_shape: [0, 0] as [number, number],
+  details: "",
+  qubo: "",
+};
+
+export interface Solution {
+  num_qubits: string;
+  circuit: string;
+  histogram: string;
+  matrix_shape: [number, number];
+  details: string;
+  qubo: string;
+}
+
+
 export interface Backend {
   name: string;
   num_qubits: number;
@@ -23,8 +42,8 @@ type AppContextType = {
   constraints: { id: number; value: string }[];
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
-  solution: [];
-  setSolution: (solution: string) => void;
+  solution: Solution | null;
+  setSolution: (solution: Solution) => void;
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
   setModalShow: (modalShow: ErrorModal) => void;
@@ -38,7 +57,7 @@ export const AppContext = createContext<AppContextType>(
     constraints: [],
     modalShow: { show: false, body: [] },
     backends: [],
-    solution: [],
+    solution: null,
     setSolution: () => {},
     setBackends: () => {},
     showErrorModal: () => {},
@@ -55,7 +74,7 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
     { id: 1, value: "" },
   ]);
   const [backends, setBackends] = useState<Backend[]>([]);
-  const [solution, setSolution] = useState([]);
+  const [solution, setSolution] = useState<Solution>(null);
   const [modalShow, setModalShow] = useState<ErrorModal>({
     show: false,
     body: [],

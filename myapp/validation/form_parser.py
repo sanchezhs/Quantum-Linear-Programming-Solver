@@ -155,7 +155,6 @@ def validate_constraints(constraints):
             parser = Lark(constraints_grammar, parser='lalr', transformer=t)
             tree = parser.parse(constraint)
             visitor = t.transform(tree)
-            print('TRANSF: ', visitor)
     except Exception as e:
         print('error constraints: ', e)
         msg = ''
