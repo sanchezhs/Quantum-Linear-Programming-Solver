@@ -8,8 +8,6 @@ import {
 } from "react";
 import { AppContext } from "../../../context/AppContext";
 import type { Backend } from "../../../context/AppContext";
-import { MyPagination } from "../index";
-import { Dropdown } from '../index'
 //import Table from './Table'
 import { Row, Col } from 'react-bootstrap'
 import { MyTable } from '../index'

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,12 +12,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import type { Backend } from "../../../context/AppContext";
 import { AppContext } from "../../../context/index";
@@ -38,7 +33,6 @@ function createData(backends: Backend[]): any[] {
     };
     rows.push(row);
   }
-  console.log(rows);
   return rows;
 }
 
@@ -206,7 +200,8 @@ export function MyTable() {
   const { backends } = React.useContext(AppContext);
   const [order, setOrder] = React.useState<Order>(DEFAULT_ORDER);
   const [orderBy, setOrderBy] = React.useState<string>(DEFAULT_ORDER_BY);
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [selected, setSelected] = React.useState<string>("");
+
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [visibleRows, setVisibleRows] = React.useState<Backend[] | null>(null);
@@ -222,7 +217,6 @@ export function MyTable() {
       0 * DEFAULT_ROWS_PER_PAGE,
       0 * DEFAULT_ROWS_PER_PAGE + DEFAULT_ROWS_PER_PAGE
     );
-    console.log("***", rowsOnMount);
     const backends = rowsOnMount.map((row) => ({
       num_qubits: 0,
       is_simulator: false,
@@ -267,23 +261,7 @@ export function MyTable() {
   );
 
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
+    setSelected(name);
   };
 
   const handleChangePage = React.useCallback(
@@ -291,7 +269,6 @@ export function MyTable() {
       setPage(newPage);
 
       const sortedRows = stableSort(rows, getComparator(order, orderBy));
-      console.log("sortedRows ", sortedRows, "Row ", rows);
       const updatedRows = sortedRows.slice(
         newPage * rowsPerPage,
         newPage * rowsPerPage + rowsPerPage
@@ -327,15 +304,12 @@ export function MyTable() {
 
       setPage(0);
 
-      console.log("Rows ", rows);
       const sortedRows = stableSort(rows, getComparator(order, orderBy));
-      console.log("sortedRows ", sortedRows);
       const updatedRows = sortedRows.slice(
         0 * updatedRowsPerPage,
         0 * updatedRowsPerPage + updatedRowsPerPage
       );
 
-      console.log("VISIBLES ROWS", updatedRows);
       const backends = updatedRows.map((row) => ({
         num_qubits: 0,
         is_simulator: false,
@@ -396,6 +370,7 @@ export function MyTable() {
                           <Checkbox
                             color="primary"
                             checked={isItemSelected}
+                            disabled={selected !== ""}
                             inputProps={{
                               "aria-labelledby": labelId,
                             }}

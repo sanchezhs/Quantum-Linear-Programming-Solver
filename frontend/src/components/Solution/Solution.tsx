@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-import { Circuit, Histogram, Details } from "./index";
+import { Circuit, Histogram, Details, SolTab } from "./index";
 import { Row, Col } from "react-bootstrap";
 
 export function Solution() {
@@ -10,7 +10,8 @@ export function Solution() {
   }
   return (
     <>
-      <Row id="modal-row">
+      <SolTab solution={solution}/>
+{/*       <Row id="modal-row">
         <Col>
           <h4>Details</h4>
           <Details
@@ -34,7 +35,7 @@ export function Solution() {
         </div>
         <code></code>
       </pre>
-      <Circuit circuit={solution!.circuit} />
+      <Circuit circuit={solution!.circuit} /> */}
     </>
   );
 }
