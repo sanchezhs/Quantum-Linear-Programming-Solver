@@ -14,7 +14,7 @@ export function Approximation({
     <>
       <Form.Group className="mb-3" controlId="formUpperBound">
         <Form.Label>
-          P
+          Circuit Depth (p)
           <Tooltip
             title="The performance of the algorithm is influenced by the value of p > 0, 
                    and the precision of the estimation increases with larger p values. 

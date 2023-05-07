@@ -1,26 +1,27 @@
 import base64
-from qiskit import BasicAer
+import qiskit
+from qiskit import Aer, IBMQ
+from qiskit_ibm_runtime import QiskitRuntimeService, Session, Options, Sampler
+from qiskit_ibm_provider import IBMProvider
+from qiskit_optimization.runtime import QAOAClient
 from sympy import sympify
-from qiskit_optimization import QuadraticProgram
-from qiskit_optimization.converters import QuadraticProgramToQubo
+from qiskit_optimization.algorithms import WarmStartQAOAOptimizer, CplexOptimizer
+from qiskit_optimization.converters import QuadraticProgramToQubo, IntegerToBinary
 from qiskit_optimization.algorithms import (
     MinimumEigenOptimizer,
 )
-from qiskit_optimization import QuadraticProgram
 from qiskit.algorithms.minimum_eigensolvers import QAOA, NumPyMinimumEigensolver
 from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
 from qiskit.algorithms.optimizers import COBYLA
 from qiskit.primitives import Sampler
 from typing import List, Tuple
-from qiskit.utils import algorithm_globals
-from qiskit.algorithms.minimum_eigensolvers import QAOA, NumPyMinimumEigensolver
-from qiskit.algorithms.optimizers import COBYLA
+from qiskit.algorithms.optimizers import COBYLA, SLSQP
 from qiskit.primitives import Sampler
 from qiskit_optimization.algorithms import (
     MinimumEigenOptimizer,
-    RecursiveMinimumEigenOptimizer,
     SolutionSample,
     OptimizationResultStatus,
+    RecursiveMinimumEigenOptimizer
 )
 from qiskit.opflow import OperatorBase, PauliSumOp
 from qiskit_optimization import QuadraticProgram
@@ -38,14 +39,15 @@ class Problem():
         self.type = type
         self.upperbound = int(upperbound)
         self.p = int(p)
-        self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'GE', '<': 'LE'}
+        self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
 
     def solve(self):
         qp = ToQiskitConverter(self).to_qiskit()
         ising_model, qubo = self.get_ising(qp)
         optimized, sampler = self.qaoa_optimize(qp)
-        result = Result(optimized, ising_model, sampler, qubo).get_results()
-        return result
+        result = Result(optimized, ising_model, sampler, qubo, qp)
+        #print(result.process_raw())
+        return result.get_results()
 
     def get_ising(self, qp) -> tuple:
         """ Get ising model and circuit from QuadraticProgram
@@ -58,7 +60,6 @@ class Problem():
         qubo = conv.convert(qp)
         # Convert from Qubo to Ising
         ising_model = qubo.to_ising()
-
         return ising_model, qubo
 
     def qaoa_optimize(self, qp) -> MinimumEigenOptimizationResult:
@@ -68,19 +69,20 @@ class Problem():
         Returns:
             MinimumEigenOptimizationResult: solution
         """
-        backend = BasicAer.get_backend('qasm_simulator')
-        sampler = Sampler(options={'shots': 10})
-        qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(), reps=self.p)
-        # exact_mes = NumPyMinimumEigensolver()
+        token = '4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932'
+        service = QiskitRuntimeService()
+        sampler = Sampler(options={'shots': 10000})
+        qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(maxiter=5000), reps=self.p)
+        ws_qaoa = WarmStartQAOAOptimizer(
+                    pre_solver=CplexOptimizer(), relax_for_pre_solver=False, qaoa=qaoa_mes, epsilon=0.0
+                    )
+        ws_result = ws_qaoa.solve(qp)
+        print(ws_result.prettyprint())
+        print(ws_result.raw_samples)
+        #qaoa = MinimumEigenOptimizer(qaoa_mes)
+        #qaoa_result = qaoa.solve(qp)
 
-        qaoa = MinimumEigenOptimizer(qaoa_mes)
-        # exact = MinimumEigenOptimizer(exact_mes)
-
-        # exact_result = exact.solve(qp)
-        qaoa_result = qaoa.solve(qp)
-        print(qaoa_result.prettyprint())
-
-        return qaoa_result, sampler
+        return ws_result, sampler
 
 
 class Result:
@@ -88,30 +90,37 @@ class Result:
                  qaoa_result: MinimumEigenOptimizationResult,
                  ising_model: Tuple[OperatorBase, float],
                  sampler: Sampler,
-                 qubo: QuadraticProgram) -> None:
+                 qubo: QuadraticProgram,
+                 qp: QuadraticProgram) -> None:
         self.qaoa_result = qaoa_result
         self.ising_model = ising_model
         self.sampler = sampler
         self.qubo = qubo
+        self.original = qp
         # self.get_mean_and_std(qaoa_result)
 
     def save_circuit(self, circuit, filename):
-        circuit.decompose().draw('mpl', filename=filename,
+        circuit.decompose().decompose().draw('mpl', filename=filename,
                                 plot_barriers=False, initial_state=True)
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
         return enconded_string
 
-    def get_results(self):
-        #print('DETAILS: ', self.qaoa_result.prettyprint())
-        #print('ISING: ', self.ising_model[0])
-        #print('NQUBITS: ', self.sampler.circuits[0].num_qubits)
-        #print('OPTIONS: ', self.sampler.options.get('shots'))
-        #print('SAMPLES: ', self.qaoa_result.samples)
-        #print('MASSIVE MATRIX: ', self.ising_model[0].to_matrix())
-        #print('PARAMETERS: ', self.sampler.parameters)
-        # print('CIRTUIT: ', self.sampler.circuits[0].draw('mpl'))
+    def process_raw(self):
+        raw = self.qaoa_result.raw_samples
+        feasible = [s for s in raw if s.status == OptimizationResultStatus.SUCCESS]
+        conv = IntegerToBinary()
+        _ = conv.convert(self.original)
+        results = {}
+        for sample in feasible:
+            x, prob = sample.x, sample.probability
+            x_int = conv.interpret(x)
+            print('Interpreted: ', x_int, ', ', prob)
+            results.setdefault(x_int[0], 0)
+            results[x_int[0]] += float(prob)   
+        return results
 
+    def get_results(self):
         mean, std, encoded_histogram = self.get_mean_and_std(self.qaoa_result)
 
         encoded = self.save_circuit(self.sampler.circuits[0], './circuit.png')
@@ -127,22 +136,23 @@ class Result:
         }
 
     def get_mean_and_std(self, qaoa_result: MinimumEigenOptimizationResult):
+        #https://qiskit.org/ecosystem/optimization/tutorials/03_minimum_eigen_optimizer.html
         fvals = [s.fval for s in qaoa_result.samples]
-        probabilities = [s.probability for s in qaoa_result.samples]
+        probabilities = [(s.fval, s.probability) for s in qaoa_result.samples]
         mean = np.mean(fvals)
         std = np.std(fvals)
-        print("Mean:", mean)
-        print("Std:", std)
-
         filtered_samples = self.get_filtered_samples(
-            qaoa_result.samples, threshold=0.005, allowed_status=(OptimizationResultStatus.SUCCESS,)
+            qaoa_result.samples, threshold=0., allowed_status=(OptimizationResultStatus.SUCCESS,)
         )
         samples_for_plot = {
             " ".join(f"{qaoa_result.variables[i].name}={int(v)}" for i, v in enumerate(s.x)): s.probability
             for s in filtered_samples
         }
+        total_prob = sum(samples_for_plot.values())
+        infeasible_prob = 1 - total_prob
+        #samples_for_plot["infeasible"] = infeasible_prob
         filename = "./histogram.png"
-        plot = plot_histogram(samples_for_plot, filename=filename)
+        plot = plot_histogram(samples_for_plot, filename=filename, figsize=(28, 26), title="Samples")
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
         return mean, std, enconded_string

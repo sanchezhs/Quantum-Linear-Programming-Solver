@@ -23,6 +23,7 @@ from qiskit_optimization.algorithms import (
 )
 from qiskit.opflow import OperatorBase, PauliSumOp
 from qiskit_optimization import QuadraticProgram
+from qiskit_optimization.converters import QuadraticProgramToQubo, InequalityToEquality, IntegerToBinary, LinearEqualityToPenalty, MaximizeToMinimize
 from qiskit.visualization import plot_histogram
 from typing import List, Tuple
 import numpy as np
@@ -69,11 +70,20 @@ class Problem():
         Returns:
             MinimumEigenOptimizationResult: solution
         """
+        algorithm_globals.random_seed = 10598
         backend = BasicAer.get_backend('qasm_simulator')
         sampler = Sampler(options={'shots': 10})
+        
+        
+        qp = QuadraticProgram()
+        qp.binary_var('x0')
+        qp.binary_var('x1')
+        qp.binary_var('s0')
+        qp.binary_var('s1')
+        qp.maximize(linear={'x0': 16, 'x1': 26, 's0': 15, 's1': 24}, quadratic={('x0', 'x1'): -12, ('x1', 's1'): -24, ('x0', 's1'): -24, ('x0', 's0'): -6, ('s1', 's0'): -12})
         qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(), reps=2)
         # exact_mes = NumPyMinimumEigensolver()
-
+        print(qp.prettyprint())
         qaoa = MinimumEigenOptimizer(qaoa_mes)
         # exact = MinimumEigenOptimizer(exact_mes)
 
@@ -185,10 +195,10 @@ class ToQiskitConverter():
         # Add objetive
         if self.type == 'minimize':
             qp.minimize(
-                linear=processed_objetive[0], constant=int(processed_objetive[1]))
+                linear=processed_objetive[0], constant=int(processed_objetive[1]), quadratic={('x', 'y'): 1})
         else:
             qp.maximize(
-                linear=processed_objetive[0], constant=int(processed_objetive[1]))
+                linear=processed_objetive[0], constant=int(processed_objetive[1]), quadratic={})
 
         # Add constraints
         for processed_constraint in processed_constraints:
@@ -305,9 +315,9 @@ class ToQiskitConverter():
         raise ValueError('Invalid constraint')
 
 
-p = Problem('x+y',
-            ['x+y<=1'],
+p = Problem('x',
+            [],
             'minimization',
-            1)
+            10)
 p.solve()
 
