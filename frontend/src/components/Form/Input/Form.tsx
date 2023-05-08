@@ -7,6 +7,7 @@ import { Modal } from "../../Elements/index";
 import { Form, Row, Col } from "react-bootstrap";
 import { sendForm } from "../../Actions/index";
 import { Solution } from "../../Solution/index";
+import { Logic } from './Logic'
 
 export type State = {
   objetive: string;
@@ -15,7 +16,7 @@ export type State = {
   p: string;
 };
 
-const initialState: State = {
+export const initialState: State = {
   objetive: "",
   radioValue: "",
   upperBound: UPPERBOUND,
@@ -28,7 +29,7 @@ export type Action =
   | { type: "setUpperBound"; payload: string }
   | { type: "setP"; payload: string };
 
-function reducer(state: State, action: Action): State {
+export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "setObjetive":
       return { ...state, objetive: action.payload };
@@ -41,7 +42,7 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-function checkForm(constraints: any, state: State, setFormState: any) {
+export function checkForm(constraints: any, state: State, setFormState: any) {
   if (
     constraints.length === 0 ||
     state.objetive === "" ||
@@ -55,38 +56,13 @@ function checkForm(constraints: any, state: State, setFormState: any) {
 }
 
 export function MainForm() {
-  const {
-    constraints,
-    createConstraint,
-    setConstraints,
-    setSolution,
-    showErrorModal,
-  } = useContext(AppContext);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [waiting, setWaiting] = useState(false);
   const [formState, setFormState] = useState({
     submitted: false,
     validated: false,
   });
 
   const { thirdRef } = useContext(ScrollContext);
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setWaiting(true);
-    setFormState({ submitted: true, validated: true });
-    if (! checkForm(constraints, state, setFormState)) return;
-    sendForm(state, constraints, setFormState, setWaiting, showErrorModal, setSolution);
-  };
-
-  const handleReset = (e: any) => {
-    e.preventDefault();
-    setFormState({ submitted: false, validated: false });
-    dispatch({ type: "setObjetive", payload: "" });
-    dispatch({ type: "setUpperBound", payload: "" });
-    setConstraints([{ id: 1, value: "" }]);
-    setWaiting(false);
-  };
 
   return (
     <>
@@ -104,15 +80,8 @@ export function MainForm() {
             <Approximation state={state} dispatch={dispatch}/>
           </Col>
         </Row>
-        <ConstraintsList />
-        <Buttons
-          waiting={waiting}
-          setWaiting={setWaiting}
-          formState={formState}
-          createConstraint={createConstraint}
-          handleSubmit={handleSubmit}
-          handleReset={handleReset}
-        />
+        <Logic formState={formState} setFormState={setFormState}
+                state={state} dispatch={dispatch}/>
         <Modal />
       </Form>
       <Solution />

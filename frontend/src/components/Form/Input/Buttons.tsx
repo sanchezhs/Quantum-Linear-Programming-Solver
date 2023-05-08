@@ -5,14 +5,14 @@ function Buttons({
   formState,
   handleSubmit,
   handleReset,
-  createConstraint,
+  dispatch,
   waiting,
   setWaiting
 }: {
   formState: any;
   handleSubmit: any;
   handleReset: any;
-  createConstraint: any;
+  dispatch: any;
   waiting: boolean;
   setWaiting: any;
 }) {
@@ -23,7 +23,8 @@ function Buttons({
         <Button
           variant="outline-primary"
           type="button"
-          onClick={() => createConstraint()}
+          //onClick={() => createConstraint()}
+          onClick={() => dispatch({ type: "createConstraint" })}
         >
           Add Constraint
         </Button>

@@ -30,7 +30,7 @@ export interface Constraints {
 }
 
 type AppContextType = {
-  constraints: { id: number; value: string }[];
+  //constraints: { id: number; value: string }[];
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
   solution: Solution | null;
@@ -38,14 +38,14 @@ type AppContextType = {
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
   setModalShow: (modalShow: ErrorModal) => void;
-  createConstraint: () => void;
-  setConstraints: (constraints: Constraints[]) => void;
-  deleteConstraint: (index: number) => void;
+  // createConstraint: () => void;
+  // setConstraints: (constraints: Constraints[]) => void;
+  // deleteConstraint: (index: number) => void;
 };
 
 export const AppContext = createContext<AppContextType>(
   {
-    constraints: [],
+    //constraints: [],
     modalShow: { show: false, body: [] },
     backends: [],
     solution: null,
@@ -53,9 +53,9 @@ export const AppContext = createContext<AppContextType>(
     setBackends: () => {},
     showErrorModal: () => {},
     setModalShow: () => {},
-    createConstraint: () => {},
-    setConstraints: () => {},
-    deleteConstraint: () => {},
+    //createConstraint: () => {},
+    //setConstraints: () => {},
+    //deleteConstraint: () => {},
   }
 ); 
 
@@ -104,7 +104,7 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
   return (
     <AppContext.Provider
       value={{
-        constraints,
+        //constraints,
         modalShow,
         backends,
         solution,
@@ -112,9 +112,9 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
         setBackends,
         showErrorModal,
         setModalShow,
-        createConstraint,
-        setConstraints,
-        deleteConstraint,
+        //createConstraint,
+        //setConstraints,
+        //deleteConstraint,
       }}
     >
       {children}

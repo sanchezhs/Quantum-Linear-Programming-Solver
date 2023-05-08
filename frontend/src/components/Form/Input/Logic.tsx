@@ -1,37 +1,123 @@
-import { useState } from 'react'
+import { useContext, useReducer, useState } from "react";
+import {
+  Objetive,
+  CheckRadio,
+  ConstraintsList,
+  UpperBound,
+  Approximation,
+} from "./index";
+import { AppContext, ScrollContext } from "../../../context/index";
+import { UPPERBOUND } from "../../Constants/index";
+import Buttons from "./Buttons";
+import { Modal } from "../../Elements/index";
+import { Form, Row, Col } from "react-bootstrap";
+import { sendForm } from "../../Actions/index";
+import { Solution } from "../../Solution/index";
+import { initialState, Action, reducer, checkForm } from "./Form";
 
-type Constraint = {
-    id: number;
-    value: string;
-}
+export type State = {
+  objetive: string;
+  radioValue: string;
+  upperBound: string;
+  p: string;
+};
+
+export type ConstraintType = {
+  id: number;
+  value: string;
+};
+
+export type ConstraintAction =
+  | { type: "createConstraint"; payload: ConstraintType }
+  | { type: "deleteConstraint"; payload: number }
+  | { type: "updateConstraints"; payload: ConstraintType[] };
 
 
 
+export function Logic({ formState, setFormState, state, dispatch }:
+    { formState: { submitted: boolean; validated: boolean };
+        setFormState: React.Dispatch<
+            React.SetStateAction<{ submitted: boolean; validated: boolean }>
+        >;
+        state: State;
+        dispatch: React.Dispatch<Action>;
+    }
 
-function createConstraint(constraints: Constraint[], setConstraints: React.Dispatch<React.SetStateAction<Constraint[]>>) {
-    setConstraints([
-      ...constraints,
-      {
-        id:
-          constraints.length > 0
-            ? constraints[constraints.length - 1].id + 1
-            : 1,
-        value: "",
-      },
-    ]);
-  }
-  
-  function deleteConstraint(index: number, constraints: Constraint[], setConstraints: React.Dispatch<React.SetStateAction<Constraint[]>>) {
-    setConstraints((prevConstraints) =>
-        prevConstraints.filter((constraint) => constraint.id !== index)
+    ) {
+  const [waiting, setWaiting] = useState(false);
+
+  const [constraints, ListDispatch] = useReducer(
+    (constraints: ConstraintType[], action: ConstraintAction) => {
+      switch (action.type) {
+        case "createConstraint":
+          return [
+            ...constraints,
+            {
+              id:
+                constraints.length > 0
+                  ? constraints[constraints.length - 1].id + 1
+                  : 1,
+              value: "",
+            },
+          ];
+        case "deleteConstraint":
+          return constraints.filter(
+            (constraint) => constraint.id !== action.payload
+          );
+        case "updateConstraints":
+          return action.payload;
+
+        default:
+          return constraints;
+      }
+    },
+    [{ id: 1, value: "" }]
+  );
+  const { showErrorModal, setSolution } = useContext(AppContext);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    setWaiting(true);
+    setFormState({ submitted: true, validated: true });
+    if (!checkForm(constraints, state, setFormState)) {
+        setWaiting(false);
+        return
+    };
+    sendForm(
+      state,
+      constraints,
+      setFormState,
+      setWaiting,
+      showErrorModal,
+      setSolution
     );
-  }
-  
-export function Logic() {
-    const [constraints, setConstraints] = useState<Constraint[]>([]);
-    return (
-        <div>Logic</div>
-    )
-}
+  };
 
-  
+  const handleReset = (e: any) => {
+    e.preventDefault();
+    setFormState({ submitted: false, validated: false });
+    dispatch({ type: "setObjetive", payload: "" });
+    dispatch({ type: "setUpperBound", payload: "10" });
+    //setConstraints([{ id: 1, value: "" }]);
+    const cleared = constraints.map((constraint) => {
+      constraint.value = "";
+      return constraint;
+    });
+    ListDispatch({ type: "updateConstraints", payload: cleared });
+    setWaiting(false);
+  };
+
+  return (
+    <>
+      <ConstraintsList constraints={constraints} dispatch={ListDispatch} />
+      <Buttons
+        waiting={waiting}
+        setWaiting={setWaiting}
+        formState={formState}
+        dispatch={ListDispatch}
+        handleSubmit={handleSubmit}
+        handleReset={handleReset}
+      />
+    </>
+  );
+}

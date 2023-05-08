@@ -1,6 +1,6 @@
 import base64
 import qiskit
-from qiskit import Aer, IBMQ
+from qiskit import Aer, IBMQ, QuantumCircuit, QuantumRegister
 from qiskit_ibm_runtime import QiskitRuntimeService, Session, Options, Sampler
 from qiskit_ibm_provider import IBMProvider
 from qiskit_optimization.runtime import QAOAClient
@@ -26,6 +26,9 @@ from qiskit_optimization.algorithms import (
 from qiskit.opflow import OperatorBase, PauliSumOp
 from qiskit_optimization import QuadraticProgram
 from qiskit.visualization import plot_histogram
+from qiskit.quantum_info import Pauli, Statevector
+from qiskit.result import QuasiDistribution
+from scipy.optimize import minimize
 from typing import List, Tuple
 import numpy as np
 import re, json
@@ -40,6 +43,7 @@ class Problem():
         self.upperbound = int(upperbound)
         self.p = int(p)
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
+        self.circuit = None
 
     def solve(self):
         qp = ToQiskitConverter(self).to_qiskit()
@@ -59,30 +63,26 @@ class Problem():
         conv = QuadraticProgramToQubo()
         qubo = conv.convert(qp)
         # Convert from Qubo to Ising
+        circuit = BuildCircuit(qubo)
+        self.circuit = circuit.get_circuit()
+        circuit.print_circuit()
         ising_model = qubo.to_ising()
         return ising_model, qubo
 
-    def qaoa_optimize(self, qp) -> MinimumEigenOptimizationResult:
+    def qaoa_optimize(self, qp: QuadraticProgram) -> MinimumEigenOptimizationResult:
         """ Optimize the Ising model using QAOA
         Args:
             qp (QuadraticProgram): QuadraticProgram
         Returns:
             MinimumEigenOptimizationResult: solution
         """
-        token = '4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932'
-        service = QiskitRuntimeService()
         sampler = Sampler(options={'shots': 10000})
-        qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(maxiter=5000), reps=self.p)
-        ws_qaoa = WarmStartQAOAOptimizer(
-                    pre_solver=CplexOptimizer(), relax_for_pre_solver=False, qaoa=qaoa_mes, epsilon=0.0
-                    )
-        ws_result = ws_qaoa.solve(qp)
-        print(ws_result.prettyprint())
-        print(ws_result.raw_samples)
-        #qaoa = MinimumEigenOptimizer(qaoa_mes)
-        #qaoa_result = qaoa.solve(qp)
+        qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(maxiter=5000), initial_state=self.circuit, initial_point=[1. for _ in range(2*self.p)], reps=self.p)
+        qaoa = MinimumEigenOptimizer(qaoa_mes)
+        qaoa_result = qaoa.solve(qp)
+        
 
-        return ws_result, sampler
+        return qaoa_result, sampler
 
 
 class Result:
@@ -97,7 +97,6 @@ class Result:
         self.sampler = sampler
         self.qubo = qubo
         self.original = qp
-        # self.get_mean_and_std(qaoa_result)
 
     def save_circuit(self, circuit, filename):
         circuit.decompose().decompose().draw('mpl', filename=filename,
@@ -105,20 +104,6 @@ class Result:
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
         return enconded_string
-
-    def process_raw(self):
-        raw = self.qaoa_result.raw_samples
-        feasible = [s for s in raw if s.status == OptimizationResultStatus.SUCCESS]
-        conv = IntegerToBinary()
-        _ = conv.convert(self.original)
-        results = {}
-        for sample in feasible:
-            x, prob = sample.x, sample.probability
-            x_int = conv.interpret(x)
-            print('Interpreted: ', x_int, ', ', prob)
-            results.setdefault(x_int[0], 0)
-            results[x_int[0]] += float(prob)   
-        return results
 
     def get_results(self):
         mean, std, encoded_histogram = self.get_mean_and_std(self.qaoa_result)
@@ -171,6 +156,73 @@ class Result:
         return res
 
 
+class BuildCircuit():
+    def __init__(self,
+                 qubo: QuadraticProgram,
+                 ) -> None:
+        self.qubo = qubo
+        self.circuit = self.obtener_circuito(qubo)
+        
+    def to_rz_rzz(self, pauli, circuit) -> QuantumCircuit:
+        pauli_list = pauli[0].primitive.to_list()
+        print(pauli_list)
+        p = re.compile('Z')
+        processed_qubits = set()
+        
+        for pauli in pauli_list:
+            op, coef = pauli[0], pauli[1]
+            lqubit = []
+            for m in p.finditer(op):
+                qubit = m.start()
+                if qubit not in processed_qubits:
+                    lqubit.append(qubit)
+                    processed_qubits.add(qubit)
+                    if len(lqubit) == 1:
+                        circuit.rz(coef.real, lqubit[0])
+                    elif len(lqubit) == 2:
+                        circuit.rzz(coef.real, lqubit[0], lqubit[1])
+        return circuit
+
+
+    def obtener_circuito(self, qubo) -> QuantumCircuit:
+        ising = qubo.to_ising()
+        nqubits = len(qubo.variables)
+        qreg_q = QuantumRegister(nqubits, 'q')
+        circuit = QuantumCircuit(qreg_q)
+        
+        for i in range(0,nqubits):
+            circuit.h(qreg_q[i])
+        
+        circuit.barrier()
+        self.to_rz_rzz(ising, circuit)
+        
+        circuit.barrier()
+        for i in range(0, nqubits):
+            circuit.rx(2, qreg_q[i])
+        #circuit.measure_all()
+        return circuit
+    
+    
+    
+    def solution_energy(self) -> float:
+        energy = 0
+        total_counts = 0
+        for sample, count in self.qubo.get_feasible_solution_counts().items():
+            total_counts += count
+            energy += self.qubo.evaluate(x=sample) * count
+            
+        return energy / total_counts
+
+    def optimize(self):
+        objective = self.solution_energy()
+        return minimize(objective, method='COBYLA', options={'maxiter': 1000, 'disp': True})
+
+    def print_circuit(self):
+        print(self.circuit.draw('text'))
+
+    def get_circuit(self) -> QuantumCircuit:
+        return self.circuit
+
 class ToQiskitConverter():
     def __init__(self, problem: Problem):
         self.problem = problem
@@ -216,11 +268,15 @@ class ToQiskitConverter():
                 linear=processed_objetive[0], constant=int(processed_objetive[1]))
 
         # Add constraints
-        for processed_constraint in processed_constraints:
-            qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
-                                 rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
-                                 )
-
+        try:
+            for processed_constraint in processed_constraints:
+                qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                                    rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
+                                    )
+        except Exception as e:
+            raise Exception(
+                'Error while processing constraints. Check if the constraint name already exists or the sense is valid') from e
+                
         return qp
 
     def simplify(self):
