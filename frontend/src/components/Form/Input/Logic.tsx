@@ -1,19 +1,9 @@
 import { useContext, useReducer, useState } from "react";
-import {
-  Objetive,
-  CheckRadio,
-  ConstraintsList,
-  UpperBound,
-  Approximation,
-} from "./index";
-import { AppContext, ScrollContext } from "../../../context/index";
-import { UPPERBOUND } from "../../Constants/index";
+import { ConstraintsList } from "./index";
+import { AppContext } from "../../../context/index";
 import Buttons from "./Buttons";
-import { Modal } from "../../Elements/index";
-import { Form, Row, Col } from "react-bootstrap";
 import { sendForm } from "../../Actions/index";
-import { Solution } from "../../Solution/index";
-import { initialState, Action, reducer, checkForm } from "./Form";
+import { Action, checkForm } from "./Form";
 
 export type State = {
   objetive: string;
