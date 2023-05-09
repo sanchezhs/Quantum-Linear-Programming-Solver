@@ -34,24 +34,41 @@ class ToQiskitConverter():
 
         # Get variables (integer variables)
         variables = list(processed_objetive[0].keys())
-        for variable in variables:
-            qp.integer_var(
-                lowerbound=0, upperbound=self.upperbound, name=str(variable))
+        print(processed_objetive[0])
+        for var, coef in processed_objetive[0].items():
+            if coef < 0:
+                qp.integer_var(
+                    lowerbound=-self.upperbound, upperbound=self.upperbound, name=str(var))
+            else:
+                qp.integer_var(
+                    lowerbound=0, upperbound=self.upperbound, name=str(var))
+        #for variable in variables:
+        #    qp.integer_var(
+        #        lowerbound=0, upperbound=self.upperbound, name=str(variable))
 
         # Add objetive
-        qp.minimize(
-                linear=processed_objetive[0], constant=int(processed_objetive[1])) # test, borrar si no funciona
-        #if self.type == 'minimize':
-        #    qp.minimize(
-        #        linear=processed_objetive[0], constant=int(processed_objetive[1]))
-        #else:
-        #    qp.maximize(
-        #        linear=processed_objetive[0], constant=int(processed_objetive[1]))
+        #qp.maximize(
+        #        linear=processed_objetive[0], constant=int(processed_objetive[1])) # test, borrar si no funciona
+        if self.type == 'minimize':
+            qp.minimize(
+                linear=processed_objetive[0], constant=int(processed_objetive[1]))
+        else:
+            qp.maximize(
+                linear=processed_objetive[0], constant=int(processed_objetive[1]))
 
         # Add constraints
         try:
             for processed_constraint in processed_constraints:
-                qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                if processed_constraint['sense'] == 'L':
+                    qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                                    rhs=int(processed_constraint['rhs']-1), name=processed_constraint['name']
+                                    )
+                elif processed_constraint['sense'] == 'G':
+                    qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                                    rhs=int(processed_constraint['rhs']+1), name=processed_constraint['name']
+                                    )
+                else:
+                    qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
                                     rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
                                     )
         except Exception as e:

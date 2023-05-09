@@ -1,7 +1,8 @@
 import { Col, Row, Tab, Tabs } from "react-bootstrap";
 import { Circuit, Histogram, Details } from "./index";
+import { Solution } from '../../context/AppContext'
 
-export function SolTab({ solution }: { solution: any }) {
+export function SolTab({ solution }: { solution: Solution }) {
   return (
     <Tabs
       style={{ marginTop: "15px" }}
@@ -13,7 +14,8 @@ export function SolTab({ solution }: { solution: any }) {
         <Row id="modal-row">
           <Col>
             <Details
-              details={solution!.details}
+              objetive={solution!.objetive}
+              vars_values={solution!.vars_values}
               matrix_shape={solution!.matrix_shape}
               qubits={solution!.num_qubits}
             />

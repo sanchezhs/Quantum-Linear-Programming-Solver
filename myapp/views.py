@@ -28,8 +28,8 @@ class Api_index(viewsets.ViewSet):
             #try:
             result = problem.solve()
             #except Exception as e:
-            #print(e)
-            #return Response({'status': 'error', 'errors': e.args}, status=400)
+                #print(e)
+                #return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
         print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)

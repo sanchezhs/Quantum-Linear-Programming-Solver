@@ -1,19 +1,30 @@
 import { Button, ButtonGroup, Spinner } from "react-bootstrap";
+import { ConstraintAction } from "./Logic";
 
 function Buttons({
   formState,
+  setFormState,
   handleSubmit,
   handleReset,
   dispatch,
   waiting,
   setWaiting
 }: {
-  formState: any;
-  handleSubmit: any;
-  handleReset: any;
-  dispatch: any;
+  formState: {
+    submitted: boolean;
+    validated: boolean;
+  };
+  setFormState: React.Dispatch<
+    React.SetStateAction<{
+      submitted: boolean;
+      validated: boolean;
+    }>
+  >;
+  handleSubmit: (e: any) => void; //
+  handleReset: (e: any) => void; //
+  dispatch: React.Dispatch<ConstraintAction>;
   waiting: boolean;
-  setWaiting: any;
+  setWaiting:  React.Dispatch<React.SetStateAction<boolean>>
 }) {
 
   return (
@@ -23,7 +34,7 @@ function Buttons({
           variant="outline-primary"
           type="button"
           //onClick={() => createConstraint()}
-          onClick={() => dispatch({ type: "createConstraint" })}
+          onClick={() => dispatch({type: "createConstraint"})}
         >
           Add Constraint
         </Button>
@@ -53,7 +64,7 @@ function Buttons({
         <Button
           variant="outline-danger"
           type="button"
-          onClick={() => setWaiting(false)}
+          onClick={() => {setWaiting(false); setFormState({ submitted: false, validated: false })}}
         >
           Cancel
         </Button>

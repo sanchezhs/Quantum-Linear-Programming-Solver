@@ -1,11 +1,12 @@
 import { createContext, useState } from "react";
 
 export interface Solution {
+  objetive: string;
+  vars_values: [{ string: string}];
   num_qubits: string;
+  matrix_shape: [number, number];
   circuit: string;
   histogram: string;
-  matrix_shape: [number, number];
-  details: string;
   qubo: string;
 }
 

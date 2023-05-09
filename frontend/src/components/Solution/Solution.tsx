@@ -10,11 +10,9 @@ export function Solution() {
   }
   return (
     <>
-      (
-      solution !== null && solution !== undefined
+      {solution !== null && solution !== undefined
       ? <SolTab solution={solution}/>
-      : null
-      )
+      : <></>}
 {/*       <Row id="modal-row">
         <Col>
           <h4>Details</h4>

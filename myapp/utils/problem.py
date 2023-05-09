@@ -25,13 +25,14 @@ class Problem():
     def solve(self):
         # Convert to QuadraticProgram
         qp = ToQiskitConverter(self).to_qiskit()
-        
+        qubo = QuadraticProgramToQubo().convert(qp)
         # Get ising model and circuit
-        ising_model, qubo = self.get_ising(qp)
-        circuit = BuildCircuit(qubo, qp, self.p, self.type)
-        best_sol, best_params, circuit = self.qaoa_optimize(qp)
+        #ising_model, qubo = self.get_ising(qp)
+        build_circuit = BuildCircuit(qubo, qp, self.p, self.type)
+        best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
         res = Result(best_sol, best_params, circuit, qubo, qp)
         
+        return res.get_results()
         # Optimize
         #optimized = self.qaoa_optimize(qp)
         # Get results
@@ -52,14 +53,14 @@ class Problem():
         ising_model = qubo.to_ising()
         return ising_model, qubo
 
-    def qaoa_optimize(self, qp: QuadraticProgram, circuit: BuildCircuit) -> MinimumEigenOptimizationResult:
+    def qaoa_optimize(self, qp: QuadraticProgram, build_circuit: BuildCircuit) -> MinimumEigenOptimizationResult:
         """ Optimize the Ising model using QAOA
         Args:
             qp (QuadraticProgram): QuadraticProgram
         Returns:
             MinimumEigenOptimizationResult: solution
         """
-        best_sol, best_params, circuit = circuit.solve()
+        best_sol, best_params, circuit = build_circuit.solve()
         return best_sol, best_params, circuit
         
         #sampler = Sampler(options={'shots': 10000})

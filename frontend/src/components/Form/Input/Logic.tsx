@@ -18,7 +18,7 @@ export type ConstraintType = {
 };
 
 export type ConstraintAction =
-  | { type: "createConstraint"; payload: ConstraintType }
+  | { type: "createConstraint";  }
   | { type: "deleteConstraint"; payload: number }
   | { type: "updateConstraints"; payload: ConstraintType[] };
 
@@ -104,6 +104,7 @@ export function Logic({ formState, setFormState, state, dispatch }:
         waiting={waiting}
         setWaiting={setWaiting}
         formState={formState}
+        setFormState={setFormState}
         dispatch={ListDispatch}
         handleSubmit={handleSubmit}
         handleReset={handleReset}
