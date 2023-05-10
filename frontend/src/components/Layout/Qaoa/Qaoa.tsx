@@ -1,7 +1,7 @@
-import { useContext, useRef, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { ScrollContext } from '../../../context/ScrollContext'
 import  circuit  from './circuit.png'
-
+import { Sphere } from '../../Elements/index'
 
 
 export function Qaoa() {
@@ -27,7 +27,7 @@ export function Qaoa() {
 
     {/*  max x, st x <=1, upperbound=3, p=1 */}
     <img src={circuit} alt="QAOA Circuit" />
-
+     <Sphere/>
 
 
     </>
