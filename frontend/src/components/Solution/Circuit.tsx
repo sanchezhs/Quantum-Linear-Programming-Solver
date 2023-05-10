@@ -2,6 +2,7 @@ import { Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 import "react-medium-image-zoom/dist/styles.css";
 import { saveAs } from "file-saver";
 import DownloadIcon from "@mui/icons-material/Download";
+import { CopyBlock, googlecode, a11yLight } from "react-code-blocks";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
@@ -24,6 +25,17 @@ export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
           </>
         )}
       </TransformWrapper>
+{/*         <div style={{maxHeight: '500px', overflow: 'scroll'}}>
+        <CopyBlock
+            text={qasm}
+            language="python"
+            showLineNumbers={false}
+            startingLineNumber={true}
+            theme={a11yLight}
+            codeBlock
+          >
+        </CopyBlock>
+        </div> */}
       <OverlayTrigger overlay={<Tooltip >Download as QASM Circuit</Tooltip>}>
         <Button
           type="button"
