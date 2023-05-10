@@ -14,14 +14,18 @@ import re
 
 
 def file_extract_data(s):
-    pattern = re.compile(r"""(?P<comments>(\/\/\s*.+\s*\r?\n)+)  # Comments starts with // and lines are separated by \r?\n, unix or windows
-                              (?P<type>(max|min))\s*:\s*                   # min or max
-                              (?P<objetive>.+)\r?\n              # Objective function
-                              subject\s+to:\s*\r?\n              # Subject to
-                              (?P<constraints>(?:.+\s*\r?\n)+.+) # Constraints, last one without \r?\n
+    pattern = re.compile(r""" (?P<comments>(\/\/\s*.+\s*\r?\n)+)?       # Comments starts with // and lines are separated by \r?\n, unix or windows
+                              (?P<depth>p\s*=\s*[1-9]+)\r?\n                         # Depth of the circuit
+                              (?P<type>(maximize|minimize))\s*:\s*              # min or max
+                              (?P<objetive>.+)\r?\n                   # Objective function
+                              subject\s+to:\s*\r?\n                   # Subject to
+                              #(?P<constraints>(?:.+\s*\r?\n)+.+)      # Constraints, last one without \r?\n
+                              (?P<constraints>(?:.+\s*\r?\n)+)      # Constraints, last one without \r?\n
+                              (?P<AnythingElse>).*                                     # Anything else
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:
         match = re.match(pattern, s)
+        print('match ', match)
         if not match:
             raise serializers.ValidationError(
                 {'errors':[f"Invalid input format. The input string '{s}' must match the expected format."]}
@@ -29,16 +33,17 @@ def file_extract_data(s):
             )
 
         comments = match.group('comments')
-        
+        p = match.group('depth').strip().split('=')[1]
         type = match.group('type')
         objetive = match.group('objetive')
         constraints = re.findall(r'.+', match.group('constraints'))
+        print('p ', p)
         print('comments ', comments)
         print('objetive ', objetive)
         print('constraints ', constraints)
         print('type ', type)
         print('todo ok en txt')
-        return objetive, constraints, type
+        return p, objetive, constraints, type
     except (AttributeError, ValueError) as e:
         raise serializers.ValidationError({'Invalid value': str(e)})
     

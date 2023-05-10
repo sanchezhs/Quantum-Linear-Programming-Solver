@@ -33,18 +33,18 @@ class Result:
 
         encoded_circuit = self.save_circuit(self.circuit, './circuit.png')
         return {
-            'objetive': objetive_value,#self.qaoa_result.prettyprint(),
+            'objetive': objetive_value,
             'vars_values': vars_values,
             'num_qubits': self.circuit.num_qubits,
-            'matrix_shape': [2**self.circuit.num_qubits, 2**self.circuit.num_qubits],
             'circuit': encoded_circuit,
             'histogram': encoded_histogram,
             'qubo': self.qubo.export_as_lp_string(),
+            'qasm': self.circuit.qasm(),
         }
         
         
     def save_circuit(self, circuit, filename):
-        circuit.draw('mpl', filename=filename,
+        _ = circuit.draw('mpl', filename=filename,
                                 plot_barriers=False, initial_state=True)
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
@@ -52,7 +52,9 @@ class Result:
 
 
     def get_solution_details(self, sol, params):
+        print(sorted(sol))
         best = list(sol.keys())[0]
+        print('BEST: ', best)
         objetive_value = self.original.objective.evaluate(np.array(best))
         vars_values = {}
         for i, var in enumerate(self.original.variables):

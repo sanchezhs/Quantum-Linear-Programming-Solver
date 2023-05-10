@@ -15,8 +15,8 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
-import type { Backend } from "../../../context/AppContext";
-import { AppContext } from "../../../context/index";
+import type { Backend } from "../../context/AppContext";
+import { AppContext } from "../../context/index";
 
 function createData(backends: Backend[]): any[] {
   const rows = [];
@@ -335,7 +335,7 @@ export function MyTable() {
   return backends.length > 0 && visibleRows ? (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

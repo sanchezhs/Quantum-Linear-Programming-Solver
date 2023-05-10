@@ -16,9 +16,6 @@ function App() {
         <Row>
           <Qaoa />
         </Row>
-        <Row>
-          <Howto />
-        </Row>
           <Row>
             <Ibm />
           </Row>
@@ -28,6 +25,9 @@ function App() {
         <Row>
           <Dropzone />
         </Row>
+{/*         <Row>
+          <Howto />
+        </Row> */}
       </Container>
       <Footer />
     </div>

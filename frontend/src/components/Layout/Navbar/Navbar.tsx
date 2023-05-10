@@ -5,7 +5,7 @@ import { ScrollContext } from '../../../context/ScrollContext'
 
 export function Navbar() {
 
- const { scrollToFirst, scrollToSecond, scrollToThird, scrollToFourth } = useContext(ScrollContext);
+ const { scrollToFirst, scrollToThird, scrollToFourth } = useContext(ScrollContext);
 
 
   return (
@@ -28,7 +28,6 @@ export function Navbar() {
             Quantum Solver
           </BootstrapNavBar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#howto" onClick={scrollToSecond}>How To</Nav.Link>
             <Nav.Link href="#solver" onClick={scrollToThird}>Solver</Nav.Link>
             <Nav.Link href="#files" onClick={scrollToFourth}>Files</Nav.Link>
           </Nav>

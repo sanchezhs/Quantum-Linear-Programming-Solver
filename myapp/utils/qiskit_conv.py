@@ -38,7 +38,7 @@ class ToQiskitConverter():
         for var, coef in processed_objetive[0].items():
             if coef < 0:
                 qp.integer_var(
-                    lowerbound=-self.upperbound, upperbound=self.upperbound, name=str(var))
+                    lowerbound=0, upperbound=self.upperbound, name=str(var))
             else:
                 qp.integer_var(
                     lowerbound=0, upperbound=self.upperbound, name=str(var))
@@ -47,7 +47,7 @@ class ToQiskitConverter():
         #        lowerbound=0, upperbound=self.upperbound, name=str(variable))
 
         # Add objetive
-        #qp.maximize(
+        #qp.minimize(
         #        linear=processed_objetive[0], constant=int(processed_objetive[1])) # test, borrar si no funciona
         if self.type == 'minimize':
             qp.minimize(

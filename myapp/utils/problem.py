@@ -32,26 +32,14 @@ class Problem():
         best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
         res = Result(best_sol, best_params, circuit, qubo, qp)
         
+        build_circuit.to_qasm()
+        optimized = self.qaoa_optimize(qp, build_circuit)
         return res.get_results()
         # Optimize
-        #optimized = self.qaoa_optimize(qp)
         # Get results
         #result = Result(optimized, ising_model, sampler, qubo, qp)
 
         #return result.get_results()
-
-    def get_ising(self, qp) -> tuple:
-        """ Get ising model and circuit from QuadraticProgram
-        Args:
-            qp (QuadraticProgram): QuadraticProgram
-        Returns:
-            tuple: ising model and circuit
-        """
-        conv = QuadraticProgramToQubo()
-        qubo = conv.convert(qp)
-        # Convert from Qubo to Ising
-        ising_model = qubo.to_ising()
-        return ising_model, qubo
 
     def qaoa_optimize(self, qp: QuadraticProgram, build_circuit: BuildCircuit) -> MinimumEigenOptimizationResult:
         """ Optimize the Ising model using QAOA
@@ -61,12 +49,15 @@ class Problem():
             MinimumEigenOptimizationResult: solution
         """
         best_sol, best_params, circuit = build_circuit.solve()
-        return best_sol, best_params, circuit
-        
+
         #sampler = Sampler(options={'shots': 10000})
         #qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(maxiter=5000), initial_state=self.circuit, initial_point=[1. for _ in range(2*self.p)], reps=self.p)
         #qaoa = MinimumEigenOptimizer(qaoa_mes)
         #qaoa_result = qaoa.solve(qp)
+        #print(qaoa_result)
+
+        return best_sol, best_params, circuit
+        
         #return qaoa_result, sampler
         
         

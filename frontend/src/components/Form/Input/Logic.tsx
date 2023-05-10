@@ -63,7 +63,7 @@ export function Logic({ formState, setFormState, state, dispatch }:
     },
     [{ id: 1, value: "" }]
   );
-  const { showErrorModal, setSolution } = useContext(AppContext);
+  const { showErrorModal, setInputSolution } = useContext(AppContext);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -79,7 +79,7 @@ export function Logic({ formState, setFormState, state, dispatch }:
       setFormState,
       setWaiting,
       showErrorModal,
-      setSolution
+      setInputSolution
     );
   };
 

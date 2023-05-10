@@ -9,10 +9,6 @@ interface ConstraintsListProps {
 
 
 export function ConstraintsList({ constraints, dispatch }: ConstraintsListProps) {
-
-    //const { constraints } = useContext(AppContext)
-    console.log(constraints)
-
   return (
     <div > 
       {constraints.length > 0 && <Form.Label>Subject to:</Form.Label>}

@@ -1,13 +1,23 @@
 import { createContext, useState } from "react";
 
-export interface Solution {
+export interface FileSolution {
   objetive: string;
   vars_values: [{ string: string}];
   num_qubits: string;
-  matrix_shape: [number, number];
   circuit: string;
   histogram: string;
   qubo: string;
+  qasm: string;
+}
+
+export interface InputSolution {
+  objetive: string;
+  vars_values: [{ string: string}];
+  num_qubits: string;
+  circuit: string;
+  histogram: string;
+  qubo: string;
+  qasm: string;
 }
 
 
@@ -33,8 +43,10 @@ export interface Constraints {
 type AppContextType = {
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
-  solution: Solution | null;
-  setSolution: (solution: Solution) => void;
+  fileSolution: FileSolution | null;
+  setFileSolution: (FileSolution: FileSolution) => void;
+  inputSolution: InputSolution | null;
+  setInputSolution: (InputSolution: InputSolution) => void;
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
   setModalShow: (modalShow: ErrorModal) => void;
@@ -44,8 +56,10 @@ export const AppContext = createContext<AppContextType>(
   {
     modalShow: { show: false, body: [] },
     backends: [],
-    solution: null,
-    setSolution: () => {},
+    inputSolution: null,
+    fileSolution: null,
+    setFileSolution: () => {},
+    setInputSolution: () => {},
     setBackends: () => {},
     showErrorModal: () => {},
     setModalShow: () => {},
@@ -55,7 +69,8 @@ export const AppContext = createContext<AppContextType>(
 
 export function AppContextProvider({ children, }: { children: React.ReactNode; }) {
   const [backends, setBackends] = useState<Backend[]>([]);
-  const [solution, setSolution] = useState<Solution>(null);
+  const [fileSolution, setFileSolution] = useState<FileSolution | null>(null);
+  const [inputSolution, setInputSolution] = useState<InputSolution | null>(null);
   const [modalShow, setModalShow] = useState<ErrorModal>({
     show: false,
     body: [],
@@ -77,8 +92,10 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
       value={{
         modalShow,
         backends,
-        solution,
-        setSolution,
+        fileSolution,
+        inputSolution,
+        setFileSolution,
+        setInputSolution,
         setBackends,
         showErrorModal,
         setModalShow,

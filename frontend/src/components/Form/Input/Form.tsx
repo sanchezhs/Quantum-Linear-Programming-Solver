@@ -1,11 +1,10 @@
 import { useContext, useReducer, useState } from "react";
-import { Objetive, CheckRadio, UpperBound, Approximation } from "./index";
-import {  ScrollContext } from "../../../context/index";
-import { UPPERBOUND } from '../../Constants/index'
+import { Objetive, CheckRadio, UpperBound, Approximation, Logic } from "./index";
+import { AppContext, ScrollContext } from "../../../context/index";
+import { UPPERBOUND } from "../../Constants/index";
 import { Modal } from "../../Elements/index";
 import { Form, Row, Col } from "react-bootstrap";
-import { Solution } from "../../Solution/index";
-import { Logic } from './Logic'
+import { InputSolTab } from "../../Solution/index";
 
 export type State = {
   objetive: string;
@@ -49,7 +48,7 @@ export function checkForm(constraints: any, state: State, setFormState: any) {
   ) {
     setFormState({ submitted: false, validated: true });
     return false;
-  } 
+  }
   return true;
 }
 
@@ -61,7 +60,7 @@ export function MainForm() {
   });
 
   const { thirdRef } = useContext(ScrollContext);
-
+  const { inputSolution } = useContext(AppContext);
   return (
     <>
       <Form validated={formState.validated}>
@@ -72,17 +71,21 @@ export function MainForm() {
             <CheckRadio dispatch={dispatch} />
           </Col>
           <Col>
-            <UpperBound state={state} dispatch={dispatch}/>
+            <UpperBound state={state} dispatch={dispatch} />
           </Col>
           <Col>
-            <Approximation state={state} dispatch={dispatch}/>
+            <Approximation state={state} dispatch={dispatch} />
           </Col>
         </Row>
-        <Logic formState={formState} setFormState={setFormState}
-                state={state} dispatch={dispatch}/>
+        <Logic
+          formState={formState}
+          setFormState={setFormState}
+          state={state}
+          dispatch={dispatch}
+        />
         <Modal />
       </Form>
-      <Solution />
+      {inputSolution && <InputSolTab inputSolution={inputSolution} />}
     </>
   );
 }

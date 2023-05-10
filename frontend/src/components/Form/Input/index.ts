@@ -5,3 +5,4 @@ export { ConstraintsList } from './ConstraintsList';
 export { CheckRadio } from './CheckRadio';
 export { UpperBound } from './UpperBound';
 export { Approximation } from './Approximation';
+export { Logic } from './Logic';

@@ -3,6 +3,15 @@ import axios from "axios";
 import type { Backend } from "../../context/AppContext";
 import { Action, ActionType } from "../Form/Ibm/Form";
 
+
+/**
+ * Sends the token to the backend for processing.
+ * If there are errors, it will show the error modal.
+ * @param apiToken 
+ * @param setBackends 
+ * @param dispatch 
+ * @param showErrorModal 
+ */
 export const sendToken = (
   apiToken: string,
   setBackends: (backends: Backend[]) => void,

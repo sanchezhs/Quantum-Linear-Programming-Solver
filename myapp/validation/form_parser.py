@@ -25,7 +25,6 @@ constraints_grammar = """
         | NUMBER
     
     NUMBER: DIGIT+ 
-        |   FLOAT
     
     VAR: ("_"|LETTER) ("_"|LETTER|DIGIT)*
         
@@ -49,7 +48,8 @@ objetive_grammar = """
 
     ?linexp: "(" linexp ")"
         | NUMBER VAR                
-        | VAR                       
+        | "-"? VAR                       
+        
         
     ?term: term ("*" | "/") factor  
         | factor
@@ -59,7 +59,6 @@ objetive_grammar = """
         | NUMBER
     
     NUMBER: DIGIT+     
-        |   FLOAT
         
     VAR: ("_"|LETTER) ("_"|LETTER|DIGIT)* 
         
@@ -106,6 +105,8 @@ class VarDetector(Transformer):
             left = items[0]
             right = items[1]
             print('term: ', left, right)
+            if isinstance(left, float) or isinstance(right, float):
+                return {'left': left, 'right': right}
             if left['left']['is_var'] and right['left']['is_var']:
                 raise serializers.ValidationError(
                     ('two variables multiplied or divided in same term'),
@@ -129,11 +130,6 @@ class VarDetector(Transformer):
         return float(token)
 
     def VAR(self, token):
-        if 's' in token.value:
-            raise serializers.ValidationError(
-                ('"s" is a reserved word, please use another variable name.'),
-                code='invalid'
-            )
         return {'var': token.value, 'is_var': True}
 
 

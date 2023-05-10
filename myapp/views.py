@@ -25,11 +25,11 @@ class Api_index(viewsets.ViewSet):
                               serializer.data['radioValue'],
                               serializer.data['upperBound'],
                               serializer.data['p'])
-            #try:
-            result = problem.solve()
-            #except Exception as e:
-                #print(e)
-                #return Response({'status': 'error', 'errors': e.args}, status=400)
+            try:
+                result = problem.solve()
+            except Exception as e:
+                print(e.args)
+                return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
         print(serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
@@ -44,16 +44,27 @@ class Api_upload(viewsets.ViewSet):
     serializer_class = serializers.FileSerializer
 
     def create(self, request):
-        print('view: ', request.body.decode('utf-8'))
-        contents = request.body.decode('utf-8')
-        contents = json.loads(contents)['fileContents']
-        objetive, constraints, type = file_reader.file_extract_data(contents)
+        # extract file contents from request
+        contents = json.loads(request.body.decode('utf-8'))['fileContents']
+        
+        # extract problem data from file contents
+        p, objetive, constraints, type = file_reader.file_extract_data(contents)
+        
         try:
+            # validate objective and constraints
             form_parser.validate_objetive(objetive)
             form_parser.validate_constraints(constraints)
-            return Response({'status': 'ok'}, status=201)
+            
+            # create and solve problem
+            problem = Problem(objetive, constraints, type, 3, p)
+            result = problem.solve()
+            
+            return Response(result, status=201)
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
+        except Exception as e:
+            return Response({'status': 'error', 'errors': e.args}, status=400)
+
 
 
 class Api_ibm(viewsets.ViewSet):
