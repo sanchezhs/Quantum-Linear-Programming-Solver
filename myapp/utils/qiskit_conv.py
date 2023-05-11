@@ -2,6 +2,7 @@ from qiskit_optimization import QuadraticProgram
 from sympy import sympify
 import re
 
+
 class ToQiskitConverter():
     def __init__(self, problem):
         self.problem = problem
@@ -42,7 +43,7 @@ class ToQiskitConverter():
             else:
                 qp.integer_var(
                     lowerbound=0, upperbound=self.upperbound, name=str(var))
-        #for variable in variables:
+        # for variable in variables:
         #    qp.integer_var(
         #        lowerbound=0, upperbound=self.upperbound, name=str(variable))
 
@@ -61,20 +62,20 @@ class ToQiskitConverter():
             for processed_constraint in processed_constraints:
                 if processed_constraint['sense'] == 'L':
                     qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
-                                    rhs=int(processed_constraint['rhs']-1), name=processed_constraint['name']
-                                    )
+                                         rhs=int(processed_constraint['rhs']-1), name=processed_constraint['name']
+                                         )
                 elif processed_constraint['sense'] == 'G':
                     qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
-                                    rhs=int(processed_constraint['rhs']+1), name=processed_constraint['name']
-                                    )
+                                         rhs=int(processed_constraint['rhs']+1), name=processed_constraint['name']
+                                         )
                 else:
                     qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
-                                    rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
-                                    )
+                                         rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
+                                         )
         except Exception as e:
             raise Exception(
                 'Error while processing constraints. Check if the constraint name already exists or the sense is valid') from e
-                
+
         return qp
 
     def simplify(self):

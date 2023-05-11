@@ -41,7 +41,7 @@ export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
           type="button"
           variant="outline-primary"
           size="sm"
-          onClick={() => saveStringToFile(qasm, "qasm.txt")}
+          onClick={() => saveStringToFile(qasm, "circuit.qasm")}
         >
           <DownloadIcon fontSize="small"/>
         </Button>

@@ -8,8 +8,9 @@ from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit_optimization import QuadraticProgram
 from qiskit.algorithms.minimum_eigensolvers import QAOA
 from .qiskit_conv import ToQiskitConverter
-from .buid_circuit import BuildCircuit
+from .optimize_problem import OptimizeProblem
 from .result import Result
+
 
 class Problem():
 
@@ -26,28 +27,25 @@ class Problem():
         # Convert to QuadraticProgram
         qp = ToQiskitConverter(self).to_qiskit()
         qubo = QuadraticProgramToQubo().convert(qp)
+        print(qubo.prettyprint())
         # Get ising model and circuit
-        #ising_model, qubo = self.get_ising(qp)
-        build_circuit = BuildCircuit(qubo, qp, self.p, self.type)
-        best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
-        res = Result(best_sol, best_params, circuit, qubo, qp)
-        
-        build_circuit.to_qasm()
-        optimized = self.qaoa_optimize(qp, build_circuit)
+        # ising_model, qubo = self.get_ising(qp)
+        best_solution, best_theta, optimized_circuit = OptimizeProblem(
+            qubo, qp, self.p, self.type).solve()
+
+        # best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
+        res = Result(best_solution, best_theta, optimized_circuit, qubo, qp)
+        # optimized = self.qaoa_optimize(qp, build_circuit)
         return res.get_results()
         # Optimize
         # Get results
-        #result = Result(optimized, ising_model, sampler, qubo, qp)
+        # result = Result(optimized, ising_model, sampler, qubo, qp)
 
-        #return result.get_results()
+        # return result.get_results()
 
-    def qaoa_optimize(self, qp: QuadraticProgram, build_circuit: BuildCircuit) -> MinimumEigenOptimizationResult:
-        """ Optimize the Ising model using QAOA
-        Args:
-            qp (QuadraticProgram): QuadraticProgram
-        Returns:
-            MinimumEigenOptimizationResult: solution
-        """
+
+"""     def qaoa_optimize(self, qp: QuadraticProgram, build_circuit: BuildCircuit) -> MinimumEigenOptimizationResult:
+        
         best_sol, best_params, circuit = build_circuit.solve()
 
         #sampler = Sampler(options={'shots': 10000})
@@ -58,12 +56,4 @@ class Problem():
 
         return best_sol, best_params, circuit
         
-        #return qaoa_result, sampler
-        
-        
-        
-
-
-
-
-
+        #return qaoa_result, sampler """

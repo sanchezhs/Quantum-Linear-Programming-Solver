@@ -1,12 +1,20 @@
 import { useContext } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { ScrollContext } from "../../../context/ScrollContext";
 import { CopyBlock, googlecode } from "react-code-blocks";
+import { Card } from "../../Elements/index";
 import circuit from "./circuit.png";
+import EastIcon from "@mui/icons-material/East";
 
 export function Qaoa() {
   const { firstRef } = useContext(ScrollContext);
-  const problemExample = `maximize: x\n subject to:\n x <=1\n upperbound=3, Circuit Depth (p) = 1`;
+  const body = {
+    comment: "no_button",
+    type: "maximize",
+    objective: "x",
+    constraints: ["x <= 1"],
+    circuitDepth: "p = 1",
+  };
 
   return (
     <>
@@ -25,22 +33,26 @@ export function Qaoa() {
       </p>
       <p>
         This tool allows you to test the QAOA algorithm on integer programming
-        problems, and to see the results obtained by the algorithm.
+        problems, and to see the results obtained by the algorithm. The example
+        below shows how to use the tool and the circuit that is generated for
+        the problem.
       </p>
-
       <Row id="modal-row">
+        <Card body={[body, body]} />
         <Col>
-          <CopyBlock
-            text={problemExample}
-            language="python"
-            showLineNumbers={false}
-            startingLineNumber={true}
-            theme={googlecode}
-            codeBlock
-          />
-        </Col>
-        <Col>
-          <img src={circuit} alt="QAOA Circuit" style={{ width: "100%" }} />
+          <div style={{ position: "relative" }}>
+            <Button
+              variant="outline-primary"
+              size="sm"
+              style={{ position: "absolute", top: 0, right: 0 }}
+            >
+              Copy Code
+            </Button>
+            <figure style={{ textAlign: "center" }}>
+              <img src={circuit} alt="QAOA Circuit" style={{ width: "100%" }} />
+              <figcaption>QAOA Circuit</figcaption>
+            </figure>
+          </div>
         </Col>
       </Row>
     </>

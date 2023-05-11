@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 
+
 /**
  * Card component
  *  - type: type of the card
@@ -8,59 +9,67 @@ import { useState } from "react";
  * @param props
  * @returns
  */
-export function Card(props: { type: string }) {
-  const [show, setShow] = useState(false);
-  const fullExample = (
-    <>
-      <h6>
-        <strong>p = 1</strong>
-      </h6>
-      <h6>
-        <strong>{props.type}:</strong> 10x + 20y - 30z
-      </h6>
-      <h6>
-        <strong>subject to:</strong>
-      </h6>
-      <ul>
-        <li>x &lt; 1</li>
-        <li>2x + y &le; 0</li>
-        <li>z &lt; 0</li>
-        <li>x + y + z = 0</li>
-      </ul>
-    </>
-  );
-  const example = (
-    <>
-      <h6>
-        <strong>Circuit depth = p &gt; 0</strong>
-      </h6>
-      <h6>
-        <strong>{props.type}:</strong> f(x<sub>1</sub>, x<sub>2</sub>, ..., x
-        <sub>m</sub>)
-      </h6>
-      <h6>
-        <strong>subject to:</strong>
-      </h6>
-      <ul>
-        <li>constraint 1</li>
-        <li>constraint 2</li>
-        <li>...</li>
-        <li>constraint n</li>
-      </ul>
-    </>
-  );
 
+type CardProps = {
+  body: {
+    comment: string;
+    type: string;
+    objective: string;
+    constraints: string[];
+    circuitDepth: string;
+  }[];
+};
+
+function renderBody(body: {
+  comment: string;
+  type: string;
+  objective: string;
+  constraints: string[];
+  circuitDepth: string;
+}) {
+  return (
+    <div>
+      <h6>
+        <strong>{body.circuitDepth}</strong>
+      </h6>
+      <h6>
+        <strong>{body.type}:</strong> {body.objective}
+      </h6>
+      <h6>
+        <strong>subject to:</strong>
+      </h6>
+      <ul>
+        {body.constraints.map((constraint, index) => (
+          <li key={index}>{constraint}</li>
+        ))}
+      </ul>
+      {/*       <h6>
+        <strong>Upper bound:</strong> {body.upperbound}
+      </h6> */}
+    </div>
+  );
+}
+
+export function Card({ body }: CardProps) {
+  const [show, setShow] = useState(false);
   return (
     <pre
       className="shadow p-3 mb-5 bg-body-tertiary"
       style={{ width: "35%", marginRight: "45px" }}
     >
-      <div style={{ width: "1px", float: "right", marginRight: "50px" }}>
-        <Button variant="outline-info" size="sm" onClick={() => setShow(!show)}>
-          {show ? "Hide" : "Show"}
-        </Button>
-      </div>
-      <code>{!show ? example : fullExample}</code>
+      {body[0].comment !== "no_button"  && (
+        <div style={{ width: "1px", float: "right", marginRight: "50px" }}>
+          <Button
+            variant="outline-info"
+            size="sm"
+            onClick={() => setShow(!show)}
+          >
+            {show ? "Hide" : "Show"}
+          </Button>
+        </div>
+      )}
+      {/* <code>{!show ? example : fullExample}</code> */}
+      <code>{!show ? renderBody(body[0]) : renderBody(body[1])}</code>
     </pre>
   );
 }
