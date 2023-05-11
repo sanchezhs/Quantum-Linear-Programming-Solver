@@ -4,7 +4,14 @@ import re
 
 
 class ToQiskitConverter():
+    """ Class to convert a problem send by the user to a QuadraticProgram
+        class from qiskit_optimization
+    """
     def __init__(self, problem):
+        """ Constructor
+        Args:
+            problem (Problem): problem with the objetive, constraints, type, upperbound and sense
+        """
         self.problem = problem
         self.objetive = problem.objetive
         self.constraints = problem.constraints
@@ -13,6 +20,7 @@ class ToQiskitConverter():
         self.upperbound = problem.upperbound
 
     def to_qiskit(self) -> QuadraticProgram:
+        
         # Simplify objetive and constraints
         objetive, constraints = self.simplify()
         processed = self.process_constraints(constraints)
@@ -47,9 +55,8 @@ class ToQiskitConverter():
         #    qp.integer_var(
         #        lowerbound=0, upperbound=self.upperbound, name=str(variable))
 
+
         # Add objetive
-        #qp.minimize(
-        #        linear=processed_objetive[0], constant=int(processed_objetive[1])) # test, borrar si no funciona
         if self.type == 'minimize':
             qp.minimize(
                 linear=processed_objetive[0], constant=int(processed_objetive[1]))
@@ -78,7 +85,7 @@ class ToQiskitConverter():
 
         return qp
 
-    def simplify(self):
+    def simplify(self) -> tuple[str, list[str]]:
         """ Insert multiplication sign between variables and numbers
            for sympify to work properly
         Returns:

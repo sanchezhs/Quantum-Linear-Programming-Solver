@@ -57,7 +57,7 @@ export function Card({ body }: CardProps) {
       className="shadow p-3 mb-5 bg-body-tertiary"
       style={{ width: "35%", marginRight: "45px" }}
     >
-      {body[0].comment !== "no_button"  && (
+      {body.length > 1  && (
         <div style={{ width: "1px", float: "right", marginRight: "50px" }}>
           <Button
             variant="outline-info"

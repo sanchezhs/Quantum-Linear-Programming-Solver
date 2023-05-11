@@ -1,10 +1,8 @@
 import { useContext } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { ScrollContext } from "../../../context/ScrollContext";
-import { CopyBlock, googlecode } from "react-code-blocks";
 import { Card } from "../../Elements/index";
 import circuit from "./circuit.png";
-import EastIcon from "@mui/icons-material/East";
 
 export function Qaoa() {
   const { firstRef } = useContext(ScrollContext);
@@ -21,7 +19,6 @@ export function Qaoa() {
       <h3 ref={firstRef}>
         QAOA <small className="text-muted">How does it work?</small>
       </h3>
-      {/* <p>explicar un poco c&oacute;mo funciona qaoa y la web, se podra usar cuenta en ibm...</p> */}
       <p>
         The Quantum Approximate Optimization Algorithm (
         <a href="https://arxiv.org/pdf/1411.4028.pdf">QAOA</a>) is a quantum
@@ -38,16 +35,9 @@ export function Qaoa() {
         the problem.
       </p>
       <Row id="modal-row">
-        <Card body={[body, body]} />
+        <Card body={[body]} />
         <Col>
           <div style={{ position: "relative" }}>
-            <Button
-              variant="outline-primary"
-              size="sm"
-              style={{ position: "absolute", top: 0, right: 0 }}
-            >
-              Copy Code
-            </Button>
             <figure style={{ textAlign: "center" }}>
               <img src={circuit} alt="QAOA Circuit" style={{ width: "100%" }} />
               <figcaption>QAOA Circuit</figcaption>

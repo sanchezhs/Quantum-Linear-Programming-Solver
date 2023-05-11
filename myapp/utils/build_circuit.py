@@ -13,11 +13,10 @@ class BuildCircuit():
         self.theta = theta
         self.p = p
 
-    def problem_hamiltonian(self, circuit, gamma, j) -> QuantumCircuit:
+    def problem_hamiltonian(self, circuit: QuantumCircuit, gamma: list, j: int) -> QuantumCircuit:
         pauli_list = self.pauli[0].primitive.to_list()
-
         for pauli in pauli_list:
-            op, coef = pauli[0], pauli[1]
+            op, coef = pauli[0][::-1], pauli[1]
             lqubit = []
             for i, c in enumerate(op):
                 if c == 'Z':
@@ -56,7 +55,7 @@ class BuildCircuit():
         circuit.measure_all()
         return circuit
 
-    def to_qasm(self):
+    def to_qasm(self) -> str:
         return self.circuit.qasm()
 
     def print_circuit(self):

@@ -1,7 +1,5 @@
-from lark import Lark, Transformer, Visitor
-from lark.visitors import Visitor_Recursive
+from lark import Lark, Transformer
 from rest_framework import serializers
-from itertools import chain
 
 constraints_grammar = """
     ?start: comparison
@@ -122,7 +120,7 @@ class VarDetector(Transformer):
             return -1 * float(items[1])
         else:
             return float(items[1])
-        
+
     def linexp_var(self, items):
         return {'var': items[1], 'is_var': True}
 
@@ -133,10 +131,10 @@ class VarDetector(Transformer):
         return {'var': token.value, 'is_var': True}
 
 
-def validate_objetive(objetive):
+def validate_objetive(objetive: str) -> None:
     try:
         parser = Lark(objetive_grammar, parser='lalr')
-        tree = parser.parse(objetive)
+        _ = parser.parse(objetive)
     except (serializers.ValidationError, Exception) as e:
         print(e)
         raise serializers.ValidationError(
@@ -144,13 +142,13 @@ def validate_objetive(objetive):
         )
 
 
-def validate_constraints(constraints):
+def validate_constraints(constraints: list[str]) -> None:
     try:
         for constraint in constraints:
             t = VarDetector()
             parser = Lark(constraints_grammar, parser='lalr', transformer=t)
             tree = parser.parse(constraint)
-            visitor = t.transform(tree)
+            _ = t.transform(tree)
     except Exception as e:
         print('error constraints: ', e)
         msg = ''
@@ -159,17 +157,4 @@ def validate_constraints(constraints):
 
         raise serializers.ValidationError(
             f'Invalid value (parse error): {constraint}{msg}'
-        )
-
-
-def check_duplicated_constraints(constraints):
-    rev_multidict = {}
-    for name, constraint in constraints.items():
-        rev_multidict.setdefault(constraint, set()).add(name)
-    duplicates = set(chain.from_iterable(
-        values for values in rev_multidict.values() if len(values) > 1))
-    if duplicates:
-        raise serializers.ValidationError(
-            ('Constraint %(name)s duplicated: %(value)s'),
-            code='duplicated'
         )

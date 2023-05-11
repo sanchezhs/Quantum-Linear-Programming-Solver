@@ -10,7 +10,7 @@ import json
 
 class Api_index(viewsets.ViewSet):
     """
-    ViewSet for index page, it checks if objetive and constraints are valid
+    ViewSet for input form, it checks if objetive and constraints are valid
     passing them to Lark parser.
     """
 

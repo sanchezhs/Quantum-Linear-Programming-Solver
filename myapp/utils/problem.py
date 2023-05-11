@@ -23,7 +23,7 @@ class Problem():
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
         self.circuit = None
 
-    def solve(self):
+    def solve(self) -> dict:
         # Convert to QuadraticProgram
         qp = ToQiskitConverter(self).to_qiskit()
         qubo = QuadraticProgramToQubo().convert(qp)

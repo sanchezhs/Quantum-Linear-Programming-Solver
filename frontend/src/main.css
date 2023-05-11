@@ -161,6 +161,10 @@ a {
   color: white;
 }
 
+#dark input[type="number"] {
+  color: white;
+}
+
 #dark #footer-div {
   background-color: #112a44;
   color: white;
@@ -252,4 +256,12 @@ a {
 
 #dark form input[type="text"]:focus {
   color: white;
+}
+
+#dark dd, dt {
+  color: #829ab1;
+}
+
+#dark figcaption {
+  color: #829ab1;
 }

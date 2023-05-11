@@ -1,19 +1,19 @@
-"""
-// comentarios
-[min | max]: funcion
-subject to: 
-c1
-c2
-c3
-...
-cn
-"""
-
 from rest_framework import serializers
 import re
 
 
-def file_extract_data(s):
+def file_extract_data(s: str) -> tuple[str, str, list[str], str]:
+    """
+    Extract data from a string with the following format:
+    // comments
+    p = 3
+    [min | max]: function
+    subject to:
+    c1
+    c2
+    ...
+    cn
+    """
     pattern = re.compile(r""" (?P<comments>(\/\/\s*.+\s*\r?\n)+)?       # Comments starts with // and lines are separated by \r?\n, unix or windows
                               (?P<depth>p\s*=\s*[1-9]+)\r?\n                         # Depth of the circuit
                               (?P<type>(maximize|minimize))\s*:\s*              # min or max
@@ -28,8 +28,9 @@ def file_extract_data(s):
         print('match ', match)
         if not match:
             raise serializers.ValidationError(
-                {'errors':[f"Invalid input format. The input string '{s}' must match the expected format."]}
-                
+                {'errors': [
+                    f"Invalid input format. The input string '{s}' must match the expected format."]}
+
             )
 
         comments = match.group('comments')
@@ -46,6 +47,6 @@ def file_extract_data(s):
         return p, objetive, constraints, type
     except (AttributeError, ValueError) as e:
         raise serializers.ValidationError({'Invalid value': str(e)})
-    
-#s = "// comentariosA x mayor que 0\n// comentariosN\n// comentariosC\nmin: hola que tal\nsubject to:\nx < 1\ny < 2\n2*(1+2+3+4) - x < 21\n"
-#extract_data(s)
+
+# s = "// comentariosA x mayor que 0\n// comentariosN\n// comentariosC\nmin: hola que tal\nsubject to:\nx < 1\ny < 2\n2*(1+2+3+4) - x < 21\n"
+# extract_data(s)
