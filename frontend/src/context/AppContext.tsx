@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 
+
 export interface FileSolution {
   objetive: string;
   vars_values: [{ string: string}];
@@ -66,7 +67,13 @@ export const AppContext = createContext<AppContextType>(
   }
 ); 
 
-
+/**
+ *  AppContextProvider, provides the context to the entire app
+ *  Backends: List of available backends
+ *  FileSolution: Problem from file upload
+ *  InputSolution: Problem from input form
+ *  ModalShow: Modal to show errors
+ */
 export function AppContextProvider({ children, }: { children: React.ReactNode; }) {
   const [backends, setBackends] = useState<Backend[]>([]);
   const [fileSolution, setFileSolution] = useState<FileSolution | null>(null);

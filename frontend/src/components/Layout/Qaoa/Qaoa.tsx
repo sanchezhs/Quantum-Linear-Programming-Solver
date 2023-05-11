@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { ScrollContext } from "../../../context/ScrollContext";
 import { Card } from "../../Elements/index";
 import circuit from "./circuit.png";
@@ -25,7 +25,7 @@ export function Qaoa() {
         algorithm that can be used to find approximate solutions to
         combinatorial optimization problems. It is a variational algorithm,
         meaning that it uses both a classical computer and a quantum computer
-        through a process called quantum annealing, whose goal is to find the
+        through a process which is a discretization of quantum annealing, whose goal is to find the
         minimum of a function.
       </p>
       <p>

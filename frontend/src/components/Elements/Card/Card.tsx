@@ -1,11 +1,15 @@
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 
-
 /**
  * Card component
- *  - type: type of the card
- *  - show: show the full example or not
+ *   - Renders a card with the given body
+ *    - The body is a list of objects with the following properties:
+ *      - comment: string
+ *      - type: minimization or maximization
+ *      - objective: string
+ *      - constraints: string[], array of constraints
+ *      - circuitDepth: string
  * @param props
  * @returns
  */
@@ -57,7 +61,7 @@ export function Card({ body }: CardProps) {
       className="shadow p-3 mb-5 bg-body-tertiary"
       style={{ width: "35%", marginRight: "45px" }}
     >
-      {body.length > 1  && (
+      {body.length > 1 && (
         <div style={{ width: "1px", float: "right", marginRight: "50px" }}>
           <Button
             variant="outline-info"

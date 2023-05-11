@@ -1,12 +1,11 @@
-import {Navbar as BootstrapNavBar, Nav, Container} from "react-bootstrap";
+import { Navbar as BootstrapNavBar, Nav, Container } from "react-bootstrap";
 import ThemeSwitch from "../../ThemeSwitch";
-import { useContext } from 'react'
-import { ScrollContext } from '../../../context/ScrollContext'
+import { useContext } from "react";
+import { ScrollContext } from "../../../context/ScrollContext";
 
 export function Navbar() {
-
- const { scrollToFirst, scrollToThird, scrollToFourth } = useContext(ScrollContext);
-
+  const { scrollToFirst, scrollToThird, scrollToFourth } =
+    useContext(ScrollContext);
 
   return (
     <>
@@ -28,8 +27,12 @@ export function Navbar() {
             Quantum Solver
           </BootstrapNavBar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#solver" onClick={scrollToThird}>Solver</Nav.Link>
-            <Nav.Link href="#files" onClick={scrollToFourth}>Files</Nav.Link>
+            <Nav.Link href="#solver" onClick={scrollToThird}>
+              Solver
+            </Nav.Link>
+            <Nav.Link href="#files" onClick={scrollToFourth}>
+              Files
+            </Nav.Link>
           </Nav>
           <ThemeSwitch />
         </Container>
@@ -37,4 +40,3 @@ export function Navbar() {
     </>
   );
 }
-

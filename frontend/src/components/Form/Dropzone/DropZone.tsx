@@ -2,14 +2,13 @@ import { useCallback, useState, useMemo, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { ScrollContext, AppContext } from "../../../context/index";
 import { sendFile } from "../../Actions/sendFile";
-import { Message } from "../../Elements/index";
 import { baseStyle, acceptStyle, activeStyle, rejectStyle } from "./styles";
 import { Howto } from "../../Layout/index";
 import { FileSolTab } from "../../Solution/index";
 
 /**
- *  This component is used to upload a file
- *
+ *  This component is used to display the dropzone
+ *  where the user can drop the file to be solved
  */
 export function MyDropzone() {
   const [fileContents, setFileContents] = useState("");
@@ -22,7 +21,11 @@ export function MyDropzone() {
     reader.onload = (event) => {
       if (event.target) {
         setFileContents(event.target.result as string);
-        sendFile(event.target.result as string, showErrorModal, setFileSolution);
+        sendFile(
+          event.target.result as string,
+          showErrorModal,
+          setFileSolution
+        );
       }
     };
     reader.readAsText(acceptedFiles[0]);
@@ -54,7 +57,6 @@ export function MyDropzone() {
       <section id="dropzone-section" className="container">
         <h3 ref={fourthRef}>File Upload</h3>
         <Howto />
-        {/* <Message fileContents={fileContents} /> */}
         <div {...getRootProps({ className: "dropzone", style })}>
           <input {...getInputProps()} />
           {isDragActive ? (
@@ -64,7 +66,9 @@ export function MyDropzone() {
           )}
         </div>
       </section>
-     { fileSolution && <FileSolTab fileSolution={fileSolution} fileContents={fileContents}/>}
+      {fileSolution && (
+        <FileSolTab fileSolution={fileSolution} fileContents={fileContents} />
+      )}
     </>
   );
 }

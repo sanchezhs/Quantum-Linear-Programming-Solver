@@ -25,9 +25,6 @@ function App() {
         <Row>
           <Dropzone />
         </Row>
-{/*         <Row>
-          <Howto />
-        </Row> */}
       </Container>
       <Footer />
     </div>

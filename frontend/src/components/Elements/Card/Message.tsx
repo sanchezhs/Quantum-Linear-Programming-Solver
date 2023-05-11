@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
-
 /**
  *  This component is used to show the content of a file in a modal
  * @param fileContents
- * @returns 
+ * @returns
  */
 export function Message({ fileContents }: { fileContents: string }) {
   const [show, setShow] = useState(false);

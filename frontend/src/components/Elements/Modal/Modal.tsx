@@ -1,14 +1,13 @@
 import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
-import { Button, Modal, Container, Row, Col } from 'react-bootstrap'
+import { Button, Modal, Container, Row, Col } from "react-bootstrap";
 
 /**
  *  This component is used to show the errors in a modal
- * 
+ *
  */
 export function myModal() {
   const { modalShow, setModalShow } = useContext(AppContext);
-  console.log(modalShow.body)
   return (
     <>
       <Modal
@@ -20,13 +19,14 @@ export function myModal() {
         </Modal.Header>
         <Modal.Body className="show-grid">
           <Container>
-            {modalShow.body && modalShow.body.map((error, i) => (
-              <Row key={i} id="modal-row">
-                <Col style={{ overflowY: "scroll" }}>
-                  <p>{error}</p>
-                </Col>
-              </Row>
-            ))}
+            {modalShow.body &&
+              modalShow.body.map((error, i) => (
+                <Row key={i} id="modal-row">
+                  <Col style={{ overflowY: "scroll" }}>
+                    <p>{error}</p>
+                  </Col>
+                </Row>
+              ))}
           </Container>
         </Modal.Body>
         <Modal.Footer>
@@ -41,4 +41,3 @@ export function myModal() {
     </>
   );
 }
-

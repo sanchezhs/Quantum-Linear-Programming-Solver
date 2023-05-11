@@ -88,7 +88,6 @@ export function Logic({ formState, setFormState, state, dispatch }:
     setFormState({ submitted: false, validated: false });
     dispatch({ type: "setObjetive", payload: "" });
     dispatch({ type: "setUpperBound", payload: "10" });
-    //setConstraints([{ id: 1, value: "" }]);
     const cleared = constraints.map((constraint) => {
       constraint.value = "";
       return constraint;
