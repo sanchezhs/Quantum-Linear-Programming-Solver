@@ -3,7 +3,7 @@ import { State, Action } from "./Form";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Tooltip from "@mui/material/Tooltip";
 
-export function Approximation({
+export function Depth({
   state,
   dispatch,
 }: {
@@ -37,7 +37,7 @@ export function Approximation({
           placeholder="Depth of the circuit"
           onChange={(e) => {
             if (e.target.value)
-              dispatch({ type: "setP", payload: e.target.value });
+              dispatch({ type: "setDepth", payload: e.target.value });
           }}
           value={state.p}
         />

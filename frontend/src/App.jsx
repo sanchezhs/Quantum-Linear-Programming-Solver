@@ -1,10 +1,9 @@
 import { useContext } from "react";
 import { ThemeContext } from "./context/ThemeContext";
-import { Footer, Navbar, Howto, Qaoa } from './components/Layout/index';
-import { Form, Dropzone, Ibm } from './components/Form/index'; 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-
+import { Footer } from "./components/Footer/Footer";
+import { Navbar } from "./components/Navbar/Navbar";
+import { Home, Input, Files, NotFound } from "./pages/index" 
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -12,6 +11,14 @@ function App() {
   return (
     <div className="App" id={theme}>
       <Navbar />
+      <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/solver" element={<Input />} />
+          <Route path="/files" element={<Files />} />
+          <Route path="*" element={<NotFound/>}/>
+      </Routes>
+      <Footer />
+      {/*       <Navbar />
       <Container>
         <Row>
           <Qaoa />
@@ -26,7 +33,7 @@ function App() {
           <Dropzone />
         </Row>
       </Container>
-      <Footer />
+      <Footer /> */}
     </div>
   );
 }

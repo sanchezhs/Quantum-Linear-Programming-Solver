@@ -1,6 +1,6 @@
 import { InputSolution } from "../../context/AppContext";
 import { HOST } from "../Constants/host";
-import type { State } from "../Form/Input/Form";
+import { State } from '../../pages/input/Form'
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -32,6 +32,8 @@ export const sendForm = (
       constraints: constraintsPost,
       radioValue: state.radioValue,
       upperBound: state.upperBound,
+      lowerBound: state.lowerBound,
+      seed: state.seed,
       p: state.p,
     })
     .then((response) => {

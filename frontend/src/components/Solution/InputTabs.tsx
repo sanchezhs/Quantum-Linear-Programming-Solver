@@ -1,7 +1,6 @@
 import { Col, Row, Tab, Tabs } from "react-bootstrap";
 import { Circuit, Histogram, Details } from "./index";
 import { InputSolution } from "../../context/AppContext";
-import { CopyBlock, googlecode } from "react-code-blocks";
 
 export function InputSolTab({
   inputSolution,

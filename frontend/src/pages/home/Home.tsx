@@ -1,11 +1,8 @@
-import { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
-import { ScrollContext } from "../../../context/ScrollContext";
-import { Card } from "../../Elements/index";
+import { Card } from "../../components/Elements/index";
 import circuit from "./circuit.png";
 
-export function Qaoa() {
-  const { firstRef } = useContext(ScrollContext);
+export function Home() {
   const body = {
     comment: "no_button",
     type: "maximize",
@@ -16,7 +13,8 @@ export function Qaoa() {
 
   return (
     <>
-      <h3 ref={firstRef}>
+       <section id="container-section" className="container">
+      <h3 >
         QAOA <small className="text-muted">How does it work?</small>
       </h3>
       <p>
@@ -45,6 +43,7 @@ export function Qaoa() {
           </div>
         </Col>
       </Row>
+      </section>
     </>
   );
 }

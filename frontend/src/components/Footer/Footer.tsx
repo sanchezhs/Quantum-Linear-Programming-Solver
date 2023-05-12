@@ -10,7 +10,7 @@ export function Footer() {
       <Row id="footer-row">
         <Col>
             <a href="https:www.github.com/sanchezhs">
-            <GitHubIcon/>
+            <GitHubIcon color='secondary'/>
             </a>
         </Col>
       </Row>

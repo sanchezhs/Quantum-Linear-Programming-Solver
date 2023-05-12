@@ -30,7 +30,6 @@ pre {
   padding: 0px;
 }
 
-
 #footer-row {
   align-items: center;
   justify-content: center;
@@ -38,10 +37,14 @@ pre {
 }
 
 #footer-div {
-  background-color: #0087f7;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #0d6efd;
   color: white;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 code {
@@ -80,12 +83,27 @@ a {
   padding: 35px 35px;
 }
 
-#dropzone-section {
-  margin-bottom: 10px;
+#content-section {
+  margin-bottom: 150px;
 }
 
 .App {
   height: 100vh;
+}
+
+.nav-links {
+  color: white;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 1.05em;
+}
+
+#not-found-error {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5em;
 }
 
 /* Dark mode */
@@ -168,8 +186,6 @@ a {
 #dark #footer-div {
   background-color: #112a44;
   color: white;
-  padding-top: 30px;
-  padding-bottom: 30px;
 }
 
 #dark .dropzone {
@@ -197,11 +213,8 @@ a {
   color: #829ab1;
 }
 
-#dark h3 {
-  color: #829ab1;
-}
-
-#dark h5 {
+#dark h3,
+h5 {
   color: #829ab1;
 }
 
@@ -258,10 +271,22 @@ a {
   color: white;
 }
 
-#dark dd, dt {
+#dark dd,
+dt {
   color: #829ab1;
 }
 
 #dark figcaption {
   color: #829ab1;
+}
+
+#dark .nav-links {
+  color: #829ab1;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 1.05em;
+}
+
+#dark .nav-links:hover {
+  color: #bcccdc;
 }

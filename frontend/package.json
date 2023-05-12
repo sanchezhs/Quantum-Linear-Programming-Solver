@@ -44,6 +44,7 @@
     "@types/react-latex": "^2.0.0",
     "@types/three": "^0.151.0",
     "@vitejs/plugin-react": "^3.1.0",
+    "react-router-dom": "^6.11.1",
     "typescript": "^5.0.4",
     "vite": "^4.2.0"
   }

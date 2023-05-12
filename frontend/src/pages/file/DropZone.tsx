@@ -1,10 +1,11 @@
-import { useCallback, useState, useMemo, useContext } from "react";
+import { useCallback, useState, useMemo, useContext, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { ScrollContext, AppContext } from "../../../context/index";
-import { sendFile } from "../../Actions/sendFile";
+import Spinner from "react-bootstrap/Spinner";
+import { AppContext } from "../../context/index";
+import { sendFile } from "../../components/Actions/sendFile";
 import { baseStyle, acceptStyle, activeStyle, rejectStyle } from "./styles";
-import { Howto } from "../../Layout/index";
-import { FileSolTab } from "../../Solution/index";
+import { Howto } from "./Howto/Howto";
+import { FileSolTab } from "../../components/Solution/index";
 
 /**
  *  This component is used to display the dropzone
@@ -12,7 +13,7 @@ import { FileSolTab } from "../../Solution/index";
  */
 export function MyDropzone() {
   const [fileContents, setFileContents] = useState("");
-  const { fourthRef } = useContext(ScrollContext);
+  const [showWaiting, setShowWaiting] = useState(false);
   const { showErrorModal } = useContext(AppContext);
   const { fileSolution, setFileSolution } = useContext(AppContext);
 
@@ -31,6 +32,14 @@ export function MyDropzone() {
     reader.readAsText(acceptedFiles[0]);
   }, []);
 
+  const onDropAccepted = useCallback((acceptedFiles: Blob[]) => {
+    setShowWaiting(true);
+  }, []);
+
+  const onServerResponse = useEffect(() => {
+    setShowWaiting(false);
+  }, [fileSolution]);
+
   const {
     getRootProps,
     getInputProps,
@@ -39,6 +48,7 @@ export function MyDropzone() {
     isDragReject,
     isFocused,
   } = useDropzone({
+    onDropAccepted,
     onDrop,
     accept: { "text/plain": [".txt"] },
     maxFiles: 1,
@@ -54,21 +64,23 @@ export function MyDropzone() {
   );
   return (
     <>
-      <section id="dropzone-section" className="container">
-        <h3 ref={fourthRef}>File Upload</h3>
+      <section id="content-section" className="container">
+        <h3>File Upload</h3>
         <Howto />
         <div {...getRootProps({ className: "dropzone", style })}>
           <input {...getInputProps()} />
           {isDragActive ? (
             <p>Drop the file here ...</p>
+          ) : showWaiting ? (
+              <Spinner animation="border" variant="success" /> 
           ) : (
             <p>Drop a file here, or click to select a file</p>
           )}
         </div>
+        {fileSolution && (
+          <FileSolTab fileSolution={fileSolution} fileContents={fileContents} />
+        )}
       </section>
-      {fileSolution && (
-        <FileSolTab fileSolution={fileSolution} fileContents={fileContents} />
-      )}
     </>
   );
 }

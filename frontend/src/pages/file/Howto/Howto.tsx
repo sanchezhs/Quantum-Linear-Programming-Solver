@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { Card } from "../../Elements/index";
+import { Card } from "../../../components/Elements/index";
 import {
   exampleMax,
   exampleMin,

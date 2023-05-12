@@ -1,16 +1,12 @@
+import { Constraint } from "./index";
+import Form from "react-bootstrap/Form";
 import { useContext, useReducer, useState } from "react";
-import { ConstraintsList } from "./index";
-import { AppContext } from "../../../context/index";
+import { AppContext } from "../../context/index";
 import Buttons from "./Buttons";
-import { sendForm } from "../../Actions/index";
+import { sendForm } from "../../components/Actions/index";
 import { Action, checkForm } from "./Form";
+import { State } from "./Form";
 
-export type State = {
-  objetive: string;
-  radioValue: string;
-  upperBound: string;
-  p: string;
-};
 
 export type ConstraintType = {
   id: number;
@@ -18,22 +14,23 @@ export type ConstraintType = {
 };
 
 export type ConstraintAction =
-  | { type: "createConstraint";  }
+  | { type: "createConstraint" }
   | { type: "deleteConstraint"; payload: number }
   | { type: "updateConstraints"; payload: ConstraintType[] };
 
-
-
-export function Logic({ formState, setFormState, state, dispatch }:
-    { formState: { submitted: boolean; validated: boolean };
-        setFormState: React.Dispatch<
-            React.SetStateAction<{ submitted: boolean; validated: boolean }>
-        >;
-        state: State;
-        dispatch: React.Dispatch<Action>;
-    }
-
-    ) {
+export function ConstraintsList({
+  formState,
+  setFormState,
+  state,
+  dispatch,
+}: {
+  formState: { submitted: boolean; validated: boolean };
+  setFormState: React.Dispatch<
+    React.SetStateAction<{ submitted: boolean; validated: boolean }>
+  >;
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}) {
   const [waiting, setWaiting] = useState(false);
 
   const [constraints, ListDispatch] = useReducer(
@@ -70,9 +67,9 @@ export function Logic({ formState, setFormState, state, dispatch }:
     setWaiting(true);
     setFormState({ submitted: true, validated: true });
     if (!checkForm(constraints, state, setFormState)) {
-        setWaiting(false);
-        return
-    };
+      setWaiting(false);
+      return;
+    }
     sendForm(
       state,
       constraints,
@@ -97,8 +94,16 @@ export function Logic({ formState, setFormState, state, dispatch }:
   };
 
   return (
-    <>
-      <ConstraintsList constraints={constraints} dispatch={ListDispatch} />
+    <div>
+      {constraints.length > 0 && <Form.Label>Subject to:</Form.Label>}
+      {constraints.map((constraint) => (
+        <Constraint
+          key={constraint.id}
+          constraints={constraints}
+          constraint={constraint}
+          dispatch={ListDispatch}
+        />
+      ))}
       <Buttons
         waiting={waiting}
         setWaiting={setWaiting}
@@ -108,6 +113,6 @@ export function Logic({ formState, setFormState, state, dispatch }:
         handleSubmit={handleSubmit}
         handleReset={handleReset}
       />
-    </>
+    </div>
   );
 }
