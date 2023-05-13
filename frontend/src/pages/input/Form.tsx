@@ -1,7 +1,7 @@
 import { useContext, useReducer, useState } from "react";
 import { Objetive, CheckRadio, Bounds, Depth, ConstraintsList, Seed } from "./index";
 import { AppContext } from "../../context/index";
-import { UPPERBOUND } from "../../components/Constants/index";
+import { UPPERBOUND, LOWERBOUND } from "../../components/Constants/index";
 import { Modal } from "../../components/Elements/index";
 import { Form, Row, Col } from "react-bootstrap";
 import { InputSolTab } from "../../components/Solution/index";
@@ -19,7 +19,7 @@ export const initialState: State = {
   objetive: "",
   radioValue: "",
   upperBound: UPPERBOUND,
-  lowerBound: "0",
+  lowerBound: LOWERBOUND,
   seed: String((Math.random() * (9999 - 0 + 1)) << 0),
   p: "1",
 };
@@ -75,8 +75,8 @@ export function MainForm() {
       <section id="content-section" className="container">
         <Form validated={formState.validated}>
           <h3>Solver</h3>
-          <div style={{ width: "100%", overflow: "hidden" }}>
-            <div id="modal-row" style={{ width: "50%", float: "left" }}>
+          <div className="container" style={{ width: "100%", overflow: "hidden" }}>
+            <div id="modal-row" style={{  width: "50%", float: "left" }}>
               <Objetive state={state} dispatch={dispatch} />
               <CheckRadio dispatch={dispatch} />
               <ConstraintsList
@@ -86,7 +86,7 @@ export function MainForm() {
                 dispatch={dispatch}
               />
             </div>
-            <div style={{ float: "right" }}>
+            <div style={{  float: "right" }}>
               <h5>Problem Parameters</h5>
               <Bounds state={state} dispatch={dispatch} />
               <h5>Circuit Parameters</h5>
@@ -94,7 +94,7 @@ export function MainForm() {
               <Seed state={state} dispatch={dispatch} />
             </div>
           </div>
-          <Modal />
+          {/* <Modal /> */}
         </Form>
         {inputSolution && <InputSolTab inputSolution={inputSolution} />}
       </section>

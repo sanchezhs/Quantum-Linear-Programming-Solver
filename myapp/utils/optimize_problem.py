@@ -7,23 +7,27 @@ from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from scipy.optimize import minimize
 from .build_circuit import BuildCircuit
-
+import random
 
 class OptimizeProblem():
     def __init__(self,
                  qubo: QuadraticProgram,
                  qp: QuadraticProgram,
                  p: int,
-                 type: str) -> None:
+                 type: str,
+                 max_value: int,
+                 seed: int) -> None:
         self.qubo = qubo
         self.original_qp = qp
         self.p = p
         self.type = type
+        self.max_value = max_value
+        random.seed(seed)
         self.ising = qubo.to_ising()
         self.circuit = None
         self.nqubits = len(qubo.variables)
         self.backend = Aer.get_backend('qasm_simulator')
-        self.shots = 7000
+        self.shots = 2000
 
     def execute_circuit(self, theta: list) -> dict:
         self.circuit = BuildCircuit(
@@ -47,14 +51,14 @@ class OptimizeProblem():
                 if self.is_feasible(sample):
                     total_counts += count
                     energy += self.evaluate(sample) * count
-            return energy / total_counts
+            return energy / total_counts if total_counts > 0 else 0
         return solution_energy
 
     def solve(self) -> tuple[dict, list, QuantumCircuit]:
         best_theta = self.optimize()
         all_solutions = self.execute_circuit(best_theta.x)
 
-        self.execute_on_real_device(best_theta.x)
+        #self.execute_on_real_device(best_theta.x)
 
         all_solutions = self.invert_counts(all_solutions)
         best = sorted(all_solutions.items(), key=lambda x: x[1], reverse=True)
@@ -64,9 +68,10 @@ class OptimizeProblem():
         return best_interpreted, best_theta, self.circuit
 
     def optimize(self) -> list:
-        init = [1 for _ in range(0, 2 * self.p)]
+        init = [random.random() + (self.max_value / (2 * np.pi)) for _ in range(0, 2 * self.p)]
         cost = self.cost()
-        return minimize(cost, init, method='COBYLA', options={'maxiter': self.shots, 'disp': True})
+        return minimize(cost, init, method='COBYLA', options={'maxiter': self.shots, 'disp': True, 'rhobeg': 0.5})
+        #return minimize(cost, init, method='SLSQP', options={'eps': 0.1})
 
     def is_feasible(self, sample: np.ndarray) -> bool:
         return self.original_qp.is_feasible(self.interpret(sample))

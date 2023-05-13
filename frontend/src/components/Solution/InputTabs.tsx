@@ -7,7 +7,6 @@ export function InputSolTab({
 }: {
   inputSolution: InputSolution;
 }) {
-  console.log(inputSolution.vars_values)
   return (
     <Tabs
       style={{ marginTop: "15px" }}
@@ -23,6 +22,7 @@ export function InputSolTab({
                 objetive={inputSolution.objetive}
                 vars_values={inputSolution.vars_values}
                 qubits={inputSolution.num_qubits}
+                parameters={inputSolution.parameters}
               />
             </Col>
             <Col>

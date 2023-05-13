@@ -2,7 +2,6 @@ import { Button, Tooltip, OverlayTrigger } from "react-bootstrap";
 import "react-medium-image-zoom/dist/styles.css";
 import { saveAs } from "file-saver";
 import DownloadIcon from "@mui/icons-material/Download";
-import { CopyBlock, googlecode, a11yLight } from "react-code-blocks";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
@@ -15,8 +14,17 @@ export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
 
   return (
     <>
-
-      <TransformWrapper initialScale={0.5} limitToBounds={true}>
+        <OverlayTrigger overlay={<Tooltip >Download as QASM Circuit</Tooltip>}>
+        <Button
+          type="button"
+          variant="outline-primary"
+          size="sm"
+          onClick={() => saveStringToFile(qasm, "circuit.qasm")}
+        >
+          <DownloadIcon fontSize="small"/>
+        </Button>
+        </OverlayTrigger>
+      <TransformWrapper initialScale={0.5} limitToBounds={true} centerOnInit={true} centerZoomedOut={true} initialPositionX={55}>
         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
           <>
             <TransformComponent>
@@ -36,16 +44,7 @@ export function Circuit({ circuit, qasm }: { circuit: string; qasm: string }) {
           >
         </CopyBlock>
         </div> */}
-      <OverlayTrigger overlay={<Tooltip >Download as QASM Circuit</Tooltip>}>
-        <Button
-          type="button"
-          variant="outline-primary"
-          size="sm"
-          onClick={() => saveStringToFile(qasm, "circuit.qasm")}
-        >
-          <DownloadIcon fontSize="small"/>
-        </Button>
-        </OverlayTrigger>
+
     </>
   );
 }

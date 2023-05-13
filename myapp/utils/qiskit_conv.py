@@ -1,12 +1,14 @@
 from qiskit_optimization import QuadraticProgram
 from sympy import sympify
 import re
+import sys
 
 
 class ToQiskitConverter():
     """ Class to convert a problem send by the user to a QuadraticProgram
         class from qiskit_optimization
     """
+
     def __init__(self, problem):
         """ Constructor
         Args:
@@ -18,9 +20,11 @@ class ToQiskitConverter():
         self.type = problem.type
         self.sense = problem.sense
         self.upperbound = problem.upperbound
+        self.lowerbound = problem.lowerBound
+        self.max_value = - sys.maxsize - 1
 
     def to_qiskit(self) -> QuadraticProgram:
-        
+
         # Simplify objetive and constraints
         objetive, constraints = self.simplify()
         processed = self.process_constraints(constraints)
@@ -29,7 +33,7 @@ class ToQiskitConverter():
         processed_constraints = self.extract_coeffs(processed)
         processed_objetive = self.extract_objetive_coeffs(objetive)
 
-        return self.__to_qiskit(processed_objetive, processed_constraints)
+        return self.__to_qiskit(processed_objetive, processed_constraints), self.max_value
 
     def __to_qiskit(self, processed_objetive: dict, processed_constraints: list[dict]) -> QuadraticProgram:
         """ Build ising using qiskit_optimization QuadraticProgram
@@ -43,18 +47,9 @@ class ToQiskitConverter():
 
         # Get variables (integer variables)
         variables = list(processed_objetive[0].keys())
-        print(processed_objetive[0])
-        for var, coef in processed_objetive[0].items():
-            if coef < 0:
-                qp.integer_var(
-                    lowerbound=0, upperbound=self.upperbound, name=str(var))
-            else:
-                qp.integer_var(
-                    lowerbound=0, upperbound=self.upperbound, name=str(var))
-        # for variable in variables:
-        #    qp.integer_var(
-        #        lowerbound=0, upperbound=self.upperbound, name=str(variable))
-
+        for var in variables:
+            qp.integer_var(
+                lowerbound=self.lowerbound, upperbound=self.upperbound, name=str(var))
 
         # Add objetive
         if self.type == 'minimize':
@@ -67,6 +62,9 @@ class ToQiskitConverter():
         # Add constraints
         try:
             for processed_constraint in processed_constraints:
+                if abs(processed_constraint['rhs']) > self.max_value:
+                    self.max_value = abs(processed_constraint['rhs'])
+
                 if processed_constraint['sense'] == 'L':
                     qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
                                          rhs=int(processed_constraint['rhs']-1), name=processed_constraint['name']

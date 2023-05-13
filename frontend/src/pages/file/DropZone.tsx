@@ -6,6 +6,7 @@ import { sendFile } from "../../components/Actions/sendFile";
 import { baseStyle, acceptStyle, activeStyle, rejectStyle } from "./styles";
 import { Howto } from "./Howto/Howto";
 import { FileSolTab } from "../../components/Solution/index";
+import { parseFileContents } from "./Howto/parseFileContents";
 
 /**
  *  This component is used to display the dropzone
@@ -21,6 +22,7 @@ export function MyDropzone() {
     const reader = new FileReader();
     reader.onload = (event) => {
       if (event.target) {
+        //parseFileContents(event.target.result as string);
         setFileContents(event.target.result as string);
         sendFile(
           event.target.result as string,

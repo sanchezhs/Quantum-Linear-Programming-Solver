@@ -4,11 +4,14 @@ import { Footer } from "./components/Footer/Footer";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Home, Input, Files, NotFound } from "./pages/index" 
 import { Routes, Route } from "react-router-dom";
+import { MathJaxContext } from 'better-react-mathjax'
+import { Modal } from "./components/Elements/index";
 
 function App() {
   const { theme } = useContext(ThemeContext);
 
   return (
+    <MathJaxContext>
     <div className="App" id={theme}>
       <Navbar />
       <Routes>
@@ -17,24 +20,10 @@ function App() {
           <Route path="/files" element={<Files />} />
           <Route path="*" element={<NotFound/>}/>
       </Routes>
+      <Modal/>
       <Footer />
-      {/*       <Navbar />
-      <Container>
-        <Row>
-          <Qaoa />
-        </Row>
-          <Row>
-            <Ibm />
-          </Row>
-        <Row>
-          <Form />
-        </Row>
-        <Row>
-          <Dropzone />
-        </Row>
-      </Container>
-      <Footer /> */}
-    </div>
+      </div>
+      </MathJaxContext>
   );
 }
 

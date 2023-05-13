@@ -14,24 +14,26 @@ from .result import Result
 
 class Problem():
 
-    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, p: str) -> None:
+    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, p: str) -> None:
         self.objetive = objetive
         self.constraints = constraints
         self.type = type
         self.upperbound = int(upperbound)
+        self.lowerBound = int(lowerBound)
+        self.seed = int(seed)
         self.p = int(p)
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
         self.circuit = None
 
     def solve(self) -> dict:
         # Convert to QuadraticProgram
-        qp = ToQiskitConverter(self).to_qiskit()
+        qp, max_value = ToQiskitConverter(self).to_qiskit()
         qubo = QuadraticProgramToQubo().convert(qp)
         print(qubo.prettyprint())
         # Get ising model and circuit
         # ising_model, qubo = self.get_ising(qp)
         best_solution, best_theta, optimized_circuit = OptimizeProblem(
-            qubo, qp, self.p, self.type).solve()
+            qubo, qp, self.p, self.type, max_value, self.seed).solve()
 
         # best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
         res = Result(best_solution, best_theta, optimized_circuit, qubo, qp)

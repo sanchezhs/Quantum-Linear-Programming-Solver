@@ -47,6 +47,7 @@ pre {
   padding-bottom: 10px;
 }
 
+
 code {
   width: 10px;
   font-family: "Fira Code", "Roboto Mono", Monaco, Consolas, monospace;
@@ -105,6 +106,11 @@ a {
   transform: translate(-50%, -50%);
   font-size: 2.5em;
 }
+
+
+
+
+
 
 /* Dark mode */
 #dark .App {
@@ -182,6 +188,7 @@ a {
 #dark input[type="number"] {
   color: white;
 }
+
 
 #dark #footer-div {
   background-color: #112a44;

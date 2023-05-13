@@ -33,6 +33,7 @@ export function Bounds({
               required
               type="number"
               min={1}
+              max={100}
               placeholder="Maximum allowed value for the variables"
               onChange={(e) => {
                 if (e.target.value)
@@ -63,8 +64,8 @@ export function Bounds({
             <Form.Control
               required
               type="number"
-              min={-100}
-              max={0}
+              min={0}
+              max={100}
               placeholder="Minimum allowed value for the variables"
               onChange={(e) => {
                 if (e.target.value)

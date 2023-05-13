@@ -24,6 +24,8 @@ class Api_index(viewsets.ViewSet):
                               serializer.data['constraints'],
                               serializer.data['radioValue'],
                               serializer.data['upperBound'],
+                              serializer.data['lowerBound'],
+                              serializer.data['seed'],
                               serializer.data['p'])
             #try:
             result = problem.solve()
@@ -48,15 +50,22 @@ class Api_upload(viewsets.ViewSet):
         contents = json.loads(request.body.decode('utf-8'))['fileContents']
         
         # extract problem data from file contents
-        p, objetive, constraints, type = file_reader.file_extract_data(contents)
+        #p, objetive, constraints, type = file_reader.file_extract_data(contents)
+        data = file_reader.file_extract_data(contents)
         
         try:
             # validate objective and constraints
-            form_parser.validate_objetive(objetive)
-            form_parser.validate_constraints(constraints)
+            form_parser.validate_objetive(data['objetive'])
+            form_parser.validate_constraints(data['constraints'])
             
             # create and solve problem
-            problem = Problem(objetive, constraints, type, 3, p)
+            problem = Problem(data['objetive'], 
+                              data['constraints'], 
+                              data['type'], 
+                              data['upperBound'], 
+                              data['lowerBound'], 
+                              data['seed'], 
+                              data['p'])
             result = problem.solve()
             
             return Response(result, status=201)

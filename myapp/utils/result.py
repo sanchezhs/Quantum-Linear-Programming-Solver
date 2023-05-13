@@ -2,6 +2,7 @@ import base64
 from qiskit_ibm_runtime import  Sampler
 from sympy import sympify
 from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
+from qiskit_optimization.problems.quadratic_objective import ObjSense
 from typing import List, Tuple
 from qiskit.primitives import Sampler
 from qiskit_optimization.algorithms import (
@@ -29,13 +30,14 @@ class Result:
         self.original = qp
 
     def get_results(self):
-        objetive_value, vars_values, encoded_histogram = self.get_solution_details(self.best_sol, self.best_params)
+        objetive_value, vars_values, encoded_histogram = self.get_solution_details(self.best_sol)
 
         encoded_circuit = self.save_circuit(self.circuit, './circuit.png')
         return {
             'objetive': objetive_value,
             'vars_values': vars_values,
             'num_qubits': self.circuit.num_qubits,
+            'parameters': self.best_params.x,
             'circuit': encoded_circuit,
             'histogram': encoded_histogram,
             'qubo': self.qubo.export_as_lp_string(),
@@ -51,8 +53,11 @@ class Result:
         return enconded_string
 
 
-    def get_solution_details(self, sol, params):
-        sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[1], reverse=True)}
+    def get_solution_details(self, sol):
+        if self.original.objective.sense == ObjSense.MAXIMIZE:
+            sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0], reverse=True)}
+        else:
+            sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0])}  
         best = list(sol.keys())[0]
         print('BEST: ', best)
         objetive_value = self.original.objective.evaluate(np.array(best))
@@ -69,16 +74,3 @@ class Result:
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
         return objetive_value, vars_values, enconded_string
-
-    def get_filtered_samples(self,
-                             samples: List[SolutionSample],
-                             threshold: float = 0,
-                             allowed_status: Tuple[OptimizationResultStatus] = (
-                                 OptimizationResultStatus.SUCCESS,),
-                             ):
-        res = []
-        for s in samples:
-            if s.status in allowed_status and s.probability > threshold:
-                res.append(s)
-
-        return res

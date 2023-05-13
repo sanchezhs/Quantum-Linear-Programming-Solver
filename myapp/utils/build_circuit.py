@@ -1,5 +1,5 @@
 from qiskit import QuantumCircuit, QuantumRegister
-
+import numpy as np
 
 class BuildCircuit():
     def __init__(self,
@@ -14,6 +14,7 @@ class BuildCircuit():
         self.p = p
 
     def problem_hamiltonian(self, circuit: QuantumCircuit, gamma: list, j: int) -> QuantumCircuit:
+        print(self.pauli[0].primitive)
         pauli_list = self.pauli[0].primitive.to_list()
         for pauli in pauli_list:
             op, coef = pauli[0][::-1], pauli[1]
@@ -21,11 +22,10 @@ class BuildCircuit():
             for i, c in enumerate(op):
                 if c == 'Z':
                     lqubit.append(i)
-
             if len(lqubit) == 1:
-                circuit.rz(coef.real * 2 * gamma[j], lqubit[0])
+                circuit.rz(coef.real/(2*np.pi) * 2 * gamma[j], lqubit[0])
             elif len(lqubit) == 2:
-                circuit.rzz(coef.real * 2 * gamma[j], lqubit[0], lqubit[1])
+                circuit.rzz(coef.real/(2*np.pi) * 2 * gamma[j], lqubit[0], lqubit[1])
 
         return circuit
 
@@ -33,8 +33,8 @@ class BuildCircuit():
         nqubits = self.nqubis
         qreg_q = QuantumRegister(nqubits, 'q')
         circuit = QuantumCircuit(qreg_q)
-        beta = self.theta[:self.p]
-        gamma = self.theta[self.p:]
+        beta = self.theta[self.p:]
+        gamma = self.theta[:self.p]
 
         # Apply Hadamard gate to all qubits
         for i in range(0, nqubits):

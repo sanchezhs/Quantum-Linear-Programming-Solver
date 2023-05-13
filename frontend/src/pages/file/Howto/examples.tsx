@@ -1,28 +1,28 @@
 export const fullExampleMin = {
   comment: "",
   circuitDepth: "p = 1",
-  type: "minimize",
+  type: "\\text{minimize }",
   objective: "10x + 20y - 30z",
-  constraints: ["x <= 1", "2x + y <= 0", "z <= 0", "x + y + z = 0"],
+  constraints: ["x \\leq 1", "2x + y \\leq 0", "z \\leq 0", "x + y + z = 0"],
 };
 export const fullExampleMax = {
   comment: "",
   circuitDepth: "p = 1",
-  type: "maximize",
+  type: "\\text{maximize }",
   objective: "10x + 20y - 30z",
-  constraints: ["x <= 1", "2x + y <= 0", "z <= 0", "x + y + z = 0"],
+  constraints: ["x \\leq 1", "2x + y \\leq 0", "z \\leq 0", "x + y + z = 0"],
 };
 export const exampleMin = {
   comment: "",
-  circuitDepth: "Circuit depth = p > 0",
-  type: "minimize",
-  objective: "f(x1, x2, ..., xm)",
-  constraints: ["constraint 1", "constraint 2", "...", "constraint n"],
+  circuitDepth: "\\text{Circuit depth} = p > 0",
+  type: "\\text{minimize: }",
+  objective: "f(x_1, x_2, \\dots, x_m)",
+  constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };
 export const exampleMax = {
   comment: "",
-  circuitDepth: "Circuit depth = p > 0",
-  type: "maximize",
-  objective: "f(x1, x2, ..., xm)",
-  constraints: ["constraint 1", "constraint 2", "...", "constraint n"],
+  circuitDepth: "\\text{Circuit depth} = p > 0",
+  type: "\\text{minimize: }",
+  objective: "f(x_1, x_2, \\dots, x_m)",
+  constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };

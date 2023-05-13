@@ -5,6 +5,7 @@ export interface FileSolution {
   objetive: string;
   vars_values: [{ string: string}];
   num_qubits: string;
+  parameters: number[];
   circuit: string;
   histogram: string;
   qubo: string;
@@ -15,6 +16,7 @@ export interface InputSolution {
   objetive: string;
   vars_values: [{ string: string}];
   num_qubits: string;
+  parameters: number[];
   circuit: string;
   histogram: string;
   qubo: string;

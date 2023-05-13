@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
+import { MathJax } from 'better-react-mathjax'
 
 /**
  * Card component
@@ -34,17 +35,20 @@ function renderBody(body: {
   return (
     <div>
       <h6>
-        <strong>{body.circuitDepth}</strong>
+      <MathJax>{`\\(${body.circuitDepth}\\)`}</MathJax>
       </h6>
       <h6>
-        <strong>{body.type}:</strong> {body.objective}
+        {/* <strong>{body.type}:</strong> {body.objective} */}
+        <MathJax>{`\\(${body.type} ${body.objective}\\)`}</MathJax>
       </h6>
       <h6>
-        <strong>subject to:</strong>
+      <MathJax>{`\\(\\text{subject to:}\\)`}</MathJax>
       </h6>
       <ul>
         {body.constraints.map((constraint, index) => (
-          <li key={index}>{constraint}</li>
+          <li key={index}>
+            <MathJax>{`\\(${constraint}\\)`}</MathJax>
+          </li>
         ))}
       </ul>
       {/*       <h6>

@@ -1,7 +1,9 @@
 import { Col, Row, Tab, Tabs } from "react-bootstrap";
+import { useContext } from "react";
+import { ThemeContext } from '../../context/index'
 import { Circuit, Histogram, Details } from "./index";
 import { FileSolution } from "../../context/AppContext";
-import { CopyBlock, googlecode } from "react-code-blocks";
+import { CopyBlock, googlecode, paraisoLight, paraisoDark } from "react-code-blocks";
 
 export function FileSolTab({
   fileSolution,
@@ -10,6 +12,8 @@ export function FileSolTab({
   fileSolution: FileSolution;
   fileContents: string;
 }) {
+  console.log(fileContents)
+  const { theme } = useContext(ThemeContext);
   return (
     <Tabs
       style={{ marginTop: "15px" }}
@@ -23,7 +27,7 @@ export function FileSolTab({
           language="python"
           showLineNumbers={true}
           startingLineNumber={true}
-          theme={googlecode}
+          theme={theme === "light" ? paraisoLight : paraisoDark}
           codeBlock
         />
       </Tab>
@@ -35,6 +39,7 @@ export function FileSolTab({
                 objetive={fileSolution.objetive}
                 vars_values={fileSolution.vars_values}
                 qubits={fileSolution.num_qubits}
+                parameters={fileSolution.parameters}
               />
             </Col>
             <Col>
@@ -44,9 +49,7 @@ export function FileSolTab({
         )}
       </Tab>
       <Tab eventKey="Circuit" title="Circuit">
-        {fileSolution && (
-          <Circuit circuit={fileSolution.circuit} qasm={fileSolution.qasm} />
-        )}
+        <Circuit circuit={fileSolution.circuit} qasm={fileSolution.qasm} />
       </Tab>
     </Tabs>
   );
