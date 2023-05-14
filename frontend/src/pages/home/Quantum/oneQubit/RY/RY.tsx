@@ -1,0 +1,44 @@
+import { Gate } from "../../index";
+import RYCircuit from "./RYCircuit.svg";
+import RYStateVector from "./RYStateVector.png";
+import RYBloch from "./RYBloch.png";
+import { MathJax } from "better-react-mathjax";
+
+export function RY() {
+  const infoGate = (
+    <>
+      <p>
+        The RY gate is a single qubit gate that is represented by the
+        following matrix:
+      </p>
+      <p>
+        <MathJax style={{ textAlign: "center" }}>
+          {"\\( e^{-i \\frac{\\theta}{2}Y} \\)"}
+        </MathJax>
+      </p>
+      <p>
+        The RY gate is used to flip the state of a qubit over the Y-axis
+        by an angle of theta.
+      </p>
+      <p>The image shows the RY gate applied to the initial state with an 
+        angle of pi/2 radians.
+      </p>
+{/*       <p>
+        <MathJax style={{ textAlign: "center" }}>
+          {"\\(Z|0\\rangle = -1|0\\rangle\\)"}
+        </MathJax>
+      </p> */}
+    </>
+  );
+
+  return (
+    <>
+      <Gate
+        circuit={RYCircuit}
+        bloch={RYBloch}
+        stateVector={RYStateVector}
+        infoGate={infoGate}
+      />
+    </>
+  );
+}

@@ -58,7 +58,10 @@ class Result:
             sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0], reverse=True)}
         else:
             sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0])}  
+        
         best = list(sol.keys())[0]
+            
+            
         print('BEST: ', best)
         objetive_value = self.original.objective.evaluate(np.array(best))
         vars_values = {}

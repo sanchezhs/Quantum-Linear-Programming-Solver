@@ -14,7 +14,6 @@ class BuildCircuit():
         self.p = p
 
     def problem_hamiltonian(self, circuit: QuantumCircuit, gamma: list, j: int) -> QuantumCircuit:
-        print(self.pauli[0].primitive)
         pauli_list = self.pauli[0].primitive.to_list()
         for pauli in pauli_list:
             op, coef = pauli[0][::-1], pauli[1]

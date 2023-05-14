@@ -1,5 +1,4 @@
-from qiskit_ibm_runtime import Sampler
-from sympy import sympify
+from rest_framework import serializers
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
 from qiskit.algorithms.optimizers import COBYLA
@@ -28,13 +27,18 @@ class Problem():
     def solve(self) -> dict:
         # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
-        qubo = QuadraticProgramToQubo().convert(qp)
+        conv = QuadraticProgramToQubo()
+        qubo = conv.convert(qp)
         print(qubo.prettyprint())
         # Get ising model and circuit
         # ising_model, qubo = self.get_ising(qp)
-        best_solution, best_theta, optimized_circuit = OptimizeProblem(
+        best_solution, best_theta, optimized_circuit = OptimizeProblem(conv,
             qubo, qp, self.p, self.type, max_value, self.seed).solve()
 
+        if not best_solution:
+            raise serializers.ValidationError({'errors': [
+                    'Solution not found']}) 
+        
         # best_sol, best_params, circuit = self.qaoa_optimize(qp, build_circuit)
         res = Result(best_solution, best_theta, optimized_circuit, qubo, qp)
         # optimized = self.qaoa_optimize(qp, build_circuit)

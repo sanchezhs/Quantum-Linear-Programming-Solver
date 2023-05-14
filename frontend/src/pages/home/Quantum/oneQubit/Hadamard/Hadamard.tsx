@@ -1,0 +1,51 @@
+import { Gate } from "../../index";
+import HadamardCircuit from "./HadamardCircuit.svg";
+import HadamardStateVector from "./HStateVector.png";
+import HadamardBloch from "./HadamardBloch.png";
+import { MathJax } from "better-react-mathjax";
+
+export function Hadamard() {
+  const infoGate = (
+    <>
+      <p>
+        The Hadamard gate is a single qubit gate that is represented by the
+        following matrix:
+      </p>
+      <p>
+        <MathJax style={{ textAlign: "center" }}>
+          {
+            "\\(\\frac{1}{\\sqrt{2}} \\begin{pmatrix} 1 & 1 \\\\ 1 & -1 \\end{pmatrix} \\)"
+          }
+        </MathJax>
+      </p>
+      <p>
+        The Hadamard gate is used to create superposition states. It is also
+        used in many other quantum algorithms, such as the Deutsch-Jozsa
+        algorithm and the quantum Fourier transform.
+      </p>
+      <p>This image shows the H gate applied to the initial state</p>
+      <p>
+        <MathJax style={{ textAlign: "center" }}>
+          {"\\(H|0\\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}\\)"}
+        </MathJax>
+      </p>
+      <p>
+        <MathJax style={{ textAlign: "center" }}>
+          {"\\(|\\frac{1}{\\sqrt{2}}|^2 = 0.5\\)"}
+        </MathJax>
+      </p>
+      <p>So the probability of measuring either 0 or 1 is 50%.</p>
+    </>
+  );
+
+  return (
+    <>
+      <Gate
+        circuit={HadamardCircuit}
+        stateVector={HadamardStateVector}
+        bloch={HadamardBloch}
+        infoGate={infoGate}
+      />
+    </>
+  );
+}

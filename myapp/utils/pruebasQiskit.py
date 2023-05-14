@@ -7,16 +7,18 @@ from qiskit.algorithms.optimizers import COBYLA
 
 
 qp = QuadraticProgram()
-qp.integer_var(name='x', lowerbound=0, upperbound=2)
-qp.maximize(linear={'x': 1})
-qp.linear_constraint(linear={'x': 1}, sense='LE', rhs=2, name='c1') # x <= 1
+qp.integer_var(name='x', lowerbound=0, upperbound=10)
+qp.integer_var(name='y', lowerbound=0, upperbound=10)
+qp.maximize(linear={'x': 1, 'y': 1})
+qp.linear_constraint(linear={'x': 1}, sense='EQ', rhs=5, name='c1') # x <= 1
+qp.linear_constraint(linear={'x': 1, 'y': 1}, sense='LE', rhs=1, name='c2') # x <= 1
+qp.linear_constraint(linear={'y': 1}, sense='GE', rhs=3, name='c3') # x <= 1
 
 sampler = Sampler()
 qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(), reps=1)
 qaoa_res = MinimumEigenOptimizer(qaoa_mes).solve(qp)
 print(qaoa_res)
-print(sampler.circuits[0].decompose().decompose().draw('text'))
-qubo = QuadraticProgramToQubo().convert(qp)
+#qubo = QuadraticProgramToQubo().convert(qp)
 
 print('----------------------------------------------------------------------------')
 

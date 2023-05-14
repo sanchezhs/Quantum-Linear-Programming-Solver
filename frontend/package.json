@@ -19,6 +19,7 @@
     "bootstrap": "^5.2.3",
     "file-saver": "^2.0.5",
     "katex": "^0.16.7",
+    "quantum-circuit": "^0.9.205",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-chartjs-2": "^5.2.0",

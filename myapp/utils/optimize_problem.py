@@ -11,12 +11,14 @@ import random
 
 class OptimizeProblem():
     def __init__(self,
+                 conv: QuadraticProgramToQubo,
                  qubo: QuadraticProgram,
                  qp: QuadraticProgram,
                  p: int,
                  type: str,
                  max_value: int,
                  seed: int) -> None:
+        self.conv = conv
         self.qubo = qubo
         self.original_qp = qp
         self.p = p
@@ -27,7 +29,7 @@ class OptimizeProblem():
         self.circuit = None
         self.nqubits = len(qubo.variables)
         self.backend = Aer.get_backend('qasm_simulator')
-        self.shots = 2000
+        self.shots = 2500
 
     def execute_circuit(self, theta: list) -> dict:
         self.circuit = BuildCircuit(
@@ -77,18 +79,14 @@ class OptimizeProblem():
         return self.original_qp.is_feasible(self.interpret(sample))
 
     def interpret(self, sample: np.ndarray) -> np.ndarray:
-        conv = QuadraticProgramToQubo()
-        _ = conv.convert(self.original_qp)
         x = np.array([int(bit) for bit in str(sample)])
-        return conv.interpret(x)
+        return self.conv.interpret(x)
 
     def filtar_soluciones(self, all_solutions: list) -> dict:
-        conv = QuadraticProgramToQubo()
-        _ = conv.convert(self.original_qp)
         buenas = {}
         for sol in all_solutions:
             x = np.array([int(bit) for bit in str(sol[0])])
-            x_int = conv.interpret(x)
+            x_int = self.conv.interpret(x)
             if self.original_qp.is_feasible(x_int):
                 x_int_tuple = tuple(x_int)
                 if x_int_tuple not in buenas:
