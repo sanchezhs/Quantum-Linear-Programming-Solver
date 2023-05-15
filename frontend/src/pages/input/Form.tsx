@@ -89,7 +89,7 @@ export function MainForm() {
             <div style={{  float: "right" }}>
               <h5>Problem Parameters</h5>
               <Bounds state={state} dispatch={dispatch} />
-              <h5>Circuit Parameters</h5>
+              <h5>Optimization Parameters</h5>
               <Depth state={state} dispatch={dispatch} />
               <Seed state={state} dispatch={dispatch} />
             </div>

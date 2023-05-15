@@ -18,6 +18,10 @@ import { MathJax } from 'better-react-mathjax'
 type CardProps = {
   body: {
     comment: string;
+    seed: string;
+    p : string;
+    lb: string;
+    ub: string;
     type: string;
     objective: string;
     constraints: string[];
@@ -27,37 +31,37 @@ type CardProps = {
 
 function renderBody(body: {
   comment: string;
+  seed: string;
+  p : string;
+  lb: string;
+  ub: string;
   type: string;
   objective: string;
   constraints: string[];
   circuitDepth: string;
 }) {
+  const { constraints, ...dynamicProperties } = body;
+
   return (
     <div>
+      {Object.entries(dynamicProperties).map(([key, value]) => (
+        <h6 key={key}>
+          <MathJax>{`\\(${value}\\)`}</MathJax>
+        </h6>
+      ))}
       <h6>
-      <MathJax>{`\\(${body.circuitDepth}\\)`}</MathJax>
-      </h6>
-      <h6>
-        {/* <strong>{body.type}:</strong> {body.objective} */}
-        <MathJax>{`\\(${body.type} ${body.objective}\\)`}</MathJax>
-      </h6>
-      <h6>
-      <MathJax>{`\\(\\text{subject to:}\\)`}</MathJax>
+        <MathJax>{`\\(\\text{subject to:}\\)`}</MathJax>
       </h6>
       <ul>
-        {body.constraints.map((constraint, index) => (
+        {constraints.map((constraint, index) => (
           <li key={index}>
             <MathJax>{`\\(${constraint}\\)`}</MathJax>
           </li>
         ))}
       </ul>
-      {/*       <h6>
-        <strong>Upper bound:</strong> {body.upperbound}
-      </h6> */}
     </div>
   );
 }
-
 export function Card({ body }: CardProps) {
   const [show, setShow] = useState(false);
   return (

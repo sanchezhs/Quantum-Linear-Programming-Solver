@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import RXCircuit from "./RXCircuit.svg";
-import RXStateVector from "./RXStateVector.png";
-import RXBloch from "./RXBloch.png";
+import RXCircuit from "./Light/RXCircuit.svg";
+import RXStateVector from "./Light/RXStateVector.png";
+import RXBloch from "./Light/RXBloch.png";
+import RXCircuitDark from "./Dark/DRXCircuit.svg";
+import RXStateVectorDark from "./Dark/DRXStateVector.png";
+import RXBlochDark from "./Dark/DRXBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function RX() {
@@ -31,9 +34,9 @@ export function RX() {
   return (
     <>
       <Gate
-        circuit={RXCircuit}
-        bloch={RXBloch}
-        stateVector={RXStateVector}
+        circuit={{ light: RXCircuit, dark: RXCircuitDark }}
+        bloch={{ light: RXBloch, dark: RXBlochDark }}
+        stateVector={{ light: RXStateVector, dark: RXStateVectorDark }}
         infoGate={infoGate}
       />
     </>

@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import CNOTCircuit from "./CNOTCircuit.svg";
-import CNOTStateVector from "./CNOTStateVector.png";
-import CNOTBloch from "./CNOTBloch.png";
+import CNOTCircuit from "./Light/CNOTCircuit.svg";
+import CNOTStateVector from "./Light/CNOTStateVector.png";
+import CNOTBloch from "./Light/CNOTBloch.png";
+import CNOTCircuitDark from "./Dark/DCNOTCircuit.svg";
+import CNOTStateVectorDark from "./Dark/DCNOTStateVector.png";
+import CNOTBlochDark from "./Dark/DCNOTBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function CNOT() {
@@ -41,9 +44,9 @@ export function CNOT() {
   return (
     <>
       <Gate
-        circuit={CNOTCircuit}
-        stateVector={CNOTStateVector}
-        bloch={CNOTBloch}
+        circuit={{ light: CNOTCircuit, dark: CNOTCircuitDark }}
+        stateVector={{ light: CNOTStateVector, dark: CNOTStateVectorDark }}
+        bloch={{ light: CNOTBloch, dark: CNOTBlochDark }}
         infoGate={infoGate}
       />
     </>

@@ -1,28 +1,32 @@
 export const fullExampleMin = {
-  comment: "",
+  seed: "seed = 1234",
+  lb: "lb = 0",
+  ub: "up = 10",
   circuitDepth: "p = 1",
-  type: "\\text{minimize }",
-  objective: "10x + 20y - 30z",
+  objetive: "\\text{minimize } x + y - z",
   constraints: ["x \\leq 1", "2x + y \\leq 0", "z \\leq 0", "x + y + z = 0"],
 };
 export const fullExampleMax = {
-  comment: "",
+  seed: "seed = 500",
+  lb: "lb = -5",
+  ub: "up = 10",
   circuitDepth: "p = 1",
-  type: "\\text{maximize }",
-  objective: "10x + 20y - 30z",
+  objetive: "\\text{maximize } x + y - z",
   constraints: ["x \\leq 1", "2x + y \\leq 0", "z \\leq 0", "x + y + z = 0"],
 };
 export const exampleMin = {
-  comment: "",
-  circuitDepth: "\\text{Circuit depth} = p > 0",
-  type: "\\text{minimize: }",
-  objective: "f(x_1, x_2, \\dots, x_m)",
+  seed: 'rng \\text{ } seed > 0',
+  lb: "lb = lower bound",
+  ub: "up = upper bound",
+  circuitDepth: "depth = p > 0",
+  objetive: "\\text{minimize: } f(x_1, x_2, \\dots, x_m)",
   constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };
 export const exampleMax = {
-  comment: "",
-  circuitDepth: "\\text{Circuit depth} = p > 0",
-  type: "\\text{minimize: }",
-  objective: "f(x_1, x_2, \\dots, x_m)",
+  seed: 'rng \\text{ } seed > 0',
+  lb: "lb = lower bound",
+  ub: "up = upper bound",
+  circuitDepth: "\\text{depth} = p > 0",
+  objetive: "\\text{minimize: } f(x_1, x_2, \\dots, x_m)",
   constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };

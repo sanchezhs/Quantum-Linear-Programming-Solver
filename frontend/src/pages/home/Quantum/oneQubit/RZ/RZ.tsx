@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import RZCircuit from "./RZCircuit.svg";
-import RZStateVector from "./RZStateVector.png";
-import RZBloch from "./RZBloch.png";
+import RZCircuit from "./Light/RZCircuit.svg";
+import RZStateVector from "./Light/RZStateVector.png";
+import RZBloch from "./Light/RZBloch.png";
+import RZCircuitDark from "./Dark/DRZCircuit.svg";
+import RZStateVectorDark from "./Dark/DRZStateVector.png";
+import RZBlochDark from "./Dark/DRZBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function RZ() {
@@ -34,9 +37,9 @@ export function RZ() {
   return (
     <>
       <Gate
-        circuit={RZCircuit}
-        bloch={RZBloch}
-        stateVector={RZStateVector}
+        circuit={{ light: RZCircuit, dark: RZCircuitDark }}
+        bloch={{ light: RZBloch, dark: RZBlochDark }}
+        stateVector={{ light: RZStateVector, dark: RZStateVectorDark }}
         infoGate={infoGate}
       />
     </>

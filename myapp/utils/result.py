@@ -1,4 +1,6 @@
 import base64
+import matplotlib
+
 from qiskit_ibm_runtime import  Sampler
 from sympy import sympify
 from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
@@ -15,6 +17,9 @@ from qiskit.visualization import plot_histogram
 from typing import List, Tuple
 import numpy as np
 
+# https://matplotlib.org/stable/users/explain/backends.html
+# Agg is a non-interactive backend that can only write to files.
+matplotlib.use('agg') 
 
 class Result:
     def __init__(self,
@@ -33,13 +38,14 @@ class Result:
         objetive_value, vars_values, encoded_histogram = self.get_solution_details(self.best_sol)
 
         encoded_circuit = self.save_circuit(self.circuit, './circuit.png')
+        matplotlib.pyplot.close()
         return {
             'objetive': objetive_value,
             'vars_values': vars_values,
             'num_qubits': self.circuit.num_qubits,
             'parameters': self.best_params.x,
-            'circuit': encoded_circuit,
-            'histogram': encoded_histogram,
+            'circuit': {'light': encoded_circuit, 'dark': ''},
+            'histogram': '',
             'qubo': self.qubo.export_as_lp_string(),
             'qasm': self.circuit.qasm(),
         }
@@ -50,30 +56,32 @@ class Result:
                                 plot_barriers=False, initial_state=True)
         with open(filename, 'rb') as file:
             enconded_string = base64.b64encode(file.read()).decode('utf-8')
+        
         return enconded_string
 
 
     def get_solution_details(self, sol):
         if self.original.objective.sense == ObjSense.MAXIMIZE:
-            sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0], reverse=True)}
+            best = sol[0]
         else:
-            sol = {k: v for k, v in sorted(sol.items(), key=lambda item: item[0])}  
+            best = sol[-1]
         
-        best = list(sol.keys())[0]
+        #best = list(sol.keys())[0]
             
             
         print('BEST: ', best)
-        objetive_value = self.original.objective.evaluate(np.array(best))
+        values = np.array(best[0])
+        objetive_value = self.original.objective.evaluate(values)
         vars_values = {}
         for i, var in enumerate(self.original.variables):
-            vars_values[var.name] = best[i]
+            vars_values[var.name] = values[i]
             
         print('OBJETIVE: ', objetive_value)
         print('VARS: ', vars_values)
         
                 
-        filename = "./histogram.png"
-        _ = plot_histogram(sol, filename=filename, figsize=(28, 26), title="Samples")
-        with open(filename, 'rb') as file:
-            enconded_string = base64.b64encode(file.read()).decode('utf-8')
-        return objetive_value, vars_values, enconded_string
+        #filename = "./histogram.png"
+        #_ = plot_histogram(best, filename=filename, figsize=(28, 26), title="Samples")
+        #with open(filename, 'rb') as file:
+        #    enconded_string = base64.b64encode(file.read()).decode('utf-8')
+        return objetive_value, vars_values, ''

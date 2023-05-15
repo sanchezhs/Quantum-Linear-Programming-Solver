@@ -28,7 +28,7 @@ class Api_index(viewsets.ViewSet):
                               serializer.data['seed'],
                               serializer.data['p'])
             #try:
-            result = problem.solve()
+            result = problem.solve(mode='qiskit')
             #except Exception as e:
                 #print(e.args)
                 #return Response({'status': 'error', 'errors': e.args}, status=400)

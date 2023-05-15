@@ -6,8 +6,9 @@ export interface FileSolution {
   vars_values: [{ string: string}];
   num_qubits: string;
   parameters: number[];
-  circuit: string;
+  circuit: { light: string; dark: string}
   histogram: string;
+  qp: string
   qubo: string;
   qasm: string;
 }
@@ -17,8 +18,9 @@ export interface InputSolution {
   vars_values: [{ string: string}];
   num_qubits: string;
   parameters: number[];
-  circuit: string;
+  circuit: { light: string; dark: string}
   histogram: string;
+  qp: string
   qubo: string;
   qasm: string;
 }

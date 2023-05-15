@@ -6,18 +6,19 @@ function process_parameters(parameters: number[])  {
   const rows = [];
 
   for (let i = 0; i < parameters.length; i += 2) {
-    const gammaIndex = i;
-    const betaIndex = i + 1;
-    const gamma = Math.round((parameters[gammaIndex] + Number.EPSILON) * 100) / 100;
-    const beta = Math.round((parameters[betaIndex] + Number.EPSILON) * 100) / 100
-  
+    let j = 0;
+    if (i > 1) j = i - 1;
+    
+    const gamma = Math.round((parameters[i] + Number.EPSILON) * 100) / 100;
+    const beta = Math.round((parameters[i+1] + Number.EPSILON) * 100) / 100;
+    
     const row = (
       <Row id="modal-row">
         <Col key={i}>
-          <MathJax>{`\\(\\gamma_${gammaIndex} = ${gamma}\\)`}</MathJax>
+          <MathJax>{`\\(\\gamma_${j} = ${gamma}\\)`}</MathJax>
         </Col>
         <Col key={i+1}>
-        <MathJax>{`\\(\\beta_${betaIndex} = ${beta}\\)`}</MathJax>
+        <MathJax>{`\\(\\beta_${j} = ${beta}\\)`}</MathJax>
         </Col>
       </Row>
     );
@@ -31,17 +32,25 @@ function process_parameters(parameters: number[])  {
 function process_variables(vars_values: [{ string: string }]) {
   
   return (
-  <>
-  <Row id="modal-row">
-   { Object.keys(vars_values).map((key: any) => (
-    <Col key={key}>
-    <MathJax>
-      {`\\(${key} = ${vars_values[key]}\\)`}
-    </MathJax>
-    </Col>
-  ))}
+    <>
+    <Row id="modal-row">
+      <Col>
+        {Object.keys(vars_values).slice(0, Math.ceil(Object.keys(vars_values).length / 2)).map((key: any) => (
+          <MathJax key={key}>
+            {`\\(${key} = ${vars_values[key]}\\)`}
+          </MathJax>
+        ))}
+      </Col>
+      <Col>
+        {Object.keys(vars_values).slice(Math.ceil(Object.keys(vars_values).length / 2)).map((key: any) => (
+          <MathJax key={key}>
+            {`\\(${key} = ${vars_values[key]}\\)`}
+          </MathJax>
+        ))}
+      </Col>
     </Row>
-    </>)
+  </>
+    )
 
   
 }

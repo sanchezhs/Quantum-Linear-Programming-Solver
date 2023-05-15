@@ -26,7 +26,8 @@ export function MyDropzone() {
         sendFile(
           event.target.result as string,
           showErrorModal,
-          setFileSolution
+          setFileSolution,
+          setShowWaiting
         );
       }
     };

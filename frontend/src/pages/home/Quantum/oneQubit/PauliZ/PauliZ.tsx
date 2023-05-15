@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import PauliZCircuit from "./ZCircuit.svg";
-import ZStateVector from "./ZStateVector.png";
-import PauliZBloch from "./ZBloch.png";
+import PauliZCircuit from "./Light/ZCircuit.svg";
+import ZStateVector from "./Light/ZStateVector.png";
+import PauliZBloch from "./Light/ZBloch.png";
+import PauliZCircuitDark from "./Dark/DPauliZCircuit.svg";
+import ZStateVectorDark from "./Dark/DPauliZStateVector.png";
+import PauliZBlochDark from "./Dark/DPauliZBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function PauliZ() {
@@ -31,9 +34,9 @@ export function PauliZ() {
   return (
     <>
       <Gate
-        circuit={PauliZCircuit}
-        bloch={PauliZBloch}
-        stateVector={ZStateVector}
+        circuit={{ light: PauliZCircuit, dark: PauliZCircuitDark }}
+        bloch={{ light: PauliZBloch, dark: PauliZBlochDark }}
+        stateVector={{ light: ZStateVector, dark: ZStateVectorDark }}
         infoGate={infoGate}
       />
     </>

@@ -1,8 +1,6 @@
 import numpy as np
-import sympy as sp
 from qiskit_ibm_runtime import QiskitRuntimeService, Sampler
 from qiskit import Aer, QuantumCircuit
-from sympy import sympify
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from scipy.optimize import minimize
@@ -24,18 +22,19 @@ class OptimizeProblem():
         self.p = p
         self.type = type
         self.max_value = max_value
-        random.seed(seed)
+        self.seed = seed  
+        self.rng = np.random.RandomState(seed=self.seed)
         self.ising = qubo.to_ising()
         self.circuit = None
         self.nqubits = len(qubo.variables)
         self.backend = Aer.get_backend('qasm_simulator')
-        self.shots = 2500
+        self.shots = 10000
 
     def execute_circuit(self, theta: list) -> dict:
         self.circuit = BuildCircuit(
             self.nqubits, self.ising, theta, self.p).build()
         histogram = self.backend.run(
-            self.circuit, shots=self.shots).result().get_counts()
+            self.circuit).result().get_counts()
         return histogram
 
     def evaluate(self, sample: np.ndarray) -> float:
@@ -65,14 +64,15 @@ class OptimizeProblem():
         all_solutions = self.invert_counts(all_solutions)
         best = sorted(all_solutions.items(), key=lambda x: x[1], reverse=True)
         best_interpreted = self.filtar_soluciones(best)
+        
         print('BEST: ', best_interpreted, ' ',
               best_theta, ', x= ', best_theta.x)
         return best_interpreted, best_theta, self.circuit
 
     def optimize(self) -> list:
-        init = [random.random() + (self.max_value / (2 * np.pi)) for _ in range(0, 2 * self.p)]
+        init = [self.rng.random() + (self.max_value / (2 * np.pi)) for _ in range(0, 2 * self.p)]
         cost = self.cost()
-        return minimize(cost, init, method='COBYLA', options={'maxiter': self.shots, 'disp': True, 'rhobeg': 0.5})
+        return minimize(cost, init, method='COBYLA', options={'maxiter': self.shots, 'disp': True, 'rhobeg': 0.25})
         #return minimize(cost, init, method='SLSQP', options={'eps': 0.1})
 
     def is_feasible(self, sample: np.ndarray) -> bool:
@@ -92,7 +92,9 @@ class OptimizeProblem():
                 if x_int_tuple not in buenas:
                     buenas[x_int_tuple] = 0
                 buenas[x_int_tuple] += int(sol[1])
-
+        print(buenas)
+        buenas = sorted(buenas.items(), key=lambda x: self.original_qp.objective.evaluate(np.array(x[0])), reverse=True)
+        
         return buenas
 
     def invert_counts(self, counts: dict) -> dict:

@@ -1,8 +1,7 @@
 import Form from "react-bootstrap/Form";
 import { State, Action } from "./Form";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Tooltip from "@mui/material/Tooltip";
 
 export function Bounds({
   state,
@@ -18,21 +17,25 @@ export function Bounds({
           <Col>
             <Form.Label>
               Upper Bound
-              <Tooltip
-                title="This value must be > 0, is an upper limit used to binarize the variables."
-                followCursor
+              <OverlayTrigger
+                overlay={
+                  <Tooltip>
+                    This value must be greather than zero, is an upper limit
+                    used to binarize the variables.
+                  </Tooltip>
+                }
               >
                 <HelpOutlineIcon
                   style={{ fontSize: 15, marginLeft: "2px" }}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                 />
-              </Tooltip>
+              </OverlayTrigger>
             </Form.Label>
             <Form.Control
               required
               type="number"
-              min={1}
+              min={-100}
               max={100}
               placeholder="Maximum allowed value for the variables"
               onChange={(e) => {
@@ -49,22 +52,25 @@ export function Bounds({
           <Col>
             <Form.Label>
               Lower Bound
-              <Tooltip
-                title="This value must be < = 0, is a lower limit used to binarize the variables."
-                followCursor
+              <OverlayTrigger
+                overlay={
+                  <Tooltip>
+                    This value is a lower limit used to binarize the variables.
+                  </Tooltip>
+                }
               >
                 <HelpOutlineIcon
                   style={{ fontSize: 15, marginLeft: "2px" }}
                   data-bs-toggle="tooltip"
                   data-bs-placement="top"
                 />
-              </Tooltip>
+              </OverlayTrigger>
             </Form.Label>
 
             <Form.Control
               required
               type="number"
-              min={0}
+              min={-100}
               max={100}
               placeholder="Minimum allowed value for the variables"
               onChange={(e) => {

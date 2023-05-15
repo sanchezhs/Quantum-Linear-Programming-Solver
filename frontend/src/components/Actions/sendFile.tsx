@@ -11,7 +11,8 @@ import axios from "axios";
 export const sendFile = (
   fileContents: string,
   showErrorModal: (errors: string[]) => void,
-  setFileSolution: (fileSolution: FileSolution) => void
+  setFileSolution: (fileSolution: FileSolution) => void,
+  setShowWaiting: (showWaiting: boolean) => void
 ) => {
   axios
     .post(HOST + "upload/", {
@@ -22,7 +23,7 @@ export const sendFile = (
       alert("Success! Check the console for the results.");
     })
     .catch((error) => {
-      console.log(error.response.data);
       showErrorModal([error.response.data.errors]);
+      setShowWaiting(false);
     });
 };

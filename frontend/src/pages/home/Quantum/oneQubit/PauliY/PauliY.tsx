@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import PauliYCircuit from "./YCircuit.svg";
-import YStateVector from "./YStateVector.png";
-import PauliYBloch from "./YBloch.png";
+import PauliYCircuit from "./Light/YCircuit.svg";
+import YStateVector from "./Light/YStateVector.png";
+import PauliYBloch from "./Light/YBloch.png";
+import PauliYCircuitDark from "./Dark/DPauliYCircuit.svg";
+import YStateVectorDark from "./Dark/DPauliYStateVector.png";
+import PauliYBlochDark from "./Dark/DPauliYBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function PauliY() {
@@ -31,9 +34,9 @@ export function PauliY() {
   return (
     <>
       <Gate
-        circuit={PauliYCircuit}
-        bloch={PauliYBloch}
-        stateVector={YStateVector}
+        circuit={{ light: PauliYCircuit, dark: PauliYCircuitDark }}
+        bloch={{ light: PauliYBloch, dark: PauliYBlochDark }}
+        stateVector={{ light: YStateVector, dark: YStateVectorDark }}
         infoGate={infoGate}
       />
     </>

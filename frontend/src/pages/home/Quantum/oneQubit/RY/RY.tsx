@@ -1,7 +1,10 @@
 import { Gate } from "../../index";
-import RYCircuit from "./RYCircuit.svg";
-import RYStateVector from "./RYStateVector.png";
-import RYBloch from "./RYBloch.png";
+import RYCircuit from "./Light/RYCircuit.svg";
+import RYStateVector from "./Light/RYStateVector.png";
+import RYBloch from "./Light/RYBloch.png";
+import RYCircuitDark from "./Dark/DRYCircuit.svg";
+import RYStateVectorDark from "./Dark/DRYStateVector.png";
+import RYBlochDark from "./Dark/DRYBloch.png";
 import { MathJax } from "better-react-mathjax";
 
 export function RY() {
@@ -34,9 +37,9 @@ export function RY() {
   return (
     <>
       <Gate
-        circuit={RYCircuit}
-        bloch={RYBloch}
-        stateVector={RYStateVector}
+        circuit={{ light: RYCircuit, dark: RYCircuitDark }}
+        bloch={{ light: RYBloch, dark: RYBlochDark }}
+        stateVector={{ light: RYStateVector, dark: RYStateVectorDark }}
         infoGate={infoGate}
       />
     </>

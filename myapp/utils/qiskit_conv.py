@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from qiskit_optimization import QuadraticProgram
 from sympy import sympify
 import re
@@ -66,20 +67,20 @@ class ToQiskitConverter():
                     self.max_value = abs(processed_constraint['rhs'])
 
                 if processed_constraint['sense'] == 'L':
-                    qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                    qp.linear_constraint(linear=processed_constraint['linear'], sense='LE',
                                          rhs=int(processed_constraint['rhs']-1), name=processed_constraint['name']
                                          )
                 elif processed_constraint['sense'] == 'G':
-                    qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
+                    qp.linear_constraint(linear=processed_constraint['linear'], sense='GE',
                                          rhs=int(processed_constraint['rhs']+1), name=processed_constraint['name']
                                          )
                 else:
                     qp.linear_constraint(linear=processed_constraint['linear'], sense=processed_constraint['sense'],
                                          rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
                                          )
-        except Exception as e:
-            raise Exception(
-                'Error while processing constraints. Check if the constraint name already exists or the sense is valid') from e
+        except Exception:
+            raise serializers.ValidationError({'errors': [
+                    'Error while processing constraints. Check if the constraint name already exists or the sense is valid']}) 
 
         return qp
 

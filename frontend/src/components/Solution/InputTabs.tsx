@@ -1,5 +1,5 @@
 import { Col, Row, Tab, Tabs } from "react-bootstrap";
-import { Circuit, Histogram, Details } from "./index";
+import { Circuit, Histogram, Details, IntegerProblem, QUBO } from "./index";
 import { InputSolution } from "../../context/AppContext";
 
 export function InputSolTab({
@@ -10,31 +10,26 @@ export function InputSolTab({
   return (
     <Tabs
       style={{ marginTop: "15px" }}
-      defaultActiveKey="details"
+      defaultActiveKey="problem"
       id="my-tab"
       className="mb-3"
     >
-      <Tab eventKey="details" title="Details">
-        {inputSolution && (
-          <Row id="modal-row">
-            <Col>
-              <Details
-                objetive={inputSolution.objetive}
-                vars_values={inputSolution.vars_values}
-                qubits={inputSolution.num_qubits}
-                parameters={inputSolution.parameters}
-              />
-            </Col>
-            <Col>
-              <Histogram histogram={inputSolution.histogram} />
-            </Col>
-          </Row>
-        )}
+      <Tab eventKey="problem" title="Problem">
+        <IntegerProblem qp={inputSolution.qp}/>
       </Tab>
-      <Tab eventKey="Circuit" title="Circuit">
-        {inputSolution && (
-          <Circuit circuit={inputSolution.circuit} qasm={inputSolution.qasm} />
-        )}
+      <Tab eventKey="qubo" title="QUBO">
+        <QUBO qubo={inputSolution.qubo}/>
+      </Tab>
+      <Tab eventKey="details" title="Details">
+        <Details
+          objetive={inputSolution.objetive}
+          vars_values={inputSolution.vars_values}
+          qubits={inputSolution.num_qubits}
+          parameters={inputSolution.parameters}
+        />
+      </Tab>
+      <Tab eventKey="circuit" title="Circuit">
+        <Circuit circuit={inputSolution.circuit} qasm={inputSolution.qasm} />
       </Tab>
     </Tabs>
   );

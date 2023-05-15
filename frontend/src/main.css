@@ -112,10 +112,25 @@ a {
   transition: transform 0.2s ease-in-out;
 }
 
+.modal-header {
+  background-color: red;
+  color: white;
+}
+
+
+
+
 /* Dark mode */
 #dark .App {
   background-color: #1c2025;
 }
+
+#dark .nav-link {
+  background-color: #1c2025;
+  color: #829ab1;
+}
+
+
 
 #dark .page-link {
   color: #829ab1;
@@ -296,4 +311,9 @@ dt {
 
 #dark .nav-links:hover {
   color: #bcccdc;
+}
+
+#dark .modal-header {
+  background-color: #aa4a44;
+  color: white;
 }
