@@ -13,10 +13,6 @@ export function checkForm(
   setFormState: any
 ) {
   let ok = true;
-  if (state.lowerBound === "0" && state.upperBound === "0") {
-    ok = false;
-  }
-
   if (state.objetive === "") {
     ok = false;
   }
@@ -99,7 +95,6 @@ export function ConstraintsList({
     e.preventDefault();
     setFormState({ submitted: false, validated: false });
     dispatch({ type: "setObjetive", payload: "" });
-    dispatch({ type: "setUpperBound", payload: "10" });
     const cleared = constraints.map((constraint) => {
       constraint.value = "";
       return constraint;

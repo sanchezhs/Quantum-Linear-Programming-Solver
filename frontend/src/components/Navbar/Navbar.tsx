@@ -40,7 +40,6 @@ export function Navbar() {
             style={{marginRight: '10px'}}
           >
             <TuneIcon fontSize="small"/>
-            Setup
           </Button>
           <ThemeSwitch /> 
       </BootstrapNavBar>

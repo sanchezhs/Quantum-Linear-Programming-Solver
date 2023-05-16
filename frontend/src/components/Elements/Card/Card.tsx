@@ -17,20 +17,12 @@ import { MathJax } from 'better-react-mathjax'
 
 type CardProps = {
   body: {
-    seed: string;
-    lb: string;
-    ub: string;
-    circuitDepth: string;
     objetive: string;
     constraints: string[];
   }[];
 };
 
 function renderBody(body: {
-  seed: string;
-  lb: string;
-  ub: string;
-  circuitDepth : string;
   objetive: string;
   constraints: string[];
 }) {

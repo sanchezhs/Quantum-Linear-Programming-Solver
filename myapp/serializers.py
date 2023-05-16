@@ -13,10 +13,6 @@ formdata = FormData(objetive='x', constraints=['x < 1'], radioValue='z')
 class FormDataSerializer(serializers.Serializer):
     objetive = serializers.CharField(validators=[form_parser.validate_objetive])
     constraints = serializers.ListField(validators=[form_parser.validate_constraints])
-    upperBound = serializers.CharField()
-    lowerBound = serializers.CharField()
-    seed = serializers.CharField()
-    p = serializers.CharField()
     radioValue = serializers.CharField()
     
     def create(self, validated_data):
@@ -26,10 +22,6 @@ class FormDataSerializer(serializers.Serializer):
         instance.objetive = validated_data.get('objetive', instance.objetive)
         instance.constraints = validated_data.get('constraints', instance.constraints)
         instance.radioValue = validated_data.get('radioValue', instance.radioValue)
-        instance.upperBound = validated_data.get('upperBound', instance.upperBound)
-        instance.lowerBound = validated_data.get('lowerBound', instance.lowerBound)
-        instance.seed = validated_data.get('seed', instance.seed)
-        instance.p = validated_data.get('p', instance.p)
         
         return instance
 

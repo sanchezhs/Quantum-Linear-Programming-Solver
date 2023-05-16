@@ -18,12 +18,14 @@ export function Problem({
             <Form.Label>Upper Bound</Form.Label>
             <Form.Control
               required
+              autoFocus={true}
               type="number"
-              min={-100}
-              max={100}
+              min={-1000}
+              max={1000}
               placeholder="Maximum allowed value for the variables"
               onChange={(e) => {
-                dispatch({ type: "setUpperBound", payload: e.target.value });
+                  if (e.target.value)
+                    dispatch({ type: "setUpperBound", payload: e.target.value });
               }}
               value={state.upperBound}
             />

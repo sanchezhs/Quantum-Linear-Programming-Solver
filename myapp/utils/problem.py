@@ -33,7 +33,7 @@ class Problem():
         self.theta = None
         self.simulator = simulator == 'simulator'
 
-    def cobyla_data(self, x: int, theta: np.ndarray, f: float, d: dict) -> None:
+    def cobyla_callback(self, x: int, theta: np.ndarray, f: float, d: dict) -> None:
         self.theta = theta
 
     def solve(self, mode='qiskit'):
@@ -48,7 +48,7 @@ class Problem():
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(
-            rhobeg=0.5, disp=True), initial_point=initial_point, callback=self.cobyla_data, reps=self.depth)
+            rhobeg=0.5, disp=True), initial_point=initial_point, callback=self.cobyla_callback, reps=self.depth)
         qaoa = MinimumEigenOptimizer(qaoa_mes)
         qaoa_result = qaoa.solve(qp)
 

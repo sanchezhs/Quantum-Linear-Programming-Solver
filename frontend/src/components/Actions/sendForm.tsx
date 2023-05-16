@@ -31,10 +31,6 @@ export const sendForm = (
       objetive: state.objetive,
       constraints: constraintsPost,
       radioValue: state.radioValue,
-      upperBound: state.upperBound,
-      lowerBound: state.lowerBound,
-      seed: state.seed,
-      p: state.p,
     })
     .then((response) => {
       setWaiting(false);

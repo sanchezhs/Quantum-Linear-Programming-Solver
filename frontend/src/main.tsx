@@ -6,7 +6,6 @@ import { ThemeContextProvider } from "./context/ThemeContext";
 import { CookiesProvider } from "react-cookie";
 import { BrowserRouter } from "react-router-dom";
 import "./main.css";
-import 'react-sliding-side-panel/lib/index.css';
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(

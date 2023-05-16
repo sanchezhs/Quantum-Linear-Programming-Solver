@@ -1,42 +1,30 @@
 import { UPPERBOUND, LOWERBOUND } from "../../../components/Constants/index";
 
 /**
- * Types for the input page
+ * Types for the Solver form
  */
 export type State = {
   objetive: string;
   radioValue: string;
-  upperBound: string;
-  lowerBound: string;
-  seed: string;
-  p: string;
 };
 
 /**
- * Initial state for the input page
+ * Initial state for the Solver form
  */
 export const initialState: State = {
   objetive: "",
   radioValue: "",
-  upperBound: UPPERBOUND,
-  lowerBound: LOWERBOUND,
-  seed: String((Math.random() * (9999 - 0 + 1)) << 0),
-  p: "1",
 };
 
 /**
- * Actions for the input page
+ * Actions for the Solver form
  */
 export type Action =
   | { type: "setObjetive"; payload: string }
   | { type: "setRadioValue"; payload: string }
-  | { type: "setUpperBound"; payload: string }
-  | { type: "setLowerBound"; payload: string }
-  | { type: "setSeed"; payload: string }
-  | { type: "setDepth"; payload: string };
 
 /**
- * Reducer for the input page
+ * Reducer for the Solver form
  * @see https://reactjs.org/docs/hooks-reference.html#usereducer
  */
 export function reducer(state: State, action: Action): State {
@@ -45,14 +33,8 @@ export function reducer(state: State, action: Action): State {
       return { ...state, objetive: action.payload };
     case "setRadioValue":
       return { ...state, radioValue: action.payload };
-    case "setUpperBound":
-      return { ...state, upperBound: action.payload };
-    case "setLowerBound":
-      return { ...state, lowerBound: action.payload };
-    case "setSeed":
-      return { ...state, seed: action.payload };
-    case "setDepth":
-      return { ...state, p: action.payload };
+    default:
+      return state;
   }
 }
 

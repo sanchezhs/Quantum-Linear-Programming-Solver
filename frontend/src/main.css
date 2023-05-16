@@ -126,7 +126,7 @@ a {
   font-weight: 400;
   height: 100%;
   width: 100%;
-  background-color: white;
+  background-color: white;  
   display: flex;
   flex-direction: column;
 }

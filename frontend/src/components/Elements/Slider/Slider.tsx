@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react";
+import { useContext, useReducer, useState } from "react";
 import {
   Col,
   Row,
@@ -6,11 +6,14 @@ import {
   Button,
   Form,
   ButtonGroup,
+  Toast,
+  ToastContainer,
 } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
-import SlidingPanel from "react-sliding-side-panel";
-import { Optimization, Problem, Backend  } from './index'
+import { Drawer, Divider } from "@mui/material";
+import { Optimization, Problem, Backend } from "./index";
 import { sendSettings } from "../../Actions/index";
+import { checkSettings } from "./checkSettings";
 
 export type State = {
   upperBound: string;
@@ -53,80 +56,67 @@ function reducer(state: State, action: Action) {
 }
 
 export function Slider() {
-  const { openPanel, setOpenPanel } = useContext(AppContext);
+  const { openPanel, setOpenPanel, showErrorModal } = useContext(AppContext);
+  const [showToast, setShowToast] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    sendSettings(state);
+    if (!checkSettings(state, showErrorModal)) return;
+    sendSettings(state, setShowToast);
     console.log(state);
   };
 
   return (
-    <>
-      <SlidingPanel type={"right"} isOpen={openPanel} size={30}>
-        <>
-          <div className="panel-container">
-            <Container style={{ marginTop: "25px" }}>
-              <h5>Problem Parameters</h5>
-              <Form>
-                <Row>
-                  <Col>
-                    <Problem state={state} dispatch={dispatch} />
-                  </Col>
-                </Row>
-                <h5>Optimization Parameters</h5>
-                <Row>
-                  <Col>
-                    <Optimization state={state} dispatch={dispatch} />
-                  </Col>
-                </Row>
-                <h5>Run Options</h5>
-                <Row>
-                  <Col>
-                    <Backend dispatch={dispatch} />
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "25px" }}>
-                  <ButtonGroup>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      onClick={() => setOpenPanel(false)}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      type="submit"
-                      onClick={handleSubmit}
-                    >
-                      Save
-                    </Button>
-                  </ButtonGroup>
-                </Row>
-              </Form>
-              {/*               <Row>
-                <Col>
-                  <Button
-                    style={{
-                      position: "absolute",
-                      bottom: 10,
-                      justifyContent: "center",
-                    }}
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setOpenPanel(false)}
-                  >
-                    close
-                  </Button>
-                </Col>
-              </Row> */}
-            </Container>
-          </div>
-        </>
-      </SlidingPanel>
-    </>
+    <Drawer anchor="right" open={openPanel} onClose={() => setOpenPanel(false)}>
+      <div className="panel-container">
+        <Container style={{ marginTop: "25px" }}>
+          <Divider style={{ margin: "2px 5px" }}>
+            <h5>Problem Parameters</h5>{" "}
+          </Divider>
+          <Form>
+            <Row>
+              <Col>
+                <Problem state={state} dispatch={dispatch} />
+              </Col>
+            </Row>
+            <Divider style={{ margin: "2px 5px" }}>
+              <h5>Optimization Parameters</h5>{" "}
+            </Divider>
+            <Row>
+              <Col>
+                <Optimization state={state} dispatch={dispatch} />
+              </Col>
+            </Row>
+            <Divider style={{ margin: "2px 5px" }}>
+              <h5>Run Options</h5>{" "}
+            </Divider>
+            <Row>
+              <Col>
+                <Backend dispatch={dispatch} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: "25px" }}>
+              <ButtonGroup>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Save
+                </Button>
+              </ButtonGroup>
+            </Row>
+          </Form>
+        </Container>
+      </div>
+      <Toast style={{textAlign: 'center', position:'absolute', bottom: 5, right: 5}} onClose={() => setShowToast(false)} delay={5000} show={showToast} animation={false}>
+        <Toast.Header>
+          <strong className="me-auto">Success!</strong>
+        </Toast.Header>
+        <Toast.Body>Settings saved during this session</Toast.Body>
+      </Toast>
+    </Drawer>
   );
 }

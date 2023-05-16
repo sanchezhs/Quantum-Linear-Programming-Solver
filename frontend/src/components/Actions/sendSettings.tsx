@@ -14,6 +14,7 @@ axios.defaults.withCredentials = true;
  */
 export const sendSettings = (
   state: State,
+  setShowToast: (showToast: boolean) => void
 ) => {
   axios
     .post(HOST + "settings/", {
@@ -24,7 +25,8 @@ export const sendSettings = (
       backend: state.backend,
     })
     .then((response) => {
-      alert("Success! Check the console for the results.");
+      setShowToast(true);
+      //alert("Success! Check the console for the results.");
     })
     .catch((error) => {
         alert("Error! Check the console for details.");
