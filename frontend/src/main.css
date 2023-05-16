@@ -117,6 +117,9 @@ a {
   color: white;
 }
 
+.modal-error-p {
+  white-space: pre-line;
+}
 
 
 

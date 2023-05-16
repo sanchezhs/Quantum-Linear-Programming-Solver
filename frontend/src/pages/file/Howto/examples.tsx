@@ -15,18 +15,18 @@ export const fullExampleMax = {
   constraints: ["x \\leq 1", "2x + y \\leq 0", "z \\leq 0", "x + y + z = 0"],
 };
 export const exampleMin = {
-  seed: 'rng \\text{ } seed > 0',
-  lb: "lb = lower bound",
-  ub: "up = upper bound",
-  circuitDepth: "depth = p > 0",
+  seed: 'rng \\text{ } seed',
+  lb: "bound",
+  ub: "upper bound",
+  circuitDepth: "depth",
   objetive: "\\text{minimize: } f(x_1, x_2, \\dots, x_m)",
   constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };
 export const exampleMax = {
-  seed: 'rng \\text{ } seed > 0',
-  lb: "lb = lower bound",
-  ub: "up = upper bound",
-  circuitDepth: "\\text{depth} = p > 0",
+  seed: 'rng \\text{ } seed',
+  lb: "lower bound",
+  ub: "upper bound",
+  circuitDepth: "depth",
   objetive: "\\text{minimize: } f(x_1, x_2, \\dots, x_m)",
   constraints: ["constraint \\quad 1", "constraint \\quad 2", "\\quad \\quad \\vdots", "constraint \\quad n"],
 };

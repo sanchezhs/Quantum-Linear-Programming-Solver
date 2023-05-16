@@ -66,7 +66,7 @@ export function ConstraintsList({
     e.preventDefault();
     setWaiting(true);
     setFormState({ submitted: true, validated: true });
-    if (!checkForm(constraints, state, setFormState)) {
+    if (!checkForm(showErrorModal, constraints, state, setFormState)) {
       setWaiting(false);
       return;
     }

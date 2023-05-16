@@ -28,7 +28,7 @@ export function Hadamard() {
         In QAOA, the Hadamard gate is applied to all qubits in the first layer
           of the circuit.
       </p>
-      <p>The image shows the H gate applied to the initial state</p>
+      <p>Left image shows the H gate applied to the initial state</p>
       <p>
         <MathJax style={{ textAlign: "center" }}>
           {"\\(H|0\\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}}\\)"}

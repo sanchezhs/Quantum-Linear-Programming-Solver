@@ -2,8 +2,7 @@ import { useContext, useReducer, useState } from "react";
 import { Objetive, CheckRadio, Bounds, Depth, ConstraintsList, Seed } from "./index";
 import { AppContext } from "../../context/index";
 import { UPPERBOUND, LOWERBOUND } from "../../components/Constants/index";
-import { Modal } from "../../components/Elements/index";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { InputSolTab } from "../../components/Solution/index";
 
 export type State = {
@@ -49,17 +48,36 @@ export function reducer(state: State, action: Action): State {
   }
 }
 
-export function checkForm(constraints: any, state: State, setFormState: any) {
-  if (
-    constraints.length === 0 ||
-    state.objetive === "" ||
-    state.radioValue === "" ||
-    constraints.find((constraint: any) => constraint.value === "")
-  ) {
-    setFormState({ submitted: false, validated: true });
-    return false;
+export function checkForm(showErrorModal: (message: string[]) => void, constraints: any, state: State, setFormState: any) {
+  
+  let ok = true;
+  if (state.lowerBound === "0" && state.upperBound === "0") {
+    showErrorModal(["Lower and Upper bounds can't be 0 at the same time!"]);
+    ok = false;
   }
-  return true;
+  
+  if (constraints.length === 0) {
+    showErrorModal(["You must add at least one constraint!"]);
+    ok = false;
+  }
+
+  if (state.objetive === "" ) {
+    showErrorModal(["You must add an objetive function!"]);
+    ok = false;
+  }
+
+  if (state.radioValue === "") {
+    showErrorModal(["You must select an optimization sense!"]);
+    ok = false;
+  }
+
+  if (constraints.find((constraint: any) => constraint.value === "")) {
+    showErrorModal(["You must fill all the constraints!"]);
+    ok = false;
+  }
+  if (!ok)
+    setFormState({ submitted: false, validated: false });
+  return ok;
 }
 
 export function MainForm() {
@@ -94,7 +112,6 @@ export function MainForm() {
               <Seed state={state} dispatch={dispatch} />
             </div>
           </div>
-          {/* <Modal /> */}
         </Form>
         {inputSolution && <InputSolTab inputSolution={inputSolution} />}
       </section>

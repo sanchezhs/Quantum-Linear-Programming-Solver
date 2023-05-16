@@ -22,7 +22,7 @@ export function RZZ() {
         </MathJax>
       </p>
         <p>
-        This gate is used to encode the Hamiltonian of the integer problem into the quantum circuit.
+        Similar to the RZ gate, the RZZ gate is used to represent the quadratic decision variables with a given angle.
         </p>
  
     </>

@@ -27,13 +27,13 @@ class Api_index(viewsets.ViewSet):
                               serializer.data['lowerBound'],
                               serializer.data['seed'],
                               serializer.data['p'])
-            #try:
-            result = problem.solve(mode='qiskit')
-            #except Exception as e:
-                #print(e.args)
-                #return Response({'status': 'error', 'errors': e.args}, status=400)
+            try:
+                result = problem.solve(mode='qiskit')
+            except Exception as e:
+                print(e.args)
+                return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
-        print(serializer.errors)
+        print('serializer errors: ', serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
 
 

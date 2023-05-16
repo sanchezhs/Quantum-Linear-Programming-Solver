@@ -49,7 +49,7 @@ export const sendForm = (
       showErrorModal([
         error.response.data.errors.objetive,
         error.response.data.errors.constraints,
-        error.response.data.errors,
+        //error.response.data.errors,
       ]);
     });
 };

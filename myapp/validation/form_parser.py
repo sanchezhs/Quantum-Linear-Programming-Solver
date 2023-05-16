@@ -137,7 +137,7 @@ def validate_objetive(objetive: str) -> None:
         _ = parser.parse(objetive)
     except (serializers.ValidationError, Exception) as e:
         print(e)
-        raise serializers.ValidationError(
+        raise serializers.ValidationError( 
             f'Invalid value (parse error): {objetive}'
         )
 

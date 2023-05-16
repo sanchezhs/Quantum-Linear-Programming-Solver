@@ -23,7 +23,7 @@ export function myModal() {
               modalShow.body.map((error, i) => (
                 <Row key={i} id="modal-row">
                   <Col style={{ overflowY: "scroll" }}>
-                    <p>{error}</p>
+                    <p className="modal-error-p">{error}</p>
                   </Col>
                 </Row>
               ))}

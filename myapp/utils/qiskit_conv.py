@@ -79,8 +79,8 @@ class ToQiskitConverter():
                                          rhs=int(processed_constraint['rhs']), name=processed_constraint['name']
                                          )
         except Exception:
-            raise serializers.ValidationError({'errors': [
-                    'Error while processing constraints. Check if the constraint name already exists or the sense is valid']}) 
+            raise serializers.ValidationError(
+                    'Error while processing constraints. Check if the constraint name already exists or the sense is valid') 
 
         return qp
 

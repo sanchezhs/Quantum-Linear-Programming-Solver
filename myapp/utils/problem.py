@@ -41,7 +41,6 @@ class Problem():
         return self._solve_qiskit()
 
     def _solve_qiskit(self):
-        # self.solve_runtime()
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         sampler = Sampler(options={'seed': self.seed})
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))

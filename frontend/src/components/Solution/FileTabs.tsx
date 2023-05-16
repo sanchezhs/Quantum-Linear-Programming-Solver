@@ -1,15 +1,12 @@
-import { Col, Row, Tab, Tabs } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 import { Circuit, Histogram, Details, IntegerProblem, QUBO } from "./index";
 import { FileSolution } from "../../context/AppContext";
 
 export function FileSolTab({
   fileSolution,
-  fileContents,
 }: {
   fileSolution: FileSolution;
-  fileContents: string;
 }) {
-  console.log(fileContents);
   return (
     <Tabs
       style={{ marginTop: "15px" }}

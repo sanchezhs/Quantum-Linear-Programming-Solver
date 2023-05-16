@@ -28,7 +28,7 @@ export function CNOT() {
         qubit is not flipped.
         CNOT is used to entangle two qubits.
       </p>
-      <p>This image shows the CNOT gate applied the state |10⟩</p>
+      <p>Left image shows the CNOT gate applied the state |10⟩</p>
       <p>
         <MathJax style={{ textAlign: "center" }}>
           {"\\(CNOT|10\\rangle = |11\\rangle\\)"}

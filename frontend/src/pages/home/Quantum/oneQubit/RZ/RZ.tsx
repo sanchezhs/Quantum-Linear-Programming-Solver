@@ -21,16 +21,12 @@ export function RZ() {
       </p>
       <p>
         The RZ gate is used to flip the state of a qubit over the Z-axis
-        by an angle of theta.
+        by an angle of theta. When the integer linear problem is reformulated
+        as a quadratic unconstrained binary optimization (QUBO) problem, the
+        RZ gate is used represent the decision variables with a given angle 
+        optimized by a classical optimizer outside QAOA. 
       </p>
-      <p>The image shows the RZ gate applied to the initial state with an 
-        angle of pi/2 radians.
-      </p>
-{/*       <p>
-        <MathJax style={{ textAlign: "center" }}>
-          {"\\(Z|0\\rangle = -1|0\\rangle\\)"}
-        </MathJax>
-      </p> */}
+
     </>
   );
 

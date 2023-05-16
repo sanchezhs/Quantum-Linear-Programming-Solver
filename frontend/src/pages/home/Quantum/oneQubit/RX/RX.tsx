@@ -22,12 +22,10 @@ export function RX() {
       <p>
         The RX gate is used to flip the state of a qubit over the X-axis
         by an angle of theta. In QAOA, this gate is essential to induce changes in
-        the state of the sistem.
+        the state of the sistem, and is applied to all qubits in the circuit.
       </p>
 
-      <p>The image shows the RX gate applied to the initial state with an 
-        angle of pi/2 radians.
-      </p>
+
     </>
   );
 

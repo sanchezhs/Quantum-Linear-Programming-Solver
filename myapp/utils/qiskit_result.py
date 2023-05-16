@@ -32,7 +32,6 @@ class QiskitResult:
         encoded_light_circuit, encoded_dark_circuit, qasm_circuit = self.save_circuit(
             {'light': './light_circuit.png', 'dark': './dark_circuit.png'})
         qubo = QuadraticProgramToQubo().convert(self.qp)
-        # encoded_histogram = self.save_histogram('./histogram.png')
         fval, vars_values, num_qubits = self.get_solution_details()
         matplotlib.pyplot.close()
         return {

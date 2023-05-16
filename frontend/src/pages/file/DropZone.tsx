@@ -21,7 +21,6 @@ export function MyDropzone() {
     const reader = new FileReader();
     reader.onload = (event) => {
       if (event.target) {
-        //parseFileContents(event.target.result as string);
         setFileContents(event.target.result as string);
         sendFile(
           event.target.result as string,
@@ -80,7 +79,7 @@ export function MyDropzone() {
           )}
         </div>
         {fileSolution && (
-          <FileSolTab fileSolution={fileSolution} fileContents={fileContents} />
+          <FileSolTab fileSolution={fileSolution}/>
         )}
       </section>
     </>
