@@ -2,13 +2,25 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { State, Action } from "./Slider";
 
-export function Settings({
+export function Optimization({
   state,
   dispatch,
 }: {
   state: State;
   dispatch: React.Dispatch<Action>;
 }) {
+
+  const MAX = "9999";
+  const handleMaxLength = (e: any) => {
+    // Check if value is > MAX
+    if (e.target.value.length > MAX.length) {
+      e.target.value = e.target.value.slice(0, MAX.length);
+    }
+    // Check if value is < 0
+    if (e.target.value < 0) {
+      e.target.value = "0";
+    }
+  }
   return (
     <>
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -17,6 +29,7 @@ export function Settings({
           required
           type="number"
           min={1}
+          max={1000}
           placeholder="Depth of the circuit"
           onChange={(e) => {
             dispatch({ type: "setDepth", payload: e.target.value });
@@ -35,8 +48,9 @@ export function Settings({
           required
           type="number"
           min={0}
-          max={1000}
+          max={MAX}
           onChange={(e) => {
+            handleMaxLength(e);
             dispatch({ type: "setSeed", payload: e.target.value });
           }}
           value={state.seed}

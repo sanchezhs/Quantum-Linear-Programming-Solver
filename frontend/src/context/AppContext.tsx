@@ -49,13 +49,13 @@ export type AppContextType = {
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
   fileSolution: FileSolution | null;
-  setFileSolution: (FileSolution: FileSolution) => void;
   inputSolution: InputSolution | null;
+  openPanel: boolean;
+  setFileSolution: (FileSolution: FileSolution) => void;
   setInputSolution: (InputSolution: InputSolution) => void;
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
   setModalShow: (modalShow: ErrorModal) => void;
-  openPanel: boolean;
   setOpenPanel: (openPanel: boolean) => void;
 };
 
@@ -65,10 +65,10 @@ export const AppContext = createContext<AppContextType>(
     backends: [],
     inputSolution: null,
     openPanel: false,
-    setOpenPanel: () => {},
     fileSolution: null,
     setFileSolution: () => {},
     setInputSolution: () => {},
+    setOpenPanel: () => {},
     setBackends: () => {},
     showErrorModal: () => {},
     setModalShow: () => {},

@@ -20,13 +20,16 @@ class Api_index(viewsets.ViewSet):
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
             print('serializer data: ', serializer.data)
+            
             problem = Problem(serializer.data['objetive'], 
                               serializer.data['constraints'],
                               serializer.data['radioValue'],
-                              serializer.data['upperBound'],
-                              serializer.data['lowerBound'],
-                              serializer.data['seed'],
-                              serializer.data['p'])
+                              request.session.get('upperBound', 10),
+                              request.session.get('lowerBound', 0),
+                              request.session.get('seed', 0),
+                              request.session.get('depth', 1),
+                              request.session.get('backend', 'simulator'),
+                              )
             try:
                 result = problem.solve(mode='qiskit')
             except Exception as e:
@@ -42,8 +45,6 @@ class Api_upload(viewsets.ViewSet):
     ViewSet for upload page. First it checks if file is valid, then it
     passes it to Lark to parse the data and finally it solves the problem.
     """
-
-    serializer_class = serializers.FileSerializer
 
     def create(self, request):
         # extract file contents from request
@@ -61,10 +62,12 @@ class Api_upload(viewsets.ViewSet):
             problem = Problem(data['objetive'], 
                               data['constraints'], 
                               data['type'], 
-                              data['upperBound'], 
-                              data['lowerBound'], 
-                              data['seed'], 
-                              data['p'])
+                              request.session.get('upperBound', 10),
+                              request.session.get('lowerBound', 0),
+                              request.session.get('seed', 0),
+                              request.session.get('depth', 1),
+                              request.session.get('backend', 'simulator'),
+                              )
             result = problem.solve()
             
             return Response(result, status=201)
@@ -73,6 +76,20 @@ class Api_upload(viewsets.ViewSet):
         except Exception as e:
             return Response({'status': 'error', 'errors': e.args}, status=400)
 
+class Api_settings(viewsets.ViewSet):
+    
+    serializer_class = serializers.SettingsDataSerializer
+    def create(self, request):
+        serializer = serializers.SettingsDataSerializer(data=request.data)
+        print('session: ', request.session.items())
+        
+        if serializer.is_valid():
+            request.session['upperBound'] = serializer.validated_data['upperBound']
+            request.session['lowerBound'] = serializer.validated_data['lowerBound']
+            request.session['seed'] = serializer.validated_data['seed']
+            request.session['depth'] = serializer.validated_data['depth']
+            print(request.data)
+            return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
 
 
 class Api_ibm(viewsets.ViewSet):

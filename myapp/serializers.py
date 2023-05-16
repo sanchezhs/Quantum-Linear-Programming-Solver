@@ -33,25 +33,30 @@ class FormDataSerializer(serializers.Serializer):
         
         return instance
 
-class FileData:
-    def __init__(self, objetive, constraints):
-        self.objetive = objetive
-        self.constraints = constraints
-            
-    
-
-class FileSerializer(serializers.Serializer):
-    #fileContents = serializers.CharField(validators=[file_reader.extract_data])
-    objetive = serializers.CharField(validators=[form_parser.validate_objetive])
-    contraints = serializers.CharField(validators=[form_parser.validate_constraints])
+class SettingsData(object):
+    def __init__(self, upperbound, lowerbund, depth, seed):
+        self.upperbound = upperbound
+        self.lowerbund = lowerbund
+        self.depth = depth
+        self.seed = seed
+        
+class SettingsDataSerializer(serializers.Serializer):
+    upperBound = serializers.CharField()
+    lowerBound = serializers.CharField()
+    seed = serializers.CharField()
+    depth = serializers.CharField()
     
     def create(self, validated_data):
-        return FileData(**validated_data)
+        return SettingsData(**validated_data)
     
     def update(self, instance, validated_data):
-        instance.objetive = validated_data.get('objetive', instance.objetive)
-        instance.constraints = validated_data.get('constraints', instance.constraints)
+        instance.upperBound = validated_data.get('upperBound', instance.upperBound)
+        instance.lowerBound = validated_data.get('lowerBound', instance.lowerBound)
+        instance.seed = validated_data.get('seed', instance.seed)
+        instance.depth = validated_data.get('depth', instance.depth)
+        
         return instance
+    
     
 class Token:
     def __init__(self, apiToken):

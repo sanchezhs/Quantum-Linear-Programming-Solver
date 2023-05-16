@@ -19,7 +19,7 @@ import numpy as np
 
 class Problem():
 
-    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, p: str) -> None:
+    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, depth: str, simulator: str) -> None:
         self.objetive = objetive
         self.constraints = constraints
         self.type = type
@@ -27,10 +27,11 @@ class Problem():
         self.lowerBound = int(lowerBound)
         self.seed = int(seed)
         self.rng = np.random.RandomState(seed=self.seed)
-        self.p = int(p)
+        self.depth = int(depth)
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
         self.circuit = None
         self.theta = None
+        self.simulator = simulator == 'simulator'
 
     def cobyla_data(self, x: int, theta: np.ndarray, f: float, d: dict) -> None:
         self.theta = theta
@@ -41,13 +42,13 @@ class Problem():
         return self._solve_qiskit()
 
     def _solve_qiskit(self):
-        self.solve_runtime()
+        #self.solve_runtime()
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         sampler = Sampler(options={'seed': self.seed})
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
-                         for _ in range(0, 2 * self.p)]
+                         for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(
-            rhobeg=0.5, disp=True), initial_point=initial_point, callback=self.cobyla_data, reps=self.p)
+            rhobeg=0.5, disp=True), initial_point=initial_point, callback=self.cobyla_data, reps=self.depth)
         qaoa = MinimumEigenOptimizer(qaoa_mes)
         qaoa_result = qaoa.solve(qp)
 
@@ -63,7 +64,7 @@ class Problem():
         conv = QuadraticProgramToQubo()
         qubo = conv.convert(qp)
         best_solution, best_theta, optimized_circuit = OptimizeProblem(conv,
-                                                                       qubo, qp, self.p, self.type, max_value, self.seed).solve()
+                                                                       qubo, qp, self.depth, self.type, max_value, self.seed).solve()
 
         if not best_solution:
             raise serializers.ValidationError({'errors': [
@@ -84,9 +85,9 @@ class Problem():
         # backend = QiskitRuntimeService().least_busy( simulator=False).name
         backend = 'ibmq_qasm_simulator'
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
-                         for _ in range(0, 2 * self.p)]
+                         for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOAClient(provider=provider, backend=provider.get_backend(
-            backend), initial_point=initial_point, reps=self.p)
+            backend), initial_point=initial_point, reps=self.depth)
         qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
         
         

@@ -9,29 +9,31 @@ import {
 } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import SlidingPanel from "react-sliding-side-panel";
-import { Settings } from "./Optimization";
-import { Problem } from "./Problem";
+import { Optimization, Problem, Backend  } from './index'
+import { sendSettings } from "../../Actions/index";
 
-
-export type State  = {
+export type State = {
   upperBound: string;
   lowerBound: string;
   depth: string;
   seed: string;
-}
+  backend: string;
+};
 
 export type Action =
   | { type: "setUpperBound"; payload: string }
   | { type: "setLowerBound"; payload: string }
   | { type: "setSeed"; payload: string }
-  | { type: "setDepth"; payload: string };
+  | { type: "setDepth"; payload: string }
+  | { type: "setBackend"; payload: string };
 
 const initialState: State = {
   upperBound: "10",
   lowerBound: "0",
+  seed: String(Math.floor(Math.random() * 10000)),
   depth: "1",
-  seed: "1",
-}
+  backend: "simulator",
+};
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -43,6 +45,8 @@ function reducer(state: State, action: Action) {
       return { ...state, depth: action.payload };
     case "setSeed":
       return { ...state, seed: action.payload };
+    case "setBackend":
+      return { ...state, backend: action.payload };
     default:
       throw new Error();
   }
@@ -51,6 +55,12 @@ function reducer(state: State, action: Action) {
 export function Slider() {
   const { openPanel, setOpenPanel } = useContext(AppContext);
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    sendSettings(state);
+    console.log(state);
+  };
 
   return (
     <>
@@ -62,27 +72,40 @@ export function Slider() {
               <Form>
                 <Row>
                   <Col>
-                    <Problem state={state} dispatch={dispatch}/>
+                    <Problem state={state} dispatch={dispatch} />
                   </Col>
                 </Row>
                 <h5>Optimization Parameters</h5>
                 <Row>
                   <Col>
-                    <Settings state={state} dispatch={dispatch}/>
+                    <Optimization state={state} dispatch={dispatch} />
                   </Col>
                 </Row>
-                <ButtonGroup>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => setOpenPanel(false)}
-                  >
-                    Close
-                  </Button>
-                  <Button variant="outline-secondary" size="sm">
-                    Save
-                  </Button>
-                </ButtonGroup>
+                <h5>Run Options</h5>
+                <Row>
+                  <Col>
+                    <Backend dispatch={dispatch} />
+                  </Col>
+                </Row>
+                <Row style={{ marginTop: "25px" }}>
+                  <ButtonGroup>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => setOpenPanel(false)}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      type="submit"
+                      onClick={handleSubmit}
+                    >
+                      Save
+                    </Button>
+                  </ButtonGroup>
+                </Row>
               </Form>
               {/*               <Row>
                 <Col>

@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
  
 router.register(r'index',views.Api_index, basename='index')
 router.register(r'upload',views.Api_upload, basename='upload')
+router.register(r'settings',views.Api_settings, basename='settings')
 router.register(r'ibm',views.Api_ibm, basename='ibm')
 
 urlpatterns = [
