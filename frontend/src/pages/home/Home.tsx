@@ -1,6 +1,3 @@
-import { Row, Col } from "react-bootstrap";
-import Diagram from "./BDiagram.png";
-import Zoom from "react-medium-image-zoom";
 import { GateMenu } from "./Quantum/index";
 
 export function Home() {

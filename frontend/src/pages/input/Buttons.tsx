@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Spinner } from "react-bootstrap";
-import { ConstraintAction } from "./Logic";
+import { ConstraintAction } from "./types/types";
 
 function Buttons({
   formState,

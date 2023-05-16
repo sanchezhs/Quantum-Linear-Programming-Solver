@@ -31,6 +31,7 @@
     "react-latex": "^2.0.0",
     "react-medium-image-zoom": "^5.1.5",
     "react-scroll": "^1.8.9",
+    "react-sliding-side-panel": "^2.0.3",
     "react-three-fiber": "^6.0.13",
     "react-zoom-pan-pinch": "^3.0.7",
     "three": "^0.152.2",

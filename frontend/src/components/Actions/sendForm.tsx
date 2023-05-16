@@ -1,6 +1,6 @@
 import { InputSolution } from "../../context/AppContext";
 import { HOST } from "../Constants/host";
-import { State } from '../../pages/input/Form'
+import { State, Constraint, setFormState } from '../../pages/input/types/types'
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -19,8 +19,8 @@ axios.defaults.withCredentials = true;
  */
 export const sendForm = (
   state: State,
-  constraints: { id: number; value: string }[],
-  setFormState: (state: { submitted: boolean; validated: boolean }) => void,
+  constraints: Constraint[],
+  setFormState: setFormState,
   setWaiting: (waiting: boolean) => void,
   showErrorModal: (errors: string[]) => void,
   setInputSolution: (solution: InputSolution) => void

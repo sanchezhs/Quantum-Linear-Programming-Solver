@@ -41,6 +41,7 @@ class Problem():
         return self._solve_qiskit()
 
     def _solve_qiskit(self):
+        self.solve_runtime()
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         sampler = Sampler(options={'seed': self.seed})
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
@@ -86,6 +87,6 @@ class Problem():
                          for _ in range(0, 2 * self.p)]
         qaoa_mes = QAOAClient(provider=provider, backend=provider.get_backend(
             backend), initial_point=initial_point, reps=self.p)
-        qaoa = MinimumEigenOptimizer(qaoa_mes)
-        qaoa_result = qaoa.solve(qp)
-        print('RUNTIME: ', qaoa_result)
+        qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
+        
+        

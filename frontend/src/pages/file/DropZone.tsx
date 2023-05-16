@@ -1,5 +1,5 @@
 import { useCallback, useState, useMemo, useContext, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Spinner from "react-bootstrap/Spinner";
 import { AppContext } from "../../context/index";
 import { sendFile } from "../../components/Actions/sendFile";
@@ -12,16 +12,22 @@ import { FileSolTab } from "../../components/Solution/index";
  *  where the user can drop the file to be solved
  */
 export function MyDropzone() {
-  const [fileContents, setFileContents] = useState("");
   const [showWaiting, setShowWaiting] = useState(false);
   const { showErrorModal } = useContext(AppContext);
   const { fileSolution, setFileSolution } = useContext(AppContext);
+  const [onSimulator, setOnSimulator] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles: Blob[]) => {
+  // This useEffect is used to hide
+  // the spinner when the fileSolution is set
+  useEffect(() => {
+    setShowWaiting(false);
+  }, [fileSolution]);
+
+  const onDropAccepted = useCallback((acceptedFiles: Blob[]) => {
+    setShowWaiting(true);
     const reader = new FileReader();
     reader.onload = (event) => {
       if (event.target) {
-        setFileContents(event.target.result as string);
         sendFile(
           event.target.result as string,
           showErrorModal,
@@ -33,13 +39,12 @@ export function MyDropzone() {
     reader.readAsText(acceptedFiles[0]);
   }, []);
 
-  const onDropAccepted = useCallback((acceptedFiles: Blob[]) => {
-    setShowWaiting(true);
-  }, []);
-
-  const onServerResponse = useEffect(() => {
-    setShowWaiting(false);
-  }, [fileSolution]);
+  const onDropRejected = useCallback(
+    (fileRejections: FileRejection[], event: DropEvent) => {
+      showErrorModal(["File rejected", "Please upload a .txt file"]);
+    },
+    []
+  );
 
   const {
     getRootProps,
@@ -50,7 +55,8 @@ export function MyDropzone() {
     isFocused,
   } = useDropzone({
     onDropAccepted,
-    onDrop,
+    onDropRejected,
+    //onDrop,
     accept: { "text/plain": [".txt"] },
     maxFiles: 1,
   });
@@ -73,14 +79,15 @@ export function MyDropzone() {
           {isDragActive ? (
             <p>Drop the file here ...</p>
           ) : showWaiting ? (
-              <Spinner animation="border" variant="success" /> 
+            <Spinner animation="border" variant="success" />
           ) : (
             <p>Drop a file here, or click to select a file</p>
           )}
         </div>
-        {fileSolution && (
-          <FileSolTab fileSolution={fileSolution}/>
-        )}
+        {onSimulator && 
+        <p>simulator</p>
+        }
+        {fileSolution && <FileSolTab fileSolution={fileSolution} />}
       </section>
     </>
   );

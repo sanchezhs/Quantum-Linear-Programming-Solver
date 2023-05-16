@@ -5,7 +5,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useCookies } from "react-cookie";
 
-function ThemeSwitch() {
+export function ThemeSwitch() {
   const { theme, setTheme } = useContext(ThemeContext);
   const [cookies, setCookie] = useCookies<string>(["theme"]);
 
@@ -43,4 +43,3 @@ function ThemeSwitch() {
     </Form>
   );
 }
-export default ThemeSwitch;

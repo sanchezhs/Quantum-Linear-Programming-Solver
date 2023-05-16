@@ -45,7 +45,7 @@ export interface Constraints {
   value: string;
 }
 
-type AppContextType = {
+export type AppContextType = {
   modalShow: { show: boolean; body: string[] };
   backends: Backend[];
   fileSolution: FileSolution | null;
@@ -55,6 +55,8 @@ type AppContextType = {
   setBackends: (backends: Backend[]) => void;
   showErrorModal: (errors: string[]) => void;
   setModalShow: (modalShow: ErrorModal) => void;
+  openPanel: boolean;
+  setOpenPanel: (openPanel: boolean) => void;
 };
 
 export const AppContext = createContext<AppContextType>(
@@ -62,6 +64,8 @@ export const AppContext = createContext<AppContextType>(
     modalShow: { show: false, body: [] },
     backends: [],
     inputSolution: null,
+    openPanel: false,
+    setOpenPanel: () => {},
     fileSolution: null,
     setFileSolution: () => {},
     setInputSolution: () => {},
@@ -79,6 +83,7 @@ export const AppContext = createContext<AppContextType>(
  *  ModalShow: Modal to show errors
  */
 export function AppContextProvider({ children, }: { children: React.ReactNode; }) {
+  const [openPanel, setOpenPanel] = useState(false);
   const [backends, setBackends] = useState<Backend[]>([]);
   const [fileSolution, setFileSolution] = useState<FileSolution | null>(null);
   const [inputSolution, setInputSolution] = useState<InputSolution | null>(null);
@@ -105,6 +110,8 @@ export function AppContextProvider({ children, }: { children: React.ReactNode; }
         backends,
         fileSolution,
         inputSolution,
+        openPanel,
+        setOpenPanel,
         setFileSolution,
         setInputSolution,
         setBackends,

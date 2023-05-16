@@ -1,8 +1,12 @@
-import { Navbar as BootstrapNavBar, Nav, Container } from "react-bootstrap";
-import ThemeSwitch from "../ThemeSwitch";
+import { Navbar as BootstrapNavBar, Nav, Button } from "react-bootstrap";
+import { ThemeSwitch } from "../ThemeSwitch";
+import { AppContext } from "../../context";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import TuneIcon from '@mui/icons-material/Tune';
 
 export function Navbar() {
+  const { setOpenPanel } = useContext(AppContext);
   return (
     <>
       <BootstrapNavBar
@@ -30,7 +34,15 @@ export function Navbar() {
               File
             </NavLink>
           </Nav>
-          <ThemeSwitch />
+          <Button 
+            variant="outline-light"
+            onClick={() => setOpenPanel(true)}
+            style={{marginRight: '10px'}}
+          >
+            <TuneIcon fontSize="small"/>
+            Setup
+          </Button>
+          <ThemeSwitch /> 
       </BootstrapNavBar>
     </>
   );

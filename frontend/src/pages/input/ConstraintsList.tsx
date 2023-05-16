@@ -1,22 +1,40 @@
-import { Constraint } from "./index";
+import { Constraint as ConstraintElement } from "./index";
 import Form from "react-bootstrap/Form";
 import { useContext, useReducer, useState } from "react";
 import { AppContext } from "../../context/index";
 import Buttons from "./Buttons";
 import { sendForm } from "../../components/Actions/index";
-import { Action, checkForm } from "./Form";
-import { State } from "./Form";
+import { State, Action, Constraint, ConstraintAction, FormState, setFormState } from "./types/types";
 
 
-export type ConstraintType = {
-  id: number;
-  value: string;
-};
+export function checkForm(
+  constraints: any,
+  state: State,
+  setFormState: any
+) {
+  let ok = true;
+  if (state.lowerBound === "0" && state.upperBound === "0") {
+    ok = false;
+  }
 
-export type ConstraintAction =
-  | { type: "createConstraint" }
-  | { type: "deleteConstraint"; payload: number }
-  | { type: "updateConstraints"; payload: ConstraintType[] };
+  if (state.objetive === "") {
+    ok = false;
+  }
+
+  if (state.radioValue === "") {
+    ok = false;
+  }
+
+  if (constraints.length === 0) {
+    ok = false;
+  }
+
+  if (constraints.find((constraint: any) => constraint.value === "")) {
+    ok = false;
+  }
+  if (!ok) setFormState({ submitted: false, validated: true });
+  return ok;
+}
 
 export function ConstraintsList({
   formState,
@@ -24,17 +42,15 @@ export function ConstraintsList({
   state,
   dispatch,
 }: {
-  formState: { submitted: boolean; validated: boolean };
-  setFormState: React.Dispatch<
-    React.SetStateAction<{ submitted: boolean; validated: boolean }>
-  >;
+  formState: FormState;
+  setFormState: setFormState
   state: State;
   dispatch: React.Dispatch<Action>;
 }) {
   const [waiting, setWaiting] = useState(false);
-
+  const { showErrorModal, setInputSolution } = useContext(AppContext);
   const [constraints, ListDispatch] = useReducer(
-    (constraints: ConstraintType[], action: ConstraintAction) => {
+    (constraints: Constraint[], action: ConstraintAction) => {
       switch (action.type) {
         case "createConstraint":
           return [
@@ -60,13 +76,12 @@ export function ConstraintsList({
     },
     [{ id: 1, value: "" }]
   );
-  const { showErrorModal, setInputSolution } = useContext(AppContext);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setWaiting(true);
     setFormState({ submitted: true, validated: true });
-    if (!checkForm(showErrorModal, constraints, state, setFormState)) {
+    if (!checkForm(constraints, state, setFormState)) {
       setWaiting(false);
       return;
     }
@@ -97,7 +112,7 @@ export function ConstraintsList({
     <div>
       {constraints.length > 0 && <Form.Label>Subject to:</Form.Label>}
       {constraints.map((constraint) => (
-        <Constraint
+        <ConstraintElement
           key={constraint.id}
           constraints={constraints}
           constraint={constraint}

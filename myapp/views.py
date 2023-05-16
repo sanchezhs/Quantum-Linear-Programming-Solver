@@ -11,7 +11,7 @@ import json
 class Api_index(viewsets.ViewSet):
     """
     ViewSet for input form, it checks if objetive and constraints are valid
-    passing them to Lark parser.
+    passing them to Lark parser and then it solves the problem.
     """
 
     serializer_class = serializers.FormDataSerializer
@@ -40,7 +40,7 @@ class Api_index(viewsets.ViewSet):
 class Api_upload(viewsets.ViewSet):
     """
     ViewSet for upload page. First it checks if file is valid, then it
-    passes it to Lark to parse the data.
+    passes it to Lark to parse the data and finally it solves the problem.
     """
 
     serializer_class = serializers.FileSerializer
@@ -50,7 +50,6 @@ class Api_upload(viewsets.ViewSet):
         contents = json.loads(request.body.decode('utf-8'))['fileContents']
         
         # extract problem data from file contents
-        #p, objetive, constraints, type = file_reader.file_extract_data(contents)
         data = file_reader.file_extract_data(contents)
         
         try:

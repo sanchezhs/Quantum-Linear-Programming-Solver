@@ -14,7 +14,7 @@ export function myModal() {
         show={modalShow.show}
         onHide={() => setModalShow({ show: false, body: [] })}
       >
-        <Modal.Header closeButton>
+        <Modal.Header className="error-modal-header" closeButton>
           <Modal.Title>Error</Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">

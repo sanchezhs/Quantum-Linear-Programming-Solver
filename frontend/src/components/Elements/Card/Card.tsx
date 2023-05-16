@@ -17,28 +17,22 @@ import { MathJax } from 'better-react-mathjax'
 
 type CardProps = {
   body: {
-    comment: string;
     seed: string;
-    p : string;
     lb: string;
     ub: string;
-    type: string;
-    objective: string;
-    constraints: string[];
     circuitDepth: string;
+    objetive: string;
+    constraints: string[];
   }[];
 };
 
 function renderBody(body: {
-  comment: string;
   seed: string;
-  p : string;
   lb: string;
   ub: string;
-  type: string;
-  objective: string;
+  circuitDepth : string;
+  objetive: string;
   constraints: string[];
-  circuitDepth: string;
 }) {
   const { constraints, ...dynamicProperties } = body;
 

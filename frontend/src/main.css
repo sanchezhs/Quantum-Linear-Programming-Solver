@@ -20,11 +20,11 @@ pre {
   overflow: scroll;
 }
 
-.row {
+/* .row {
   align-items: center;
   justify-content: center;
   padding: 90px;
-}
+} */
 
 #modal-row {
   padding: 0px;
@@ -112,7 +112,7 @@ a {
   transition: transform 0.2s ease-in-out;
 }
 
-.modal-header {
+.error-modal-header {
   background-color: red;
   color: white;
 }
@@ -121,10 +121,20 @@ a {
   white-space: pre-line;
 }
 
-
+.panel-container {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
 
 /* Dark mode */
-#dark .App {
+/*#dark .App {
+  background-color: #1c2025;
+}
+*/
+#dark {
   background-color: #1c2025;
 }
 
@@ -222,9 +232,7 @@ a {
   background-color: #123456;
 }
 
-#dark {
-  background-color: #1c2025;
-}
+
 
 #dark .navbar {
   background-color: #112a44 !important;

@@ -1,4 +1,4 @@
-export { GateMenu } from './Buttons/Buttons'
+export { GateMenu } from './GateButtons/GateMenu'
 export { Hadamard } from './oneQubit/Hadamard/Hadamard'
 export { PauliX } from './oneQubit/PauliX/PauliX'
 export { PauliY } from './oneQubit/PauliY/PauliY'
