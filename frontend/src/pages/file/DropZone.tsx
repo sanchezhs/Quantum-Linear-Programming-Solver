@@ -1,4 +1,5 @@
 import { useCallback, useState, useMemo, useContext, useEffect } from "react";
+import { Button } from "react-bootstrap";
 import { DropEvent, FileRejection, useDropzone } from "react-dropzone";
 import Spinner from "react-bootstrap/Spinner";
 import { AppContext } from "../../context/index";
@@ -15,7 +16,6 @@ export function MyDropzone() {
   const [showWaiting, setShowWaiting] = useState(false);
   const { showErrorModal } = useContext(AppContext);
   const { fileSolution, setFileSolution } = useContext(AppContext);
-  const [onSimulator, setOnSimulator] = useState(false);
 
   // This useEffect is used to hide
   // the spinner when the fileSolution is set
@@ -84,9 +84,6 @@ export function MyDropzone() {
             <p>Drop a file here, or click to select a file</p>
           )}
         </div>
-        {onSimulator && 
-        <p>simulator</p>
-        }
         {fileSolution && <FileSolTab fileSolution={fileSolution} />}
       </section>
     </>

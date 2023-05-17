@@ -23,14 +23,9 @@ export function RY() {
         The RY gate is used to flip the state of a qubit over the Y-axis
         by an angle of theta.
       </p>
-      <p>The image shows the RY gate applied to the initial state with an 
+      <p>Left image shows the RY gate applied to the initial state with an 
         angle of pi/2 radians.
       </p>
-{/*       <p>
-        <MathJax style={{ textAlign: "center" }}>
-          {"\\(Z|0\\rangle = -1|0\\rangle\\)"}
-        </MathJax>
-      </p> */}
     </>
   );
 

@@ -6,36 +6,37 @@ import {
   Button,
   Form,
   ButtonGroup,
-  Toast,
-  ToastContainer,
 } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { Drawer, Divider } from "@mui/material";
-import { Optimization, Problem, Backend } from "./index";
+import CloseIcon from "@mui/icons-material/Close";
+import { Optimization, Problem, Backend, Message, checkSettings } from "./index";
 import { sendSettings } from "../../Actions/index";
-import { checkSettings } from "./checkSettings";
 
 export type State = {
   upperBound: string;
   lowerBound: string;
   depth: string;
   seed: string;
-  backend: string;
+  shots: string;
+  simulator: boolean;
 };
 
 export type Action =
   | { type: "setUpperBound"; payload: string }
   | { type: "setLowerBound"; payload: string }
-  | { type: "setSeed"; payload: string }
   | { type: "setDepth"; payload: string }
-  | { type: "setBackend"; payload: string };
+  | { type: "setSeed"; payload: string }
+  | { type: "setShots"; payload: string }
+  | { type: "setIsSimulator"; payload: boolean };
 
 const initialState: State = {
   upperBound: "10",
   lowerBound: "0",
-  seed: String(Math.floor(Math.random() * 10000)),
   depth: "1",
-  backend: "simulator",
+  seed: String(Math.floor(Math.random() * 10000)),
+  shots: "1000",
+  simulator: true,
 };
 
 function reducer(state: State, action: Action) {
@@ -48,8 +49,10 @@ function reducer(state: State, action: Action) {
       return { ...state, depth: action.payload };
     case "setSeed":
       return { ...state, seed: action.payload };
-    case "setBackend":
-      return { ...state, backend: action.payload };
+    case "setShots":
+      return { ...state, shots: action.payload };
+    case "setIsSimulator":
+      return { ...state, simulator: action.payload };
     default:
       throw new Error();
   }
@@ -57,13 +60,13 @@ function reducer(state: State, action: Action) {
 
 export function Slider() {
   const { openPanel, setOpenPanel, showErrorModal } = useContext(AppContext);
-  const [showToast, setShowToast] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [showMessage, setShowMessage] = useState({ show: false, error: false });
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!checkSettings(state, showErrorModal)) return;
-    sendSettings(state, setShowToast);
+    sendSettings(state, setShowMessage);
     console.log(state);
   };
 
@@ -71,6 +74,14 @@ export function Slider() {
     <Drawer anchor="right" open={openPanel} onClose={() => setOpenPanel(false)}>
       <div className="panel-container">
         <Container style={{ marginTop: "25px" }}>
+          <Button
+            style={{ position: "absolute", top: 5, left: 5 }}
+            size="sm"
+            variant="outline-secondaty"
+            onClick={() => {setOpenPanel(false); setShowMessage({show: false, error: false})}}
+          >
+            <CloseIcon />
+          </Button>
           <Divider style={{ margin: "2px 5px" }}>
             <h5>Problem Parameters</h5>{" "}
           </Divider>
@@ -93,9 +104,13 @@ export function Slider() {
             </Divider>
             <Row>
               <Col>
-                <Backend dispatch={dispatch} />
+                <Backend state={state} dispatch={dispatch} />
               </Col>
             </Row>
+            <Message
+              showMessage={showMessage}
+              setShowMessage={setShowMessage}
+            />
             <Row style={{ marginTop: "25px" }}>
               <ButtonGroup>
                 <Button
@@ -111,12 +126,6 @@ export function Slider() {
           </Form>
         </Container>
       </div>
-      <Toast style={{textAlign: 'center', position:'absolute', bottom: 5, right: 5}} onClose={() => setShowToast(false)} delay={5000} show={showToast} animation={false}>
-        <Toast.Header>
-          <strong className="me-auto">Success!</strong>
-        </Toast.Header>
-        <Toast.Body>Settings saved during this session</Toast.Body>
-      </Toast>
     </Drawer>
   );
 }

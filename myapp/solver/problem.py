@@ -7,73 +7,104 @@ from qiskit_optimization.algorithms import MinimumEigenOptimizer
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.runtime import QAOAClient
 from qiskit.algorithms.minimum_eigensolvers import QAOA
-from .qiskit_conv import ToQiskitConverter
-from .optimize_problem import OptimizeProblem
-from .result import Result
-from .qiskit_result import QiskitResult
-from qiskit import QuantumCircuit
+from .result.qiskit_result import QiskitResult
+from .result.manual_result import ManualResult  
+from .converter.qiskit_conv import ToQiskitConverter
+from .optimization.optimize_problem import OptimizeProblem  
+
 from qiskit import IBMQ
 from qiskit_ibm_runtime import QiskitRuntimeService
 import numpy as np
 
 
 class Problem():
+    """
+    This class is responsible for solving the problem.
+    There are two different methods depending 'simulator' parameter.
+    """
 
-    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, depth: str, simulator: str) -> None:
+    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, depth: str, shots: str, simulator: str) -> None:
+        """
+
+        Args:
+            objetive (str):  Objetive function
+            constraints (str): Constraints
+            type (str): Sense of optimization
+            upperbound (str): Upper bound for binarization
+            lowerBound (str): Lower bound for binarization
+            seed (str): Seed for random number generator
+            depth (str): Depth of the circuit (layers)
+            simulator (str): Simulator or runtime
+        """
         self.objetive = objetive
         self.constraints = constraints
         self.type = type
         self.upperbound = int(upperbound)
         self.lowerBound = int(lowerBound)
         self.seed = int(seed)
+        self.shots = int(shots)
         self.rng = np.random.RandomState(seed=self.seed)
         self.depth = int(depth)
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
         self.circuit = None
         self.theta = None
-        self.simulator = simulator == 'simulator'
+        self.simulator = simulator
 
-    def cobyla_callback(self, x: int, theta: np.ndarray, f: float, d: dict) -> None:
-        self.theta = theta
+
 
     def solve(self, mode='qiskit'):
-        if mode != 'qiskit':
+        if mode == 'manual':
             return self._solve_manual()
-        return self._solve_qiskit()
+        else:
+            return self._solve_qiskit()
 
     def _solve_qiskit(self):
-        #self.solve_runtime()
+        if not self.simulator:
+            return self.solve_runtime()
+        
+        # Convert to Quadratic Program
         qp, max_value = ToQiskitConverter(self).to_qiskit()
-        sampler = Sampler(options={'seed': self.seed})
+        
+        # Initialize Sampler to get the circuit
+        sampler = Sampler(options={'seed': self.seed, 'shots': self.shots})
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
+        
+        # Initialize QAOA
         qaoa_mes = QAOA(sampler=sampler, optimizer=COBYLA(
             rhobeg=0.5, disp=True), initial_point=initial_point, callback=self.cobyla_callback, reps=self.depth)
+        
+        # Solve using MinimumEigenOptimizer
         qaoa = MinimumEigenOptimizer(qaoa_mes)
         qaoa_result = qaoa.solve(qp)
 
         print(qaoa_result)
+        # Return results
         results = QiskitResult(qaoa_result, qp, sampler,
                                self.theta).get_results()
 
         return results
 
     def _solve_manual(self) -> dict:
+        
         # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         conv = QuadraticProgramToQubo()
         qubo = conv.convert(qp)
+        
+        # Optimize
         best_solution, best_theta, optimized_circuit = OptimizeProblem(conv,
-                                                                       qubo, qp, self.depth, self.type, max_value, self.seed).solve()
-
+                                                                       qubo, qp, self.depth, self.type, max_value, self.shots, self.seed).solve()
+        # Check if solution was found
         if not best_solution:
             raise serializers.ValidationError({'errors': [
                 'Solution not found']})
-
-        res = Result(best_solution, best_theta, optimized_circuit, qubo, qp)
-        return res.get_results()
+            
+        # Return results
+        return ManualResult(best_solution, best_theta, optimized_circuit, qubo, qp).get_results()
 
     def solve_runtime(self):
+        # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         token = '4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932'
         try:
@@ -82,12 +113,17 @@ class Problem():
             provider = IBMQ.load_account()
         QiskitRuntimeService.save_account(
             overwrite=True, channel="ibm_quantum", token=token)
-        # backend = QiskitRuntimeService().least_busy( simulator=False).name
+        #backend = QiskitRuntimeService().least_busy(simulator=False).name
         backend = 'ibmq_qasm_simulator'
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOAClient(provider=provider, backend=provider.get_backend(
-            backend), initial_point=initial_point, reps=self.depth)
+            backend), initial_point=initial_point, callback=self.cobyla_callback, reps=self.depth, shots=self.shots)
         qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
-        
-        
+
+        return QiskitResult(qaoa_result, qp, None,
+                               self.theta, self.simulator).get_results()
+
+    
+    def cobyla_callback(self, x: int, theta: np.ndarray, f: float, d: dict) -> None:
+        self.theta = theta    

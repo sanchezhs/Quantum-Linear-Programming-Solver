@@ -131,14 +131,20 @@ a {
   flex-direction: column;
 }
 
+#settings-button {
+  border-color: #0087f7;
+  border-width: 0px;
+}
+
 /* Dark mode */
 /*#dark .App {
   background-color: #1c2025;
 }
 */
 #dark {
-  background-color: #1c2025;
-}
+  /*background-color: #1c2025;*/
+  background-color: #262626;
+} 
 
 #dark .nav-link {
   background-color: #1c2025;
@@ -284,13 +290,13 @@ h5 {
 }
 
 #dark .btn-outline-danger {
-  color: #aa4a44;
-  border-color: #aa4a44;
+  color: #bcccdc;
+  border-color: #bcccdc;
 }
 
 #dark .btn-outline-danger:hover {
-  color: #aa4a44;
-  border-color: #aa4a44;
+  color: #bcccdc;
+  border-color: #bcccdc;
 }
 
 #dark pre {

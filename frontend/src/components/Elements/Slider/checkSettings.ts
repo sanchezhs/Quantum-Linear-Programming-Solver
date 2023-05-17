@@ -4,6 +4,12 @@ import { State } from './Slider'
 export function checkSettings(state : State, showErrorModal: (message: string[]) => void) {
 
     let { upperBound, lowerBound, depth, seed } = state;
+
+    if (state.simulator === null) {
+        showErrorModal(["Please select simulator or quantum computer"]);  
+        return false;
+    }
+
     if (!upperBound || !lowerBound || !depth || !seed) {
         showErrorModal(["Upper bound, lower bound, depth and seed must be numbers"]);
         return false;

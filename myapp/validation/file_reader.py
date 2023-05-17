@@ -15,10 +15,6 @@ def file_extract_data(s: str) -> dict:
     cn
     """
     pattern = re.compile(r""" (?P<comments>(\/\/\s*.+\s*\r?\n)+)?          # Comments starts with // and lines are separated by \r?\n, unix or windows
-                              (?P<seed>seed\s*=\s*[0-9]{1,4})\s*\r?\n         # Seed of the optimization
-                              (?P<depth>p\s*=\s*[1-9]+)\s*\r?\n               # Depth of the circuit
-                              (?P<lowerBound>lb\s*=\s*-?[0-9][0-9]*)\s*\r?\n         # LowerBound of variables
-                              (?P<upperBound>ub\s*=\s*[1-9][0-9]*)\s*\r?\n    # UpperBound of variables
                               (?P<type>(maximize|minimize))\s*:\s*         # minimize or maximize
                               (?P<objetive>.+)\s*\r?\n                        # Objective function
                               subject\s+to:\s*\r?\n                        # Subject to
@@ -31,29 +27,16 @@ def file_extract_data(s: str) -> dict:
         print('match ', match)
 
         comments = match.group('comments')
-        p = match.group('depth').strip().split('=')[1]
-        seed  = match.group('seed').strip().split('=')[1]
-        lowerBound = match.group('lowerBound').strip().split('=')[1]
-        upperBound = match.group('upperBound').strip().split('=')[1]
-
         
         type = match.group('type')
         objetive = match.group('objetive')
         constraints = re.findall(r'.+', match.group('constraints'))
-        print('p ', p)
-        print('seed ', seed)
-        print('lowerBound ', lowerBound)
-        print('upperBound ', upperBound)
         print('comments ', comments)
         print('objetive ', objetive)
         print('constraints ', constraints)
         print('type ', type)
         print('todo ok en txt')
         return {
-            'seed': seed,
-            'p': p,
-            'lowerBound': lowerBound,
-            'upperBound': upperBound,
             'objetive': objetive,
             'constraints': constraints,
             'type': type

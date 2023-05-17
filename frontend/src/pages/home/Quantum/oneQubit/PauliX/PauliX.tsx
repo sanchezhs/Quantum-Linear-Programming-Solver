@@ -22,10 +22,10 @@ export function PauliX() {
             </MathJax>
           </p>
           <p>
-            The Pauli-X gate is used to flip the state of a qubit over the X-axis.
+            The Pauli-X gate is used to flip the state of a qubit over the X-axis. It is the analogous of the classical NOT gate.
           </p>
           <p>
-            The image shows the X gate applied to the initial state
+            Left image shows the X gate applied to the initial state
           </p>
           <p>
             <MathJax style={{ textAlign: "center" }}>

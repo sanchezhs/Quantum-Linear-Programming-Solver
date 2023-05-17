@@ -5,7 +5,6 @@ from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from scipy.optimize import minimize
 from .build_circuit import BuildCircuit
-import random
 
 class OptimizeProblem():
     def __init__(self,
@@ -15,6 +14,7 @@ class OptimizeProblem():
                  p: int,
                  type: str,
                  max_value: int,
+                 shots: str,
                  seed: int) -> None:
         self.conv = conv
         self.qubo = qubo
@@ -22,13 +22,13 @@ class OptimizeProblem():
         self.p = p
         self.type = type
         self.max_value = max_value
+        self.shots = int(shots)
         self.seed = seed  
         self.rng = np.random.RandomState(seed=self.seed)
         self.ising = qubo.to_ising()
         self.circuit = None
         self.nqubits = len(qubo.variables)
         self.backend = Aer.get_backend('qasm_simulator')
-        self.shots = 10000
 
     def execute_circuit(self, theta: list) -> dict:
         self.circuit = BuildCircuit(

@@ -34,14 +34,15 @@ export function Navbar() {
               File
             </NavLink>
           </Nav>
+          <ThemeSwitch /> 
           <Button 
+            id="settings-button"
             variant="outline-light"
             onClick={() => setOpenPanel(true)}
             style={{marginRight: '10px'}}
           >
-            <TuneIcon fontSize="small"/>
+            <TuneIcon style={{marginBottom: '5px'}} fontSize="small"/>
           </Button>
-          <ThemeSwitch /> 
       </BootstrapNavBar>
     </>
   );

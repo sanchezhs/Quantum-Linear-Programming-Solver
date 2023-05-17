@@ -35,6 +35,9 @@ export function Hadamard() {
         </MathJax>
       </p>
       <p>
+        As you can see, the Hadamard gate creates a superposition of the 0 and 1
+      </p>
+      <p>
         <MathJax style={{ textAlign: "center" }}>
           {"\\(|\\frac{1}{\\sqrt{2}}|^2 = 0.5\\)"}
         </MathJax>

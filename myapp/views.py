@@ -1,9 +1,9 @@
-from .utils.problem import Problem
+from .solver.problem import Problem
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
 from .validation import file_reader, form_parser
-from .qiskit_ibm import ibm
+from .utils import ibm
 from . import serializers
 import json
 
@@ -19,7 +19,6 @@ class Api_index(viewsets.ViewSet):
     def create(self, request):
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
-            print('serializer data: ', serializer.data)
             
             problem = Problem(serializer.data['objetive'], 
                               serializer.data['constraints'],
@@ -28,13 +27,14 @@ class Api_index(viewsets.ViewSet):
                               request.session.get('lowerBound', 0),
                               request.session.get('seed', 0),
                               request.session.get('depth', 1),
-                              request.session.get('backend', 'simulator'),
+                              request.session.get('shots', 1000),
+                              request.session.get('simulator', True),
                               )
-            #try:
-            result = problem.solve(mode='qiskit')
-            #except Exception as e:
-                #print(e.args)
-                #return Response({'status': 'error', 'errors': e.args}, status=400)
+            try:
+                result = problem.solve(mode='qiskit')
+            except Exception as e:
+                print(e.args)
+                return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
         print('serializer errors: ', serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
@@ -66,7 +66,8 @@ class Api_upload(viewsets.ViewSet):
                               request.session.get('lowerBound', 0),
                               request.session.get('seed', 0),
                               request.session.get('depth', 1),
-                              request.session.get('backend', 'simulator'),
+                              request.session.get('shots', 1000),
+                              request.session.get('simulator', True),
                               )
             result = problem.solve()
             
@@ -88,7 +89,9 @@ class Api_settings(viewsets.ViewSet):
             request.session['lowerBound'] = serializer.validated_data['lowerBound']
             request.session['seed'] = serializer.validated_data['seed']
             request.session['depth'] = serializer.validated_data['depth']
-            print(request.data)
+            request.session['shots'] = serializer.validated_data['shots']
+            request.session['simulator'] = serializer.validated_data['simulator']
+            request.session['shots'] = serializer.validated_data['shots']
             return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
 
 

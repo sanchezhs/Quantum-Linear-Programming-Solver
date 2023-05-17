@@ -21,11 +21,18 @@ export function Circuit({
     const blob = new Blob([str], { type: "text/plain;charset=utf-8" });
     saveAs(blob, filename);
   };
-
+  if (circuit.light === "" || circuit.dark === "") {
+    return <>
+      <p>
+        Circuits are not available when using quantum computers.
+      </p>
+    </>
+  }
   return (
     <>
       <OverlayTrigger overlay={<Tooltip>Download as QASM Circuit</Tooltip>}>
         <Button
+          style={{ float: 'right'}}
           type="button"
           variant="outline-primary"
           size="sm"
@@ -53,17 +60,6 @@ export function Circuit({
           </>
         )}
       </TransformWrapper>
-      {/*         <div style={{maxHeight: '500px', overflow: 'scroll'}}>
-        <CopyBlock
-            text={qasm}
-            language="python"
-            showLineNumbers={false}
-            startingLineNumber={true}
-            theme={a11yLight}
-            codeBlock
-          >
-        </CopyBlock>
-        </div> */}
     </>
   );
 }

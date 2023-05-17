@@ -21,7 +21,7 @@ import numpy as np
 # Agg is a non-interactive backend that can only write to files.
 matplotlib.use('agg') 
 
-class Result:
+class ManualResult:
     def __init__(self,
                  best_sol,
                  best_params,

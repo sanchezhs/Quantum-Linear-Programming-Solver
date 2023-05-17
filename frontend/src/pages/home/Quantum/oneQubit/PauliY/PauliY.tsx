@@ -22,7 +22,7 @@ export function PauliY() {
       <p>
         The Pauli-Y gate is used to flip the state of a qubit over the Y-axis.
       </p>
-      <p>The image shows the Y gate applied to the initial state</p>
+      <p>Left image shows the Y gate applied to the initial state</p>
       <p>
         <MathJax style={{ textAlign: "center" }}>
           {"\\(Y|0\\rangle = -i|0\\rangle\\)"}

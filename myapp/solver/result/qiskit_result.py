@@ -18,22 +18,48 @@ class QiskitResult:
                  measures: MinimumEigenOptimizationResult,
                  qp: QuadraticProgram,
                  sampler: Sampler,
-                 theta: np.ndarray) -> None:
+                 theta: np.ndarray,
+                 simulator=True) -> None:
         self.measures = measures
         self.qp = qp
         self.sampler = sampler
         self.theta = theta
+        self.simulator = simulator
 
     def change_order(self, theta: np.ndarray):
-        mid = int(len(theta) / 2)
-        return theta[mid:] + theta[:mid]
+        mid = len(theta) // 2
+        return np.concatenate((theta[mid:], theta[:mid]))
 
     def get_results(self):
+        if self.simulator:
+            return self.get_simulator_results()
+        else:
+            return self.get_runtime_results()
+
+    def get_runtime_results(self):
+        qubo = QuadraticProgramToQubo().convert(self.qp)
+        fval, vars_values, num_qubits = self.get_solution_details(qubo)
+        return {
+            'objetive': fval,
+            'vars_values': vars_values,
+            'num_qubits': num_qubits,
+            'parameters': self.change_order(self.theta),
+            'circuit': {
+                'light': '',
+                'dark': '',
+            },
+            'histogram': '',
+            'qp': self.qp.export_as_lp_string(),
+            'qubo': qubo.export_as_lp_string(),
+            'qasm': '',
+        }
+
+    def get_simulator_results(self):
         encoded_light_circuit, encoded_dark_circuit, qasm_circuit = self.save_circuit(
             {'light': './light_circuit.png', 'dark': './dark_circuit.png'})
+
         qubo = QuadraticProgramToQubo().convert(self.qp)
-        fval, vars_values, num_qubits = self.get_solution_details()
-        matplotlib.pyplot.close()
+        fval, vars_values, num_qubits = self.get_solution_details(qubo)
         return {
             'objetive': fval,
             'vars_values': vars_values,
@@ -59,11 +85,11 @@ class QiskitResult:
         circuit.draw('mpl', filename=light_filename,
                      plot_barriers=False, initial_state=True)
         circuit.draw('mpl', filename=dark_filename, style={
-                     'backgroundcolor': '#1c2025', 'textcolor': '#ffffff'}, plot_barriers=False, initial_state=True)
+                     'backgroundcolor': '#262626', 'textcolor': '#ffffff'}, plot_barriers=False, initial_state=True)
 
         encoded_light_circuit = self.encode_file(light_filename)
         encoded_dark_circuit = self.encode_file(dark_filename)
-
+        matplotlib.pyplot.close()
         return encoded_light_circuit, encoded_dark_circuit, circuit.qasm()
 
     def encode_file(self, filename: str) -> str:
@@ -71,8 +97,8 @@ class QiskitResult:
             encoded_circuit = base64.b64encode(file.read()).decode('utf-8')
         return encoded_circuit
 
-    def get_solution_details(self):
-        num_qubits = self.sampler.circuits[0].num_qubits
+    def get_solution_details(self, qubo: QuadraticProgram):
+        num_qubits = qubo.get_num_vars()
         values = self.measures.x
         fval = int(self.measures.fval)
         variables = self.qp.variables

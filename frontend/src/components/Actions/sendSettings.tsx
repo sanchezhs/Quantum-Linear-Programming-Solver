@@ -14,7 +14,7 @@ axios.defaults.withCredentials = true;
  */
 export const sendSettings = (
   state: State,
-  setShowToast: (showToast: boolean) => void
+  setShowMessage: React.Dispatch<React.SetStateAction<{show: boolean, error: boolean}>>
 ) => {
   axios
     .post(HOST + "settings/", {
@@ -22,13 +22,14 @@ export const sendSettings = (
       lowerBound: state.lowerBound,
       seed: state.seed,
       depth: state.depth,
-      backend: state.backend,
+      shots: state.shots,
+      simulator: state.simulator,
     })
     .then((response) => {
-      setShowToast(true);
-      //alert("Success! Check the console for the results.");
+      setShowMessage({show: true, error: false});
     })
     .catch((error) => {
+        setShowMessage({show: true, error: true});
         alert("Error! Check the console for details.");
         console.log(error);
     });

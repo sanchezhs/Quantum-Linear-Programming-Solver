@@ -23,10 +23,24 @@ export function Home() {
               the algorithm, as well as the state vector and q-sphere of the
               quantum state at each step of the algorithm.
             </p>
+            <h5 text-muted>Settings</h5>
             <p>
-              Right picture is how this tool converts the problem into a
-              circuit that can be optimized by the algorithm.
+             You can adjust the settings of the algorithm and the problem
+              parameters in the panel on the right. The settings are divided into
+              three sections: 
+              <ul>
+                <li>Problem Parameters</li>
+                <li>Optimization Parameters</li>
+                <li>Run Options</li>
+              </ul>
+              The Problem Parameters section allows you to change 
+              the upper and lower bound use when binarizing the variables. 
+              The Optimization Parameters section allows you to adjust depth of 
+              the circuit and the random seed. 
+              The Run Options section allows you to select the backend you want to
+              run the algorithm on.
             </p>
+
             <h3>Quantum Gates</h3>
             <p>
               QAOA uses a sequence of quantum gates to approximate the solution
@@ -40,7 +54,7 @@ export function Home() {
               , RZ and RZZ. These gates play a crucial role in
               manipulating the quantum state and encoding the problem's
               information. However, it is also advantageous to familiarize
-              oneself with other fundamental gates used in quantum computing, as
+              yourself with other fundamental gates used in quantum computing, as
               they provide a broader understanding of the context and principles
               underlying QAOA.
             </p>

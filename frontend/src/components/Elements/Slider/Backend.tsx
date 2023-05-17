@@ -1,8 +1,19 @@
 import { Form } from "react-bootstrap";
-import { useState } from "react";
-import { Action } from "./Slider";
+import { State, Action } from "./Slider";
 
-export function Backend({ dispatch }: { dispatch: React.Dispatch<Action> }) {
+
+export function Backend({
+  state,
+  dispatch,
+}: {
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}) {
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isSimulator = e.target.value === "true";
+    dispatch({ type: "setIsSimulator", payload: isSimulator });
+  };
+
   return (
     <>
       <Form.Check
@@ -11,23 +22,20 @@ export function Backend({ dispatch }: { dispatch: React.Dispatch<Action> }) {
         name="radio-group-sim"
         id="simulator-radio"
         label="Simulator"
-        value="simulator"
-        defaultChecked={true}
-        onChange={(e) => {
-          dispatch({ type: "setBackend", payload: e.target.value });
-        }}
+        value="true"
+        checked={state.simulator}
+        onChange={handleRadioChange}
       ></Form.Check>
       <Form.Check
         required
         type="radio"
         name="radio-group-sim"
-        id="simulator-radio"
+        id="quantum-computer-radio"
         label="Quantum Computer"
-        value="quantum"
+        value="false"
+        checked={!state.simulator}
         feedbackType="invalid"
-        onChange={(e) => {
-          dispatch({ type: "setBackend", payload: e.target.value });
-        }}
+        onChange={handleRadioChange}
       ></Form.Check>
     </>
   );

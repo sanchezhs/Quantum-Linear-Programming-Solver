@@ -22,7 +22,7 @@ export function RZZ() {
         </MathJax>
       </p>
         <p>
-        Similar to the RZ gate, the RZZ gate is used to represent the quadratic decision variables with a given angle.
+        Similar to the RZ gate, the RZZ gate is used to represent the quadratic decision variables with a given angle optimized by a classical optimizer.
         </p>
  
     </>

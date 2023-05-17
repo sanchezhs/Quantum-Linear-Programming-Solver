@@ -26,7 +26,8 @@ export function CNOT() {
         If the control qubit is in the state |1⟩, then the target qubit is
         flipped. If the control qubit is in the state |0⟩, then the target
         qubit is not flipped.
-        CNOT is used to entangle two qubits.
+        CNOT is used to entangle two qubits, it is also used to implement RZZ 
+        gates from RZ gates.
       </p>
       <p>Left image shows the CNOT gate applied the state |10⟩</p>
       <p>

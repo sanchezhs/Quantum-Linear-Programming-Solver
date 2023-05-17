@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { AppContext } from '../../context/AppContext'
 import { Button, ButtonGroup, Spinner } from "react-bootstrap";
 import { ConstraintAction } from "./types/types";
 
@@ -26,14 +28,13 @@ function Buttons({
   waiting: boolean;
   setWaiting:  React.Dispatch<React.SetStateAction<boolean>>
 }) {
-
+  const { setOpenPanel } = useContext(AppContext);
   return (
     <>
       <ButtonGroup>
         <Button
           variant="outline-primary"
           type="button"
-          //onClick={() => createConstraint()}
           onClick={() => dispatch({type: "createConstraint"})}
         >
           Add Constraint
@@ -42,12 +43,19 @@ function Buttons({
           Clear
         </Button>
         <Button
+          variant="outline-primary"
+          type="button"
+          onClick={() => setOpenPanel(true)}
+        >
+          Settings
+        </Button>
+        <Button
           variant="outline-success"
           type="submit"
           disabled={formState.submitted}
           onClick={handleSubmit}
         >
-          {waiting ? "Waiting..." : "Submit"}
+          {waiting ? "Waiting..." : "Run"}
           {waiting && (
             <Spinner
               as="span"

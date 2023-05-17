@@ -40,6 +40,23 @@ export function Optimization({
           Number of layers in the circuit.
         </Form.Text>
       </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Shots</Form.Label>
+        <Form.Control
+          required
+          type="number"
+          min={1}
+          max={25000}
+          placeholder="Shots"
+          onChange={(e) => {
+            dispatch({ type: "setShots", payload: e.target.value });
+          }}
+          value={state.shots}
+        />
+        <Form.Text className="text-muted">
+          The number of times the circuit is run.
+        </Form.Text>
+      </Form.Group>
 
       <Form.Group className="mb-3" controlId="formUpperBound">
         <Form.Label>Seed</Form.Label>
