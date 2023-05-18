@@ -30,7 +30,7 @@ class OptimizeProblem():
         self.nqubits = len(qubo.variables)
         self.backend = Aer.get_backend('qasm_simulator')
 
-    def execute_circuit(self, theta: list) -> dict:
+    def execute_circuit(self, theta) :
         self.circuit = BuildCircuit(
             self.nqubits, self.ising, theta, self.p).build()
         histogram = self.backend.run(
@@ -43,7 +43,7 @@ class OptimizeProblem():
         return self.qubo.objective.evaluate(float_array)
 
     def cost(self):
-        def solution_energy(theta: list) -> float:
+        def solution_energy(theta) -> float:
             histogram = self.execute_circuit(theta)
             reversed = self.invert_counts(histogram)
             energy = 0
@@ -55,7 +55,7 @@ class OptimizeProblem():
             return energy / total_counts if total_counts > 0 else 0
         return solution_energy
 
-    def solve(self) -> tuple[dict, list, QuantumCircuit]:
+    def solve(self):
         best_theta = self.optimize()
         all_solutions = self.execute_circuit(best_theta.x)
 
@@ -69,7 +69,7 @@ class OptimizeProblem():
               best_theta, ', x= ', best_theta.x)
         return best_interpreted, best_theta, self.circuit
 
-    def optimize(self) -> list:
+    def optimize(self):
         init = [self.rng.random() + (self.max_value / (2 * np.pi)) for _ in range(0, 2 * self.p)]
         cost = self.cost()
         return minimize(cost, init, method='COBYLA', options={'maxiter': self.shots, 'disp': True, 'rhobeg': 0.25})
@@ -82,7 +82,7 @@ class OptimizeProblem():
         x = np.array([int(bit) for bit in str(sample)])
         return self.conv.interpret(x)
 
-    def filtar_soluciones(self, all_solutions: list) -> dict:
+    def filtar_soluciones(self, all_solutions) :
         buenas = {}
         for sol in all_solutions:
             x = np.array([int(bit) for bit in str(sol[0])])
@@ -97,10 +97,10 @@ class OptimizeProblem():
         
         return buenas
 
-    def invert_counts(self, counts: dict) -> dict:
+    def invert_counts(self, counts) :
         return {k[::-1]: v for k, v in counts.items()}
 
-    def execute_on_real_device(self, theta: list) -> None:
+    def execute_on_real_device(self, theta):
         service = QiskitRuntimeService(
             channel="ibm_quantum", token="4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932")
         backend = service.get_backend("ibmq_qasm_simulator")

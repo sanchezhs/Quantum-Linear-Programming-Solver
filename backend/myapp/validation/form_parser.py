@@ -142,7 +142,7 @@ def validate_objetive(objetive: str) -> None:
         )
 
 
-def validate_constraints(constraints: list[str]) -> None:
+def validate_constraints(constraints) :
     try:
         for constraint in constraints:
             t = VarDetector()

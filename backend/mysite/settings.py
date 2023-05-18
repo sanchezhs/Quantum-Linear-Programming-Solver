@@ -61,6 +61,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:5173',
     'http://localhost:5174',
     'http://127.0.0.1:5174',
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
 )
 
 CORS_ORIGIN_ALLOW_ALL = False
@@ -70,6 +72,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_NAME = "csrftoken"
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

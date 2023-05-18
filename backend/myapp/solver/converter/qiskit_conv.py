@@ -36,7 +36,7 @@ class ToQiskitConverter():
 
         return self.__to_qiskit(processed_objetive, processed_constraints), self.max_value
 
-    def __to_qiskit(self, processed_objetive: dict, processed_constraints: list[dict]) -> QuadraticProgram:
+    def __to_qiskit(self, processed_objetive, processed_constraints) -> QuadraticProgram:
         """ Build ising using qiskit_optimization QuadraticProgram
             using the processed objetive and constraints
         Args:
@@ -84,7 +84,7 @@ class ToQiskitConverter():
 
         return qp
 
-    def simplify(self) -> tuple[str, list[str]]:
+    def simplify(self):
         """ Insert multiplication sign between variables and numbers
            for sympify to work properly
         Returns:
@@ -95,7 +95,7 @@ class ToQiskitConverter():
                        for constraint in self.constraints]
         return objetive, constraints
 
-    def process_constraints(self, constraints: list[str]) -> list[str]:
+    def process_constraints(self, constraints):
         """ Process constraints to be used by qiskit_optimization
             equalize all constraints to 0 and save the inequality type
         Args:
@@ -112,7 +112,7 @@ class ToQiskitConverter():
             processed.append((expr, operator))
         return processed
 
-    def extract_coeffs(self, constraints: list[str]) -> list[dict]:
+    def extract_coeffs(self, constraints):
         """ Extract the coefficients and constant of the constraints
             and add the inequality type and name
         Args:

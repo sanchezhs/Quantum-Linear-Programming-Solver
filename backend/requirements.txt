@@ -11,6 +11,6 @@ qiskit
 qiskit-optimization
 qiskit-ibmq-provider
 qiskit-ibm-runtime
-setup-tools
+
 matplotlib
 pylatexenc

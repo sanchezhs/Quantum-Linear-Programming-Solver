@@ -56,7 +56,7 @@ class QiskitResult:
 
     def get_simulator_results(self):
         encoded_light_circuit, encoded_dark_circuit, qasm_circuit = self.save_circuit(
-            {'light': './light_circuit.png', 'dark': './dark_circuit.png'})
+            './light_circuit.png', './dark_circuit.png')
 
         qubo = QuadraticProgramToQubo().convert(self.qp)
         fval, vars_values, num_qubits = self.get_solution_details(qubo)
@@ -75,12 +75,12 @@ class QiskitResult:
             'qasm': qasm_circuit,
         }
 
-    def save_circuit(self, filename: dict) -> tuple[str, str]:
+    def save_circuit(self, light: str, dark: str):
         circuit = self.sampler.circuits[0].decompose().decompose()
         circuit = circuit.bind_parameters(self.theta)
 
-        light_filename = filename['light']
-        dark_filename = filename['dark']
+        light_filename = light
+        dark_filename = dark
 
         circuit.draw('mpl', filename=light_filename,
                      plot_barriers=False, initial_state=True)
