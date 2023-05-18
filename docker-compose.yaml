@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./api:/backend/api
+      - ./backend:/backend
 
   web:
     build: 
@@ -17,4 +17,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      - /frontend/node_modules
       - ./frontend:/frontend
