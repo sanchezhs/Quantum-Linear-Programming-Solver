@@ -1,18 +1,15 @@
 django
-django-bootstrap-v5
+requests
+numpy
+pandas
 lark
-<<<<<<< HEAD
-crispy
-django-crispy-forms
-crispy-bootstrap4
-=======
-dropzone
-bootstrap
 scipy
 sympy
->>>>>>> crispy
 djangorestframework
 django-cors-headers
+qiskit
+qiskit-optimization
+qiskit-ibmq-provider
 qiskit-ibm-runtime
 setup-tools
 matplotlib
