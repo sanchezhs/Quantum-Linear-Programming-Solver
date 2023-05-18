@@ -10,7 +10,13 @@ import {
 import { AppContext } from "../../../context/AppContext";
 import { Drawer, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Optimization, Problem, Backend, Message, checkSettings } from "./index";
+import {
+  Optimization,
+  Problem,
+  Backend,
+  Message,
+  checkSettings,
+} from "./index";
 import { sendSettings } from "../../Actions/index";
 
 export type State = {
@@ -71,19 +77,31 @@ export function Slider() {
   };
 
   return (
-    <Drawer anchor="right" open={openPanel} onClose={() => setOpenPanel(false)}>
+    <Drawer
+      anchor="right"
+      open={openPanel}
+      onClose={() => setOpenPanel(false)}
+      PaperProps={{
+        sx: {
+          boxShadow: 10,
+        },
+      }}
+    >
       <div className="panel-container">
         <Container style={{ marginTop: "25px" }}>
           <Button
             style={{ position: "absolute", top: 5, left: 5 }}
             size="sm"
             variant="outline-secondaty"
-            onClick={() => {setOpenPanel(false); setShowMessage({show: false, error: false})}}
+            onClick={() => {
+              setOpenPanel(false);
+              setShowMessage({ show: false, error: false });
+            }}
           >
             <CloseIcon />
           </Button>
           <Divider style={{ margin: "2px 5px" }}>
-            <h5>Problem Parameters</h5>{" "}
+            <h5>Problem Parameters</h5>
           </Divider>
           <Form>
             <Row>
@@ -92,7 +110,7 @@ export function Slider() {
               </Col>
             </Row>
             <Divider style={{ margin: "2px 5px" }}>
-              <h5>Optimization Parameters</h5>{" "}
+              <h5>Optimization Parameters</h5>
             </Divider>
             <Row>
               <Col>
@@ -100,7 +118,7 @@ export function Slider() {
               </Col>
             </Row>
             <Divider style={{ margin: "2px 5px" }}>
-              <h5>Run Options</h5>{" "}
+              <h5>Run Options</h5>  
             </Divider>
             <Row>
               <Col>

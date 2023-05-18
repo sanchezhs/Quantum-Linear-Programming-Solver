@@ -21,7 +21,6 @@ export function QUBO({ qubo }: { qubo: string }) {
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            overflow: "scroll",
           }}
         >
           <OverlayTrigger

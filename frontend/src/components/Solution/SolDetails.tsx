@@ -55,7 +55,7 @@ function process_variables(vars_values: [{ string: string }]) {
   
 }
 
-export function Details({
+export function SolDetails({
   objetive,
   vars_values,
   qubits,

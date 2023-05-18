@@ -87,7 +87,7 @@ export function Gate({
           </figure>
         </Col>
       </Row>
-      <Row id="modal-row" style={{ marginBottom: "200px" }}>
+      <Row id="modal-row" style={{ marginBottom: "150px" }}>
         <Col>{infoGate}</Col>
       </Row>
     </>

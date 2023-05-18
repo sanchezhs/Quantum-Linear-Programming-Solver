@@ -1,5 +1,5 @@
 import { Tab, Tabs } from "react-bootstrap";
-import { Circuit, Histogram, Details, IntegerProblem, QUBO } from "./index";
+import { Circuit, Histogram, SolDetails, IntegerProblem, QUBO } from "./index";
 import { FileSolution } from "../../context/AppContext";
 
 export function FileSolTab({
@@ -10,23 +10,23 @@ export function FileSolTab({
   return (
     <Tabs
       style={{ marginTop: "15px" }}
-      defaultActiveKey="problem"
+      defaultActiveKey="solution"
       id="my-tab"
       className="mb-3"
     >
-      <Tab eventKey="problem" title="Problem">
-        <IntegerProblem qp={fileSolution.qp} />
-      </Tab>
-      <Tab eventKey="qubo" title="QUBO">
-        <QUBO qubo={fileSolution.qubo} />
-      </Tab>
-      <Tab eventKey="details" title="Details">
-        <Details
+      <Tab eventKey="solution" title="Solution">
+        <SolDetails
           objetive={fileSolution.objetive}
           vars_values={fileSolution.vars_values}
           qubits={fileSolution.num_qubits}
           parameters={fileSolution.parameters}
         />
+      </Tab>
+      <Tab eventKey="problem" title="Problem">
+        <IntegerProblem qp={fileSolution.qp} />
+      </Tab>
+      <Tab eventKey="qubo" title="QUBO">
+        <QUBO qubo={fileSolution.qubo} />
       </Tab>
       <Tab eventKey="circuit" title="Circuit">
         <Circuit circuit={fileSolution.circuit} qasm={fileSolution.qasm} />

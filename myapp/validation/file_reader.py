@@ -19,7 +19,7 @@ def file_extract_data(s: str) -> dict:
                               (?P<objetive>.+)\s*\r?\n                        # Objective function
                               subject\s+to:\s*\r?\n                        # Subject to
                               #(?P<constraints>(?:.+\s*\r?\n)+.+)          # Constraints, last one without \r?\n
-                              (?P<constraints>(?:.+\s*\r?\n)+)             # Constraints, last one without \r?\n
+                              (?P<constraints>(?:.+\s*\r?\n?)+)             # Constraints, last one without \r?\n
                               (?P<AnythingElse>).*                         # Anything else
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:
@@ -37,7 +37,7 @@ def file_extract_data(s: str) -> dict:
         print('type ', type)
         print('todo ok en txt')
         return {
-            'objetive': objetive,
+            'objetive': objetive.strip(),
             'constraints': constraints,
             'type': type
         }

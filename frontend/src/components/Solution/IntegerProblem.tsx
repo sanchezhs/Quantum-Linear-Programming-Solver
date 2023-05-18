@@ -21,7 +21,7 @@ export function IntegerProblem({ qp }: { qp: string }) {
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            overflow: "scroll",
+            overflow: "hidden",
           }}
         >
           <OverlayTrigger
