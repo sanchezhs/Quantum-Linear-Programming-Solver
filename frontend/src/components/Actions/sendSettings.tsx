@@ -24,13 +24,12 @@ export const sendSettings = (
       depth: state.depth,
       shots: state.shots,
       simulator: state.simulator,
+      token: state.token,
     })
     .then((response) => {
       setShowMessage({show: true, error: false});
     })
     .catch((error) => {
         setShowMessage({show: true, error: true});
-        alert("Error! Check the console for details.");
-        console.log(error);
     });
 };

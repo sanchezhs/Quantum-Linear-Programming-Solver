@@ -23,7 +23,7 @@ class Problem():
     There are two different methods depending 'simulator' parameter.
     """
 
-    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, depth: str, shots: str, simulator: str) -> None:
+    def __init__(self, objetive: str, constraints: str, type: str, upperbound: str, lowerBound: str, seed: str, depth: str, shots: str, simulator: str, token: str) -> None:
         """
 
         Args:
@@ -43,12 +43,13 @@ class Problem():
         self.lowerBound = int(lowerBound)
         self.seed = int(seed)
         self.shots = int(shots)
+        self.simulator = simulator
+        self.token = token
         self.rng = np.random.RandomState(seed=self.seed)
         self.depth = int(depth)
         self.sense = {'=': 'EQ', '>=': 'GE', '<=': 'LE', '>': 'G', '<': 'L'}
         self.circuit = None
         self.theta = None
-        self.simulator = simulator
 
 
 
@@ -104,22 +105,26 @@ class Problem():
         return ManualResult(best_solution, best_theta, optimized_circuit, qubo, qp).get_results()
 
     def solve_runtime(self):
+        if self.token == '':
+            raise serializers.ValidationError({'errors': [
+                'Token is required']})
         # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
-        token = '4028a768ca1626c7d921c2872156924aa8f740ebd43cd7cb18f44a51edb5f2a781dcc40419fcdb28749f04ffa8e31d819e258142766f2c9b7df29796f099f932'
         try:
-            provider = IBMQ.enable_account(token)
+            provider = IBMQ.enable_account(self.token)
         except:
             provider = IBMQ.load_account()
-        QiskitRuntimeService.save_account(
-            overwrite=True, channel="ibm_quantum", token=token)
-        #backend = QiskitRuntimeService().least_busy(simulator=False).name
-        backend = 'ibmq_qasm_simulator'
+        try:
+            backend = QiskitRuntimeService(channel='ibm_quantum', token=self.token).least_busy(simulator=False).name
+        except:
+            raise serializers.ValidationError(
+                'Token is not valid')
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOAClient(provider=provider, backend=provider.get_backend(
             backend), initial_point=initial_point, callback=self.cobyla_callback, reps=self.depth, shots=self.shots)
         qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
+
 
         return QiskitResult(qaoa_result, qp, None,
                                self.theta, self.simulator).get_results()

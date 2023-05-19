@@ -33,19 +33,18 @@ export const sendForm = (
       radioValue: state.radioValue,
     })
     .then((response) => {
+      alert("Success! Check the console for the results.");
       setWaiting(false);
       setFormState({ submitted: false, validated: false });
       setInputSolution(response.data);
-      alert("Success! Check the console for the results.");
     })
     .catch((error) => {
-      console.log('ERROR: ', error.response.data.errors);
-      setWaiting(false);
-      setFormState({ submitted: false, validated: false });
       showErrorModal([
         error.response.data.errors.objetive,
         error.response.data.errors.constraints,
-        //error.response.data.errors,
+        error.response.data.errors,
       ]);
+      setWaiting(false);
+      setFormState({ submitted: false, validated: false });
     });
 };

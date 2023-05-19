@@ -47,7 +47,6 @@ export const sendToken = (
       if (!error.response) {
         alert("Network error");
       }
-      console.log("Token error: ", error.response.data.errors);
       showErrorModal([error.response.data.errors]);
       dispatch({ type: ActionType.SetSubmitted, payload: false });
       dispatch({ type: ActionType.SetWaiting, payload: false });

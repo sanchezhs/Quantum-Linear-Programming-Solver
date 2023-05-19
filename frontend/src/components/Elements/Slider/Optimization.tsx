@@ -60,7 +60,6 @@ export function Optimization({
 
       <Form.Group className="mb-3" controlId="formUpperBound">
         <Form.Label>Seed</Form.Label>
-
         <Form.Control
           required
           type="number"

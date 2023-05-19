@@ -26,6 +26,7 @@ export type State = {
   seed: string;
   shots: string;
   simulator: boolean;
+  token: string;
 };
 
 export type Action =
@@ -34,7 +35,8 @@ export type Action =
   | { type: "setDepth"; payload: string }
   | { type: "setSeed"; payload: string }
   | { type: "setShots"; payload: string }
-  | { type: "setIsSimulator"; payload: boolean };
+  | { type: "setIsSimulator"; payload: boolean }
+  | { type: "setToken"; payload: string };
 
 const initialState: State = {
   upperBound: "10",
@@ -43,6 +45,7 @@ const initialState: State = {
   seed: String(Math.floor(Math.random() * 10000)),
   shots: "1000",
   simulator: true,
+  token: '',
 };
 
 function reducer(state: State, action: Action) {
@@ -59,6 +62,8 @@ function reducer(state: State, action: Action) {
       return { ...state, shots: action.payload };
     case "setIsSimulator":
       return { ...state, simulator: action.payload };
+    case "setToken":
+      return { ...state, token: action.payload };
     default:
       throw new Error();
   }

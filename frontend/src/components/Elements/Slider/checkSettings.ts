@@ -3,7 +3,12 @@ import { State } from './Slider'
 
 export function checkSettings(state : State, showErrorModal: (message: string[]) => void) {
 
-    let { upperBound, lowerBound, depth, seed } = state;
+    let { upperBound, lowerBound, depth, seed, token } = state;
+
+    if (token === '') {
+        showErrorModal(["Please enter token to access IBM quantum computer"]);
+        return false;
+    }
 
     if (state.simulator === null) {
         showErrorModal(["Please select simulator or quantum computer"]);  

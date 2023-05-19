@@ -26,13 +26,14 @@ class FormDataSerializer(serializers.Serializer):
         return instance
 
 class SettingsData(object):
-    def __init__(self, upperbound, lowerbund, depth, seed, shots, simulator):
+    def __init__(self, upperbound, lowerbund, depth, seed, shots, simulator, token):
         self.upperbound = upperbound
         self.lowerbund = lowerbund
         self.depth = depth
         self.seed = seed
         self.shots = shots
         self.simulator = simulator
+        self.token = token
         
 class SettingsDataSerializer(serializers.Serializer):
     upperBound = serializers.CharField()
@@ -41,6 +42,7 @@ class SettingsDataSerializer(serializers.Serializer):
     seed = serializers.CharField()
     shots = serializers.CharField()
     simulator = serializers.BooleanField()
+    token = serializers.CharField()
     
     def create(self, validated_data):
         return SettingsData(**validated_data)
@@ -52,6 +54,7 @@ class SettingsDataSerializer(serializers.Serializer):
         instance.seed = validated_data.get('seed', instance.seed)
         instance.shots = validated_data.get('shots', instance.shots)
         instance.simulator = validated_data.get('simulator', instance.simulator)
+        instance.token = validated_data.get('token', instance.token)
         
         return instance
     

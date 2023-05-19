@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { State, Action } from "./Slider";
-
 
 export function Backend({
   state,
@@ -14,6 +14,8 @@ export function Backend({
     dispatch({ type: "setIsSimulator", payload: isSimulator });
   };
 
+  const [isQuantumComputer, setIsQuantumComputer] = useState(false);
+
   return (
     <>
       <Form.Check
@@ -24,7 +26,10 @@ export function Backend({
         label="Simulator"
         value="true"
         checked={state.simulator}
-        onChange={handleRadioChange}
+        onChange={(e) => {
+          handleRadioChange(e);
+          setIsQuantumComputer(false);
+        }}
       ></Form.Check>
       <Form.Check
         required
@@ -35,8 +40,27 @@ export function Backend({
         value="false"
         checked={!state.simulator}
         feedbackType="invalid"
-        onChange={handleRadioChange}
+        onChange={(e) => {
+          handleRadioChange(e);
+          setIsQuantumComputer(true);
+        }}
       ></Form.Check>
+      {isQuantumComputer && (
+        <div style={{ marginTop: "10px" }}>
+          <Form.Label>IBM API Token</Form.Label>
+          <Form.Control
+            required
+            type="password"
+            value={state.token}
+            onChange={(e) =>
+              dispatch({ type: "setToken", payload: e.target.value })
+            }
+          />
+          <Form.Text className="text-muted">
+            Token necessary to access the IBM quantum computers.
+          </Form.Text>
+        </div>
+      )}
     </>
   );
 }

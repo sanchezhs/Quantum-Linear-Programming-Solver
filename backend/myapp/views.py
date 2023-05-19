@@ -19,7 +19,7 @@ class Api_index(viewsets.ViewSet):
     def create(self, request):
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
-            
+            print('serializer data: ', serializer.data)
             problem = Problem(serializer.data['objetive'], 
                               serializer.data['constraints'],
                               serializer.data['radioValue'],
@@ -29,6 +29,7 @@ class Api_index(viewsets.ViewSet):
                               request.session.get('depth', 1),
                               request.session.get('shots', 1000),
                               request.session.get('simulator', True),
+                              request.session.get('token', ''),
                               )
             try:
                 result = problem.solve(mode='qiskit')
@@ -68,6 +69,7 @@ class Api_upload(viewsets.ViewSet):
                               request.session.get('depth', 1),
                               request.session.get('shots', 1000),
                               request.session.get('simulator', True),
+                              request.session.get('token', ''),
                               )
             result = problem.solve()
             
@@ -92,6 +94,7 @@ class Api_settings(viewsets.ViewSet):
             request.session['shots'] = serializer.validated_data['shots']
             request.session['simulator'] = serializer.validated_data['simulator']
             request.session['shots'] = serializer.validated_data['shots']
+            request.session['token'] = serializer.validated_data['token']
             return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
 
 
