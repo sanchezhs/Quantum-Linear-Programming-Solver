@@ -1,8 +1,8 @@
+import re
+import sys
 from rest_framework import serializers
 from qiskit_optimization import QuadraticProgram
 from sympy import sympify
-import re
-import sys
 
 
 class ToQiskitConverter():
@@ -25,6 +25,11 @@ class ToQiskitConverter():
         self.max_value = - sys.maxsize - 1
 
     def to_qiskit(self) -> QuadraticProgram:
+        """
+        Method to convert a problem send by the user to a QuadraticProgram
+        Returns:
+            QuadraticProgram: QuadraticProgram from qiskit_optimization
+        """
 
         # Simplify objetive and constraints
         objetive, constraints = self.simplify()
@@ -80,7 +85,7 @@ class ToQiskitConverter():
                                          )
         except Exception:
             raise serializers.ValidationError(
-                    'Error while processing constraints. Check if the constraint name already exists or the sense is valid') 
+                    'Error while processing constraints. Check if the constraint name already exists or the sense is valid')
 
         return qp
 

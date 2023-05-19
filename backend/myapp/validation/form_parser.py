@@ -132,6 +132,14 @@ class VarDetector(Transformer):
 
 
 def validate_objetive(objetive: str) -> None:
+    """ Validates objetive using objetive_grammar
+        and Lark parser
+    Args:
+        objetive (str): objetive function from the problem
+
+    Raises:
+        serializers.ValidationError: If objetive is invalid (parse error)
+    """
     try:
         parser = Lark(objetive_grammar, parser='lalr')
         _ = parser.parse(objetive)
@@ -142,7 +150,15 @@ def validate_objetive(objetive: str) -> None:
         )
 
 
-def validate_constraints(constraints) :
+def validate_constraints(constraints):
+    """ Validates constraints using constraints_grammar
+
+    Args:
+        constraints (list(str)): list of constraints
+
+    Raises:
+        serializers.ValidationError: If some constraint is invalid (parse error)
+    """
     try:
         for constraint in constraints:
             t = VarDetector()

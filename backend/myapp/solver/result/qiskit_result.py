@@ -14,12 +14,7 @@ matplotlib.use('agg')
 
 
 class QiskitResult:
-    def __init__(self,
-                 measures: MinimumEigenOptimizationResult,
-                 qp: QuadraticProgram,
-                 sampler: Sampler,
-                 theta: np.ndarray,
-                 simulator=True) -> None:
+    def __init__(self, measures: MinimumEigenOptimizationResult, qp: QuadraticProgram, sampler: Sampler, theta: np.ndarray, simulator=True) -> None:
         self.measures = measures
         self.qp = qp
         self.sampler = sampler

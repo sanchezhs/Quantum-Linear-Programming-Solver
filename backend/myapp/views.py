@@ -1,3 +1,4 @@
+import json
 from .solver.problem import Problem
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -5,10 +6,9 @@ from rest_framework import serializers as rest_serializers
 from .validation import file_reader, form_parser
 from .utils import ibm
 from . import serializers
-import json
 
 
-class Api_index(viewsets.ViewSet):
+class Api_input(viewsets.ViewSet):
     """
     ViewSet for input form, it checks if objetive and constraints are valid
     passing them to Lark parser and then it solves the problem.
@@ -17,6 +17,14 @@ class Api_index(viewsets.ViewSet):
     serializer_class = serializers.FormDataSerializer
 
     def create(self, request):
+        """ Get data from frontend, validate it and solve the problem
+
+        Args:
+            request: Request from frontend
+
+        Returns:
+              None
+        """
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
             print('serializer data: ', serializer.data)
@@ -48,6 +56,13 @@ class Api_upload(viewsets.ViewSet):
     """
 
     def create(self, request):
+        """ Get file from frontend, extract data from it, validate it and solve the problem
+        Args:
+            request: Request from frontend
+
+        Returns:
+           None
+        """
         # extract file contents from request
         contents = json.loads(request.body.decode('utf-8'))['fileContents']
         
@@ -83,6 +98,13 @@ class Api_settings(viewsets.ViewSet):
     
     serializer_class = serializers.SettingsDataSerializer
     def create(self, request):
+        """ Get settings from frontend and save them in session
+        Args:
+            request: Request from frontend
+
+        Returns:
+            None
+        """
         serializer = serializers.SettingsDataSerializer(data=request.data)
         print('session: ', request.session.items())
         
@@ -96,21 +118,3 @@ class Api_settings(viewsets.ViewSet):
             request.session['shots'] = serializer.validated_data['shots']
             request.session['token'] = serializer.validated_data['token']
             return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
-
-
-class Api_ibm(viewsets.ViewSet):
-
-    selializer_class = serializers.TokenSerializer
-
-    def create(self, request):
-        print('ibm ', request.data)
-        serializer = serializers.TokenSerializer(data=request.data)
-        if serializer.is_valid():
-            # serializer.save()
-            print('serializer data: ', serializer.data['apiToken'])
-            try:
-                backends = ibm.get_backends(serializer.data['apiToken'])
-                return Response({'status': 'ok', 'backends': backends}, status=201)
-            except Exception as e:
-                return Response({'status': 'error', 'errors': e.args}, status=400)
-        return Response({'status': 'error', 'errors': serializer.errors}, status=400)

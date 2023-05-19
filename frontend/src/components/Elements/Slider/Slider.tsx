@@ -45,7 +45,7 @@ const initialState: State = {
   seed: String(Math.floor(Math.random() * 10000)),
   shots: "1000",
   simulator: true,
-  token: '',
+  token: 'empty',
 };
 
 function reducer(state: State, action: Action) {

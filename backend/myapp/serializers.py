@@ -57,18 +57,3 @@ class SettingsDataSerializer(serializers.Serializer):
         instance.token = validated_data.get('token', instance.token)
         
         return instance
-    
-    
-class Token:
-    def __init__(self, apiToken):
-        self.apiToken = apiToken
-    
-class TokenSerializer(serializers.Serializer):
-    apiToken = serializers.CharField()
-    
-    def create(self, validated_data):
-        return Token(**validated_data)
-    
-    def update(self, instance, validated_data):
-        instance.apiToken = validated_data.get('apiToken', instance.apiToken)
-        return instance

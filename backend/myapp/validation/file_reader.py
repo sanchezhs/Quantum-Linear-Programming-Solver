@@ -45,6 +45,3 @@ def file_extract_data(s: str) -> dict:
         raise serializers.ValidationError( {'errors': [
                     f"Invalid input format. The input string: \n{s}\n must match the expected format."]}
             )
-
-# s = "// comentariosA x mayor que 0\n// comentariosN\n// comentariosC\nmin: hola que tal\nsubject to:\nx < 1\ny < 2\n2*(1+2+3+4) - x < 21\n"
-# extract_data(s)

@@ -3,9 +3,9 @@ import { State } from './Slider'
 
 export function checkSettings(state : State, showErrorModal: (message: string[]) => void) {
 
-    let { upperBound, lowerBound, depth, seed, token } = state;
+    let { upperBound, lowerBound, depth, seed, token, simulator } = state;
 
-    if (token === '') {
+    if (!simulator && token === '') {
         showErrorModal(["Please enter token to access IBM quantum computer"]);
         return false;
     }

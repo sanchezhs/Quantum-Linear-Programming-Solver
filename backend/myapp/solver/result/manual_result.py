@@ -22,12 +22,7 @@ import numpy as np
 matplotlib.use('agg') 
 
 class ManualResult:
-    def __init__(self,
-                 best_sol,
-                 best_params,
-                 circuit,
-                 qubo: QuadraticProgram,
-                 qp: QuadraticProgram) -> None:
+    def __init__(self, best_sol, best_params, circuit, qubo: QuadraticProgram, qp: QuadraticProgram) -> None:
         self.best_sol = best_sol
         self.best_params = best_params
         self.circuit = circuit
