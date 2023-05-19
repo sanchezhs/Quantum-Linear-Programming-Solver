@@ -27,7 +27,7 @@ export const sendForm = (
 ) => {
   const constraintsPost = constraints.map((constraint) => constraint.value);
   axios
-    .post(HOST + "input/", {
+    .post(HOST + "index/", {
       objetive: state.objetive,
       constraints: constraintsPost,
       radioValue: state.radioValue,
@@ -39,11 +39,14 @@ export const sendForm = (
       setInputSolution(response.data);
     })
     .catch((error) => {
+      if (error.response.data.errors[0] !== undefined) {
+        showErrorModal([error.response.data.errors[0].token]);
+      } else {
       showErrorModal([
         error.response.data.errors.objetive,
         error.response.data.errors.constraints,
-        error.response.data.errors,
       ]);
+    }
       setWaiting(false);
       setFormState({ submitted: false, validated: false });
     });

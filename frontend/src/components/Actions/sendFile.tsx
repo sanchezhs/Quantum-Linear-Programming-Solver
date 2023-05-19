@@ -23,7 +23,14 @@ export const sendFile = (
       alert("Success! Check the console for the results.");
     })
     .catch((error) => {
-      showErrorModal([error.response.data.errors]);
+      if (error.response.data.errors.token !== undefined) {
+        showErrorModal([error.response.data.errors.token]);
+      } else {
+      showErrorModal([
+        error.response.data.errors
+      ]);
+
+    }
       setShowWaiting(false);
     });
 };
