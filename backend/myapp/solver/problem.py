@@ -105,9 +105,6 @@ class Problem():
         return ManualResult(best_solution, best_theta, optimized_circuit, qubo, qp).get_results()
 
     def solve_runtime(self):
-        if self.token == '':
-            raise serializers.ValidationError({'errors': [
-                'Token is required']})
         # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         try:
@@ -117,14 +114,12 @@ class Problem():
         try:
             backend = QiskitRuntimeService(channel='ibm_quantum', token=self.token).least_busy(simulator=False).name
         except:
-            raise serializers.ValidationError(
-                'Token is not valid')
+            raise serializers.ValidationError({'token': 'Token is not valid'})
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
         qaoa_mes = QAOAClient(provider=provider, backend=provider.get_backend(
             backend), initial_point=initial_point, callback=self.cobyla_callback, reps=self.depth, shots=self.shots)
         qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
-
 
         return QiskitResult(qaoa_result, qp, None,
                                self.theta, self.simulator).get_results()
