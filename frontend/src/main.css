@@ -17,8 +17,7 @@ pre {
 }
 
 .App {
-  overflow: scroll;
-  min-height: calc(100vh - 40px);
+  overflow-y: visible;
 }
 
 
@@ -46,13 +45,14 @@ pre {
 } */
 
 #footer-div {
-  min-height:50px;
+  height: 4rem;
+  margin-top: 260px;
+  width:100%;
   background-color: #0d6efd;
   color: white;
   padding-top: 10px;
   padding-bottom: 10px;
-} 
-
+}
 
 code {
   width: 10px;
@@ -92,11 +92,9 @@ a {
 
 #content-section {
   margin-bottom: 150px;
+  
 }
 
-.App {
-  height: 100vh;
-}
 
 .nav-links {
   color: white;
@@ -147,6 +145,11 @@ a {
   background-color: #1c2025;
 }
 */
+
+#dark .App {
+  overflow-y: visible;
+  min-height: calc(100% - 4rem);
+}
 #dark {
   /*background-color: #1c2025;*/
   background-color: #262626;

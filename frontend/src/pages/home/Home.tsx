@@ -33,12 +33,6 @@ export function Home() {
                 <li>Optimization Parameters</li>
                 <li>Run Options</li>
               </ul>
-              The Problem Parameters section allows you to change 
-              the upper and lower bound use when binarizing the variables. 
-              The Optimization Parameters section allows you to adjust depth of 
-              the circuit and the random seed. 
-              The Run Options section allows you to select the backend you want to
-              run the algorithm on.
             </p>
 
             <h3>Quantum Gates</h3>

@@ -14,5 +14,5 @@ You need to install Docker to use this app, see [https://www.docker.com/](https:
   VSCode has an option named **CRLF** (**LF** on Linux) in the options bar below, at the right side. Change it to **LF**, save *entrypoint.sh* and rerun
   steps *2* and *3*.
 - *vite not found*: Check that you have NodeJS and npm installed on your machine. If you have them installed, run **npm install -g npm** and rerun steps *2* and *3*.  
-
+- *Host version does not match binary version*: Remove **node_modules** from *frontend* and restart your machine.
 

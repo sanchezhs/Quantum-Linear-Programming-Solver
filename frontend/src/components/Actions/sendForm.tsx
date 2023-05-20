@@ -39,14 +39,6 @@ export const sendForm = (
       setInputSolution(response.data);
     })
     .catch((error) => {
-/*       if (error.response.data.errors !== undefined) {
-        showErrorModal([error.response.data.errors[0].token]);
-      } else {
-      showErrorModal([
-        error.response.data.errors.objetive,
-        error.response.data.errors.constraints,
-      ]);
-    } */
       showErrorModal([
         'There was and error, here are some things you can check:',
         '1. Check that the objetive is correct.',
