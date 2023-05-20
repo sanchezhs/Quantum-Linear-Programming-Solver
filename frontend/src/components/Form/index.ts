@@ -1,1 +1,0 @@
-export { IBM as Ibm } from './Ibm/IBM';

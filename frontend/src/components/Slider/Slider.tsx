@@ -7,7 +7,7 @@ import {
   Form,
   ButtonGroup,
 } from "react-bootstrap";
-import { AppContext } from "../../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import { Drawer, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -17,7 +17,7 @@ import {
   Message,
   checkSettings,
 } from "./index";
-import { sendSettings } from "../../Actions/index";
+import { sendSettings } from "../Actions/index";
 
 export type State = {
   upperBound: string;

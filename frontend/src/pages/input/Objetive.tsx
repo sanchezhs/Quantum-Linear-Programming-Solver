@@ -1,5 +1,5 @@
 import Form from "react-bootstrap/Form";
-import { State, Action } from './Form'
+import { State, Action } from './types/types'
 
 export function Objetive({ state, dispatch }: { state: State; dispatch: React.Dispatch<Action> }) {
   return (

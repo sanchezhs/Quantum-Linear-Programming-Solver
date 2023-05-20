@@ -27,7 +27,7 @@ export const sendForm = (
 ) => {
   const constraintsPost = constraints.map((constraint) => constraint.value);
   axios
-    .post(HOST + "index/", {
+    .post(HOST + "input/", {
       objetive: state.objetive,
       constraints: constraintsPost,
       radioValue: state.radioValue,

@@ -1,12 +1,12 @@
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { ConstraintAction, ConstraintType } from "./Logic";
+import { ConstraintAction, Constraint } from "./types/types";
 
 export function Constraint({
   constraints,
   constraint,
   dispatch,
 }: {
-  constraints: ConstraintType[];
+  constraints: Constraint[];
   constraint: { id: number; value: string };
   dispatch: React.Dispatch<ConstraintAction>;
 }) {

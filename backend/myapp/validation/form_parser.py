@@ -102,15 +102,10 @@ class VarDetector(Transformer):
         else:  # mult or div
             left = items[0]
             right = items[1]
-            print('term: ', left, right)
             if isinstance(left, float) or isinstance(right, float):
                 return {'left': left, 'right': right}
             if left['left']['is_var'] and right['left']['is_var']:
-                raise serializers.ValidationError(
-                    ('two variables multiplied or divided in same term'),
-                    code='invalid'
-                )
-            print('term: ', left, right)
+                raise Exception('Invalid expression: two variables multiplied or divided')
             return {'left': left, 'right': right}
 
     def factor(self, items):
@@ -141,14 +136,19 @@ def validate_objetive(objetive: str) -> None:
         serializers.ValidationError: If objetive is invalid (parse error)
     """
     try:
+        t = VarDetector()
         parser = Lark(objetive_grammar, parser='lalr')
-        _ = parser.parse(objetive)
+        tree = parser.parse(objetive)
+        t.transform(tree)
     except (serializers.ValidationError, Exception) as e:
         print(e)
-        raise serializers.ValidationError( 
-            f'Invalid value (parse error): {objetive}'
-        )
+        msg = ''
+        if (len(e.args) > 0):
+            msg = f', {e.args[0]}'
 
+        raise serializers.ValidationError(
+            f'Invalid value (parse error): {objetive}{msg}'
+        )
 
 def validate_constraints(constraints):
     """ Validates constraints using constraints_grammar

@@ -70,8 +70,10 @@ class Problem():
         # Convert to Quadratic Program
         qp, max_value = ToQiskitConverter(self).to_qiskit()
         
-        # Initialize Sampler to get the circuit
+        # Initialize Sampler to get circuit later
         sampler = Sampler(options={'seed': self.seed, 'shots': self.shots})
+        
+        # Initialize initial point
         initial_point = [self.rng.random() + (max_value / (2 * np.pi))
                          for _ in range(0, 2 * self.depth)]
         
@@ -83,12 +85,9 @@ class Problem():
         qaoa = MinimumEigenOptimizer(qaoa_mes)
         qaoa_result = qaoa.solve(qp)
 
-        print(qaoa_result)
         # Return results
-        results = QiskitResult(qaoa_result, qp, sampler,
+        return QiskitResult(qaoa_result, qp, sampler,
                                self.theta).get_results()
-
-        return results
 
     def _solve_manual(self) -> dict:
         """ Solve the problem using the manual approach
@@ -102,6 +101,8 @@ class Problem():
         
         # Convert to QuadraticProgram
         qp, max_value = ToQiskitConverter(self).to_qiskit()
+        
+        # Convert to QUBO
         conv = QuadraticProgramToQubo()
         qubo = conv.convert(qp)
         

@@ -12,6 +12,11 @@ class Api_input(viewsets.ViewSet):
     """
     ViewSet for input form, it checks if objetive and constraints are valid
     passing them to Lark parser and then it solves the problem.
+    
+    Args (viewsets): Viewset from django rest framework
+    
+    Returns: Result of solving the problem with code 201, 
+             or error with code 400
     """
 
     serializer_class = serializers.FormDataSerializer
@@ -53,6 +58,11 @@ class Api_upload(viewsets.ViewSet):
     """
     ViewSet for upload page. First it checks if file is valid, then it
     passes it to Lark to parse the data and finally it solves the problem.
+    
+    Args (viewsets): Viewset from django rest framework
+    
+    Returns: Result of solving the problem with code 201, 
+             or error with code 400
     """
 
     def create(self, request):
@@ -95,6 +105,14 @@ class Api_upload(viewsets.ViewSet):
             return Response({'status': 'error', 'errors': e.args}, status=400)
 
 class Api_settings(viewsets.ViewSet):
+    """ ViewSet for settings page. It saves settings in session
+        for later use in solving problems. 
+    Args:
+        viewsets (Viewset): Viewset from django rest framework
+
+    Returns:
+        Response: Response to frontend
+    """
     
     serializer_class = serializers.SettingsDataSerializer
     def create(self, request):

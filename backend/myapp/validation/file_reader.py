@@ -16,10 +16,9 @@ def file_extract_data(s: str) -> dict:
     """
     pattern = re.compile(r""" (?P<comments>(\/\/\s*.+\s*\r?\n)+)?          # Comments starts with // and lines are separated by \r?\n, unix or windows
                               (?P<type>(maximize|minimize))\s*:\s*         # minimize or maximize
-                              (?P<objetive>.+)\s*\r?\n                        # Objective function
+                              (?P<objetive>.+)\s*\r?\n                     # Objective function
                               subject\s+to:\s*\r?\n                        # Subject to
-                              #(?P<constraints>(?:.+\s*\r?\n)+.+)          # Constraints, last one without \r?\n
-                              (?P<constraints>(?:.+\s*\r?\n?)+)             # Constraints, last one without \r?\n
+                              (?P<constraints>(?:.+\s*\r?\n?)+)            # Constraints, last one without \r?\n
                               (?P<AnythingElse>).*                         # Anything else
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:

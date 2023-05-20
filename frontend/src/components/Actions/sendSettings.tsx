@@ -1,5 +1,5 @@
 import { HOST } from "../Constants/host";
-import { State } from "../Elements/Slider/Slider";
+import { State } from "../Slider/Slider";
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";

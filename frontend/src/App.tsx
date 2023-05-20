@@ -6,7 +6,7 @@ import { Home, Input, Files, NotFound } from "./pages/index"
 import { Routes, Route } from "react-router-dom";
 import { MathJaxContext } from 'better-react-mathjax'
 import { Modal } from "./components/Elements/index";
-import { Slider } from './components/Elements/index'
+import { Slider } from './components/Slider/index'
 
 
 function App() {
