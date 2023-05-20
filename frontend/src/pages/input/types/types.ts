@@ -59,7 +59,7 @@ React.SetStateAction<FormState>
 /**
  * Types for the constraints
  */
-export type Constraint = {
+export type TConstraint = {
   id: number;
   value: string;
 };
@@ -70,4 +70,4 @@ export type Constraint = {
 export type ConstraintAction =
   | { type: "createConstraint" }
   | { type: "deleteConstraint"; payload: number }
-  | { type: "updateConstraints"; payload: Constraint[] };
+  | { type: "updateConstraints"; payload: TConstraint[] };

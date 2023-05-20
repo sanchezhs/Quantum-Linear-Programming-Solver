@@ -23,14 +23,20 @@ export const sendFile = (
       alert("Success! Check the console for the results.");
     })
     .catch((error) => {
-      if (error.response.data.errors.token !== undefined) {
+/*       if (error.response.data.errors.token !== undefined) {
         showErrorModal([error.response.data.errors.token]);
       } else {
       showErrorModal([
         error.response.data.errors
       ]);
 
-    }
+    } */
+    showErrorModal([
+      'There was and error, here are some things you can check:',
+      '1. Check that the objetive is correct.',
+      '2. Check that the constraints are correct.',
+      '3. Check that the token is correct.',
+    ]);
       setShowWaiting(false);
     });
 };

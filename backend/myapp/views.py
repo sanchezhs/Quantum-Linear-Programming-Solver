@@ -123,16 +123,19 @@ class Api_settings(viewsets.ViewSet):
         Returns:
             None
         """
-        serializer = serializers.SettingsDataSerializer(data=request.data)
-        print('session: ', request.session.items())
-        
-        if serializer.is_valid():
-            request.session['upperBound'] = serializer.validated_data['upperBound']
-            request.session['lowerBound'] = serializer.validated_data['lowerBound']
-            request.session['seed'] = serializer.validated_data['seed']
-            request.session['depth'] = serializer.validated_data['depth']
-            request.session['shots'] = serializer.validated_data['shots']
-            request.session['simulator'] = serializer.validated_data['simulator']
-            request.session['shots'] = serializer.validated_data['shots']
-            request.session['token'] = serializer.validated_data['token']
-            return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
+        try:
+            serializer = serializers.SettingsDataSerializer(data=request.data)
+            print('session: ', request.session.items())
+            
+            if serializer.is_valid(raise_exception=True):
+                request.session['upperBound'] = serializer.validated_data['upperBound']
+                request.session['lowerBound'] = serializer.validated_data['lowerBound']
+                request.session['seed'] = serializer.validated_data['seed']
+                request.session['depth'] = serializer.validated_data['depth']
+                request.session['shots'] = serializer.validated_data['shots']
+                request.session['simulator'] = serializer.validated_data['simulator']
+                request.session['shots'] = serializer.validated_data['shots']
+                request.session['token'] = serializer.validated_data['token']
+                return Response({'status': 'ok', 'data': serializer.validated_data}, status=201)
+        except Exception as e:
+            return Response({'status': 'error', 'errors': e.args}, status=400)

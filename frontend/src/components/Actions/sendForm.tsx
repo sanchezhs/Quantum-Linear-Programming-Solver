@@ -1,6 +1,6 @@
 import { InputSolution } from "../../context/AppContext";
 import { HOST } from "../Constants/host";
-import { State, Constraint, setFormState } from '../../pages/input/types/types'
+import { State, TConstraint, setFormState } from '../../pages/input/types/types'
 import axios from "axios";
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
@@ -19,7 +19,7 @@ axios.defaults.withCredentials = true;
  */
 export const sendForm = (
   state: State,
-  constraints: Constraint[],
+  constraints: TConstraint[],
   setFormState: setFormState,
   setWaiting: (waiting: boolean) => void,
   showErrorModal: (errors: string[]) => void,
@@ -39,14 +39,20 @@ export const sendForm = (
       setInputSolution(response.data);
     })
     .catch((error) => {
-      if (error.response.data.errors[0] !== undefined) {
+/*       if (error.response.data.errors !== undefined) {
         showErrorModal([error.response.data.errors[0].token]);
       } else {
       showErrorModal([
         error.response.data.errors.objetive,
         error.response.data.errors.constraints,
       ]);
-    }
+    } */
+      showErrorModal([
+        'There was and error, here are some things you can check:',
+        '1. Check that the objetive is correct.',
+        '2. Check that the constraints are correct.',
+        '3. Check that the token is correct.',
+      ]);
       setWaiting(false);
       setFormState({ submitted: false, validated: false });
     });

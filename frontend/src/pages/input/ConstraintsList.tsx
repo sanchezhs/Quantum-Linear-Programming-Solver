@@ -4,7 +4,7 @@ import { useContext, useReducer, useState } from "react";
 import { AppContext } from "../../context/index";
 import Buttons from "./Buttons";
 import { sendForm } from "../../components/Actions/index";
-import { State, Action, Constraint, ConstraintAction, FormState, setFormState } from "./types/types";
+import { State, Action, TConstraint, ConstraintAction, FormState, setFormState } from "./types/types";
 
 
 export function checkForm(
@@ -46,7 +46,7 @@ export function ConstraintsList({
   const [waiting, setWaiting] = useState(false);
   const { showErrorModal, setInputSolution } = useContext(AppContext);
   const [constraints, ListDispatch] = useReducer(
-    (constraints: Constraint[], action: ConstraintAction) => {
+    (constraints: TConstraint[], action: ConstraintAction) => {
       switch (action.type) {
         case "createConstraint":
           return [
