@@ -46,7 +46,7 @@ pre {
 
 #footer-div {
   height: 4rem;
-  margin-top: 260px;
+  margin-top: 450px;
   width:100%;
   background-color: #0d6efd;
   color: white;
@@ -148,7 +148,6 @@ a {
 
 #dark .App {
   overflow-y: visible;
-  min-height: calc(100% - 4rem);
 }
 #dark {
   /*background-color: #1c2025;*/

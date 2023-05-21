@@ -39,12 +39,19 @@ export const sendForm = (
       setInputSolution(response.data);
     })
     .catch((error) => {
-      showErrorModal([
-        'There was and error, here are some things you can check:',
-        '1. Check that the objetive is correct.',
-        '2. Check that the constraints are correct.',
-        '3. Check that the token is correct.',
-      ]);
+      if (error.response.data.infeasible) {
+        showErrorModal([
+          'The problem is infeasible.',
+          'Try changing the constraints or the objetive.'
+        ]);
+      } else {
+        showErrorModal([
+          'There was and error, here are some things you can check:',
+          '1. Check that the objetive is correct.',
+          '2. Check that the constraints are correct.',
+          '3. Check that the token is correct.',
+        ]);
+      }
       setWaiting(false);
       setFormState({ submitted: false, validated: false });
     });

@@ -24,8 +24,8 @@ function App() {
       </Routes>
       <Modal/>
       <Slider/> 
-      </div>
       <Footer />
+      </div>
       </MathJaxContext>
   );
 }

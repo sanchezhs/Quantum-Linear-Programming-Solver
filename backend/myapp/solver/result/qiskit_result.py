@@ -1,12 +1,14 @@
 import base64
 import matplotlib
 from qiskit_ibm_runtime import Sampler
+from qiskit_optimization.algorithms import OptimizationResultStatus
 from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
 from qiskit.primitives import Sampler
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from qiskit.visualization import plot_histogram
 import numpy as np
+from ...exceptions.exceptions import NoSolutionFoundError
 
 # https://matplotlib.org/stable/users/explain/backends.html
 # Agg is a non-interactive backend that can only write to files.
@@ -93,6 +95,8 @@ class QiskitResult:
         return encoded_circuit
 
     def get_solution_details(self, qubo: QuadraticProgram):
+        if all(x.status == OptimizationResultStatus.INFEASIBLE for x in self.measures.samples):
+            raise NoSolutionFoundError('No feasible solution found.')
         num_qubits = qubo.get_num_vars()
         values = self.measures.x
         fval = int(self.measures.fval)

@@ -81,11 +81,16 @@ export function Slider() {
     console.log(state);
   };
 
+  const handlePanelClose = () => {
+    setOpenPanel(false);
+    setShowMessage({ show: false, error: false });
+  };
+
   return (
     <Drawer
       anchor="right"
       open={openPanel}
-      onClose={() => setOpenPanel(false)}
+      onClose={handlePanelClose}
       PaperProps={{
         sx: {
           boxShadow: 10,
@@ -98,10 +103,7 @@ export function Slider() {
             style={{ position: "absolute", top: 5, left: 5 }}
             size="sm"
             variant="outline-secondaty"
-            onClick={() => {
-              setOpenPanel(false);
-              setShowMessage({ show: false, error: false });
-            }}
+            onClick={handlePanelClose}
           >
             <CloseIcon />
           </Button>

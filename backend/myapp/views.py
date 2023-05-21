@@ -4,9 +4,9 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
 from .validation import file_reader, form_parser
+from .exceptions.exceptions import NoSolutionFoundError
 from .utils import ibm
 from . import serializers
-
 
 class Api_input(viewsets.ViewSet):
     """
@@ -46,8 +46,13 @@ class Api_input(viewsets.ViewSet):
                               )
             try:
                 result = problem.solve(mode='qiskit')
+            except NoSolutionFoundError as e:
+                print('No solution found')
+                return Response({'status': 'error', 'infeasible': e.args}, status=400)
+            except InvalidObjetiveError as e:
+                print('Invalid objetive')
+                return Response({'status': 'error', 'errors': e.args}, status=400)
             except Exception as e:
-                print(e.args)
                 return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
         print('serializer errors: ', serializer.errors)
@@ -101,6 +106,7 @@ class Api_upload(viewsets.ViewSet):
             return Response(result, status=201)
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
+
         except Exception as e:
             return Response({'status': 'error', 'errors': e.args}, status=400)
 

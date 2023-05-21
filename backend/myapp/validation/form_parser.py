@@ -1,4 +1,4 @@
-from lark import Lark, Transformer, UnexpectedInput
+from lark import Lark, Transformer
 from rest_framework import serializers
 
 constraints_grammar = """
@@ -141,7 +141,6 @@ def validate_objetive(objetive: str) -> None:
         tree = parser.parse(objetive)
         #t.transform(tree)
     except Exception as e:
-        print(e)
         raise serializers.ValidationError(
             f'Invalid value (parse error): {objetive}'
         )

@@ -86,6 +86,8 @@ class Problem():
         qaoa_result = qaoa.solve(qp)
 
         # Return results
+        print(qaoa_result)
+        
         return QiskitResult(qaoa_result, qp, sampler,
                                self.theta).get_results()
 
@@ -145,7 +147,6 @@ class Problem():
             )
 
         qaoa_result = MinimumEigenOptimizer(qaoa_mes).solve(qp)
-
         return QiskitResult(qaoa_result, qp, None, self.theta, self.simulator).get_results()
 
 

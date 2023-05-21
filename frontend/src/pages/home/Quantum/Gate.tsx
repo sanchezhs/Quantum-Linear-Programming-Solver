@@ -56,7 +56,7 @@ export function Gate({
         </Col>
       </Row>
       <Row id="modal-row" style={{ marginTop: "20px" }}>
-        <Col style={{ textAlign: "center" }}>
+        <Col style={{ marginTop: '30px' }}>
           <figure>
             <img
               className="img-zoom"
@@ -72,7 +72,7 @@ export function Gate({
               className="img-zoom"
               src={theme === "light" ? stateVector.light : stateVector.dark}
               alt="StateVector"
-              style={{ width: "65%" }}
+              style={{ width: "65%", marginTop: '45px' }}
             />
           </Zoom>
         </Col>
