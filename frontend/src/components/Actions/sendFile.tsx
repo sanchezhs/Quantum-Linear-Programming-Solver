@@ -28,6 +28,10 @@ export const sendFile = (
           'The problem is infeasible.',
           'Try changing the constraints or the objetive.'
         ]);
+      } else if (error.response.data.file_error) {
+        showErrorModal([
+          error.response.data.file_error
+        ]);
       } else {
         showErrorModal([
           'There was and error, here are some things you can check:',

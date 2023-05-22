@@ -213,7 +213,7 @@ a {
 }
 
 #dark .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #3d3d3d;
+  background-color: #6a6a6a;
 }
 
 #dark .table-striped tbody tr:nth-of-type(even) {

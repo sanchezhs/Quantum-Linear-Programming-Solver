@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from ..exceptions.exceptions import InvalidFileFormatError
 import re
 
 
@@ -41,6 +42,8 @@ def file_extract_data(s: str) -> dict:
             'type': type
         }
     except Exception as e:
-        raise serializers.ValidationError( {'errors': [
+        raise InvalidFileFormatError(f"Invalid input format. The input string: \n{s}\n must match the expected format.") from e
+    
+"""         raise serializers.ValidationError( {'errors': [
                     f"Invalid input format. The input string: \n{s}\n must match the expected format."]}
-            )
+            ) """

@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
 from .validation import file_reader, form_parser
-from .exceptions.exceptions import NoSolutionFoundError
+from .exceptions.exceptions import NoSolutionFoundError,InvalidFileFormatError
 from .utils import ibm
 from . import serializers
 
@@ -47,11 +47,7 @@ class Api_input(viewsets.ViewSet):
             try:
                 result = problem.solve(mode='qiskit')
             except NoSolutionFoundError as e:
-                print('No solution found')
                 return Response({'status': 'error', 'infeasible': e.args}, status=400)
-            except InvalidObjetiveError as e:
-                print('Invalid objetive')
-                return Response({'status': 'error', 'errors': e.args}, status=400)
             except Exception as e:
                 return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
@@ -81,10 +77,11 @@ class Api_upload(viewsets.ViewSet):
         # extract file contents from request
         contents = json.loads(request.body.decode('utf-8'))['fileContents']
         
-        # extract problem data from file contents
-        data = file_reader.file_extract_data(contents)
         
         try:
+            # extract problem data from file contents
+            data = file_reader.file_extract_data(contents)
+            
             # validate objective and constraints
             form_parser.validate_objetive(data['objetive'])
             form_parser.validate_constraints(data['constraints'])
@@ -104,9 +101,12 @@ class Api_upload(viewsets.ViewSet):
             result = problem.solve()
             
             return Response(result, status=201)
+        except InvalidFileFormatError as e:
+            return Response({'status': 'error', 'file_error': e.args}, status=400)
         except rest_serializers.ValidationError as e:
             return Response({'status': 'error', 'errors': e.detail}, status=400)
-
+        except NoSolutionFoundError as e:
+            return Response({'status': 'error', 'infeasible': e.args}, status=400)
         except Exception as e:
             return Response({'status': 'error', 'errors': e.args}, status=400)
 
