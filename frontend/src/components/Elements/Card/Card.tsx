@@ -66,7 +66,6 @@ export function Card({ body }: CardProps) {
           </Button>
         </div>
       )}
-      {/* <code>{!show ? example : fullExample}</code> */}
       <code>{!show ? renderBody(body[0]) : renderBody(body[1])}</code>
     </pre>
   );

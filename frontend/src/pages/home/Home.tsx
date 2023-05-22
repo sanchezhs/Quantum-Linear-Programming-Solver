@@ -28,12 +28,12 @@ export function Home() {
              You can adjust the settings of the algorithm and the problem
               parameters in the panel on the right. The settings are divided into
               three sections: 
-              <ul>
-                <li>Problem Parameters</li>
-                <li>Optimization Parameters</li>
-                <li>Run Options</li>
-              </ul>
             </p>
+              <ul>
+                <li>- Problem Parameters</li>
+                <li>- Optimization Parameters</li>
+                <li>- Run Options</li>
+              </ul>
 
             <h3>Quantum Gates</h3>
             <p>
