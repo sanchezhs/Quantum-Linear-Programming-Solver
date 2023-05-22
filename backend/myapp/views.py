@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework import serializers as rest_serializers
 from .validation import file_reader, form_parser
 from .exceptions.exceptions import NoSolutionFoundError,InvalidFileFormatError
-from .utils import ibm
 from . import serializers
 
 class Api_input(viewsets.ViewSet):
