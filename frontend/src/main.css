@@ -348,3 +348,7 @@ dt {
 #dark ul {
   color: #829ab1;
 }
+
+.MuiDrawer-root {
+  color: #066ff0;
+}

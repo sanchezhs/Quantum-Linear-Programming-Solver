@@ -8,7 +8,7 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import { AppContext } from "../../context/AppContext";
-import { Drawer, Divider } from "@mui/material";
+import { Drawer, Divider, createTheme , ThemeProvider} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Optimization,
@@ -76,7 +76,7 @@ export function Slider() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!checkSettings(state, showErrorModal)) return;
+    if (!checkSettings(state, showErrorModal, setOpenPanel)) return;
     sendSettings(state, setShowMessage);
     console.log(state);
   };
