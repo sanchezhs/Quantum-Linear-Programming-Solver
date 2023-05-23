@@ -4,11 +4,13 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /backend
 
-COPY entrypoint.sh /entrypoint.sh 
-RUN chmod o+x /entrypoint.sh
-
 COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt && \
+    python manage.py makemigrations && \
+    python manage.py migrate 
+
 
 EXPOSE 8000
 
-CMD ["./entrypoint.sh"]
+CMD ["python", "manage.py", "runserver"]

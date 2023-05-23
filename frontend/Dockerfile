@@ -1,12 +1,3 @@
-FROM node:14.17.3
+FROM httpd:alpine
 
-WORKDIR /frontend
-
-COPY . .
-
-RUN npm install
-
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+COPY dist /usr/local/apache2/htdocs
