@@ -43,9 +43,8 @@ class Api_input(viewsets.ViewSet):
                               request.session.get('simulator', True),
                               request.session.get('token', ''),
                               )
-            result = problem.solve(mode='qiskit')
             try:
-                b= 0
+                result = problem.solve(mode='qiskit')
             except NoSolutionFoundError as e:
                 return Response({'status': 'error', 'infeasible': e.args}, status=400)
             except Exception as e:
