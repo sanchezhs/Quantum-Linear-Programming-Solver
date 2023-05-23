@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /backend
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh 
 RUN chmod o+x /entrypoint.sh
 
 COPY . .

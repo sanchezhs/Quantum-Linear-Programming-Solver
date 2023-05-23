@@ -2,11 +2,10 @@ FROM node:14.17.3
 
 WORKDIR /frontend
 
-COPY package.json .
+COPY . .
 
 RUN npm install
 
-COPY . .
 
 EXPOSE 3000
 
