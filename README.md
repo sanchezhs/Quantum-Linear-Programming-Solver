@@ -1,11 +1,6 @@
 # TFG [![DOI](https://zenodo.org/badge/619192204.svg)](https://zenodo.org/badge/latestdoi/619192204)
 
 
-
-[![DOI](https://zenodo.org/badge/619192204.svg)](https://zenodo.org/badge/latestdoi/619192204)
-
-
-
 ## Installation
 You need to install Docker to use this app, see [https://www.docker.com/](https://www.docker.com/).
 
