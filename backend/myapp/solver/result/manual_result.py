@@ -60,23 +60,10 @@ class ManualResult:
             best = sol[0]
         else:
             best = sol[-1]
-        
-        #best = list(sol.keys())[0]
-            
-            
-        print('BEST: ', best)
         values = np.array(best[0])
         objetive_value = self.original.objective.evaluate(values)
         vars_values = {}
         for i, var in enumerate(self.original.variables):
             vars_values[var.name] = values[i]
             
-        print('OBJETIVE: ', objetive_value)
-        print('VARS: ', vars_values)
-        
-                
-        #filename = "./histogram.png"
-        #_ = plot_histogram(best, filename=filename, figsize=(28, 26), title="Samples")
-        #with open(filename, 'rb') as file:
-        #    enconded_string = base64.b64encode(file.read()).decode('utf-8')
         return objetive_value, vars_values, ''

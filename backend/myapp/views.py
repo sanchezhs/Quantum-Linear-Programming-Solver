@@ -31,7 +31,6 @@ class Api_input(viewsets.ViewSet):
         """
         serializer = serializers.FormDataSerializer(data=request.data)
         if serializer.is_valid():
-            print('serializer data: ', serializer.data)
             problem = Problem(serializer.data['objetive'], 
                               serializer.data['constraints'],
                               serializer.data['radioValue'],
@@ -50,7 +49,6 @@ class Api_input(viewsets.ViewSet):
             except Exception as e:
                 return Response({'status': 'error', 'errors': e.args}, status=400)
             return Response(result, status=201)
-        print('serializer errors: ', serializer.errors)
         return Response({'status': 'error', 'errors': serializer.errors}, status=400)
 
 

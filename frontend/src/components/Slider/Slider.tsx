@@ -78,7 +78,6 @@ export function Slider() {
     e.preventDefault();
     if (!checkSettings(state, showErrorModal, setOpenPanel)) return;
     sendSettings(state, setShowMessage);
-    console.log(state);
   };
 
   const handlePanelClose = () => {

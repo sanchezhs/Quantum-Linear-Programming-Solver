@@ -161,7 +161,6 @@ def validate_constraints(constraints):
             tree = parser.parse(constraint)
             _ = t.transform(tree)
     except Exception as e:
-        print('error constraints: ', e)
         msg = ''
         if (len(e.args) > 0):
             msg = f', {e.args[0]}'

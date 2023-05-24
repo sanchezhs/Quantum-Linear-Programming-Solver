@@ -1,4 +1,3 @@
-from rest_framework import serializers
 from ..exceptions.exceptions import InvalidFileFormatError
 import re
 
@@ -24,18 +23,10 @@ def file_extract_data(s: str) -> dict:
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:
         match = re.match(pattern, s)
-        print('match ', match)
-
         comments = match.group('comments')
-        
         type = match.group('type')
         objetive = match.group('objetive')
         constraints = re.findall(r'.+', match.group('constraints'))
-        print('comments ', comments)
-        print('objetive ', objetive)
-        print('constraints ', constraints)
-        print('type ', type)
-        print('todo ok en txt')
         return {
             'objetive': objetive.strip(),
             'constraints': constraints,
