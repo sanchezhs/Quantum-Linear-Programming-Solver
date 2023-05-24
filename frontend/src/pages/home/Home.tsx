@@ -23,7 +23,7 @@ export function Home() {
               the algorithm, as well as the state vector and q-sphere of the
               quantum state at each step of the algorithm.
             </p>
-            <h5>Settings</h5>
+{/*             <h5>Settings</h5>
             <p>
              You can adjust the settings of the algorithm and the problem
               parameters in the panel on the right. The settings are divided into
@@ -33,7 +33,7 @@ export function Home() {
                 <li>- Problem Parameters</li>
                 <li>- Optimization Parameters</li>
                 <li>- Run Options</li>
-              </ul>
+              </ul> */}
 
             <h3>Quantum Gates</h3>
             <p>
