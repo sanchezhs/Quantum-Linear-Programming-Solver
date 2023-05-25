@@ -16,7 +16,7 @@ export const sendFile = (
 ) => {
   axios
     .post(HOST + "upload/", {
-      fileContents: fileContents,
+      fileContents: fileContents
     })
     .then((response) => {
       setFileSolution(response.data);

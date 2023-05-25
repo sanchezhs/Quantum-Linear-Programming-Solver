@@ -17,7 +17,7 @@ export function RZZ() {
       <p>
         <MathJax style={{ textAlign: "center" }}>
           {
-            "\\(I \\otimes \\ R_Z(\\theta) = \\begin{pmatrix} e^{-i\\frac{\\theta}{2}} & 0 & 0 & 0 \\\\ 0 &  e^{-i\\frac{\\theta}{2}} & 0 & 0 \\\\ 0 & 0 &  e^{-i\\frac{\\theta}{2}} & 0 \\\\ 0 & 0 & 0 &  e^{-i\\frac{\\theta}{2}} \\end{pmatrix} \\)"
+            "\\(RZZ(\\theta) = \\begin{pmatrix} e^{-i\\frac{\\theta}{2}} & 0 & 0 & 0 \\\\ 0 &  e^{-i\\frac{\\theta}{2}} & 0 & 0 \\\\ 0 & 0 &  e^{-i\\frac{\\theta}{2}} & 0 \\\\ 0 & 0 & 0 &  e^{-i\\frac{\\theta}{2}} \\end{pmatrix} \\)"
           }
         </MathJax>
       </p>

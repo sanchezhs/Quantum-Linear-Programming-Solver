@@ -1,17 +1,14 @@
 from rest_framework import serializers
 from qiskit_optimization.converters import QuadraticProgramToQubo
-from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
 from qiskit.algorithms.optimizers import COBYLA
 from qiskit.primitives import Sampler
 from qiskit_optimization.algorithms import MinimumEigenOptimizer
-from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.runtime import QAOAClient
 from qiskit.algorithms.minimum_eigensolvers import QAOA
 from .result.qiskit_result import QiskitResult
 from .result.manual_result import ManualResult  
 from .converter.qiskit_conv import ToQiskitConverter
 from .optimization.optimize_problem import OptimizeProblem  
-
 from qiskit import IBMQ
 from qiskit_ibm_runtime import QiskitRuntimeService
 import numpy as np
@@ -87,7 +84,6 @@ class Problem():
 
         # Return results
         print(qaoa_result)
-        
         return QiskitResult(qaoa_result, qp, sampler,
                                self.theta).get_results()
 

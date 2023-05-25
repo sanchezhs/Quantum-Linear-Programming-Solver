@@ -128,7 +128,6 @@ class Api_settings(viewsets.ViewSet):
         """
         try:
             serializer = serializers.SettingsDataSerializer(data=request.data)
-            print('session: ', request.session.items())
             
             if serializer.is_valid(raise_exception=True):
                 request.session['upperBound'] = serializer.validated_data['upperBound']

@@ -22,6 +22,7 @@ def file_extract_data(s: str) -> dict:
                               (?P<AnythingElse>).*                         # Anything else
                              """, flags=re.VERBOSE | re.IGNORECASE)
     try:
+        s = s.replace('\r\n', '\n')
         match = re.match(pattern, s)
         comments = match.group('comments')
         type = match.group('type')
