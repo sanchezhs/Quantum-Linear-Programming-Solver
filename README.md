@@ -1,4 +1,6 @@
-# TFG [![DOI](https://zenodo.org/badge/619192204.svg)](https://zenodo.org/badge/latestdoi/619192204)
+# TFG [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7972044.svg)](https://doi.org/10.5281/zenodo.7972044)
+
+
 
 
 ## Installation
