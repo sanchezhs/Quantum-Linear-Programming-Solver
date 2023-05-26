@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .validation import form_parser, file_reader
+from .validation import form_parser
 
 
 class FormData(object):
@@ -8,7 +8,6 @@ class FormData(object):
         self.constraints = constraints
         self.radioValue = radioValue
 
-formdata = FormData(objetive='x', constraints=['x < 1'], radioValue='z')
 
 class FormDataSerializer(serializers.Serializer):
     objetive = serializers.CharField(validators=[form_parser.validate_objetive])

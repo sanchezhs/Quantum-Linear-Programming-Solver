@@ -1,6 +1,6 @@
 import numpy as np
 from qiskit_ibm_runtime import QiskitRuntimeService, Sampler
-from qiskit import Aer, QuantumCircuit
+from qiskit import Aer
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from scipy.optimize import minimize

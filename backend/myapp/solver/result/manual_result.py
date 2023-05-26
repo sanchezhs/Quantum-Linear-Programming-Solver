@@ -1,20 +1,7 @@
 import base64
 import matplotlib
-
-from qiskit_ibm_runtime import  Sampler
-from sympy import sympify
-from qiskit_optimization.algorithms.minimum_eigen_optimizer import MinimumEigenOptimizationResult
 from qiskit_optimization.problems.quadratic_objective import ObjSense
-from typing import List, Tuple
-from qiskit.primitives import Sampler
-from qiskit_optimization.algorithms import (
-    SolutionSample,
-    OptimizationResultStatus,
-)
-from qiskit.opflow import OperatorBase
 from qiskit_optimization import QuadraticProgram
-from qiskit.visualization import plot_histogram
-from typing import List, Tuple
 import numpy as np
 
 # https://matplotlib.org/stable/users/explain/backends.html
