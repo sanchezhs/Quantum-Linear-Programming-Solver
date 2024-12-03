@@ -6,10 +6,19 @@ It has two parts:
 - Backend: Written in Python, uses Qiskit for quantum algorithm QAOA (Quantum Approximate Optimization Algoritm)
 - Frontend: Written in Typescript using React. Provides a graphical interface where the user can enter ILP problems with restrictions and visualize the solutions (including quantum associated quantum circuit)
 
+# Images
+
+![solver1](./files/solver1.png)
+![solver3](./files/solver3.png)
+![solver4](./files/solver4.png)
+
 # Examples
 Write a formula like:
+```python
 **minimize** x_0 + x_1 + 2(x_0 + x_1 + s_0 - 1)^2
 **subject to** 0 <= x_0 <= 1, 0 <= x_1 <= 1, 0 <= s_0 <= 1
+```
+Click on **Run** (see first image).
 
 # Installation
 You need to install Docker to use this app, see [https://www.docker.com/](https://www.docker.com/).
