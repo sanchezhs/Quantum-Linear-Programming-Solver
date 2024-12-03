@@ -8,8 +8,13 @@ It has two parts:
 
 # Images
 
+The project implements a grammar to recognize mathematical formulas:
 ![solver1](./files/solver1.png)
+
+It also can read those formulas from files:
 ![solver3](./files/solver3.png)
+
+And you can customize optimization paremeters:
 ![solver4](./files/solver4.png)
 
 # Examples
